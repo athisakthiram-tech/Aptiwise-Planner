@@ -77,6 +77,19 @@ export interface BenefitCalculationResult {
   sourceVersion?: string;
 }
 
+// A configuration-specific comparison against the customer's stated
+// monthly budget — deliberately separate from MatchQuality.budgetVerified
+// in lib/insurance/matching.ts, which stays false for category matching
+// regardless of this. `verified` is only true once an exact premium was
+// actually returned; unknown figures stay undefined, never 0.
+export interface PlanBudgetComparison {
+  verified: boolean;
+  customerMonthlyBudget: number;
+  annualPremium?: number;
+  monthlyEquivalent?: number;
+  withinBudget?: boolean;
+}
+
 // Everything a future LIC calculator might need. Only fields backed by an
 // actual verified customer input should be populated by the UI today —
 // the rest stay optional and calculators must report them via

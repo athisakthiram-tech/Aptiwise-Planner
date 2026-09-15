@@ -5,6 +5,7 @@ import { InsuranceProduct } from "@/types/insurance";
 import { formatINRCompact } from "@/lib/calculations/format";
 import { getPlanEngineForProduct } from "@/lib/insurance/engineRegistry";
 import { Disclosure } from "@/components/ui/Disclosure";
+import { Plan733Configurator } from "@/components/planner/Plan733Configurator";
 
 export function LicProductDetailSheet({
   product,
@@ -73,62 +74,68 @@ export function LicProductDetailSheet({
             </div>
           </div>
 
-          <div>
-            <p className="text-xs font-semibold text-ink-500">👤 Eligibility</p>
-            <p className="text-amber-700">{eligibilityText}</p>
-            {eligibilityReason && (
-              <p className="mt-0.5 text-xs text-ink-500">{eligibilityReason}</p>
-            )}
-          </div>
+          {product.planNumber === "733" ? (
+            <Plan733Configurator product={product} goal={goal} />
+          ) : (
+            <>
+              <div>
+                <p className="text-xs font-semibold text-ink-500">👤 Eligibility</p>
+                <p className="text-amber-700">{eligibilityText}</p>
+                {eligibilityReason && (
+                  <p className="mt-0.5 text-xs text-ink-500">{eligibilityReason}</p>
+                )}
+              </div>
 
-          <div>
-            <p className="text-xs font-semibold text-ink-500">🧾 Premium</p>
-            <p className="text-amber-700">
-              {premium?.available && premium.premium != null
-                ? `${formatINRCompact(premium.premium)} / year`
-                : "⚠️ Exact premium requires verified LIC premium rates"}
-            </p>
-          </div>
+              <div>
+                <p className="text-xs font-semibold text-ink-500">🧾 Premium</p>
+                <p className="text-amber-700">
+                  {premium?.available && premium.premium != null
+                    ? `${formatINRCompact(premium.premium)} / year`
+                    : "⚠️ Exact premium requires verified LIC premium rates"}
+                </p>
+              </div>
 
-          <div>
-            <p className="text-xs font-semibold text-ink-500">❤️ Family Protection</p>
-            {guaranteed ? (
-              <p className="text-ink-900">
-                {formatINRCompact(guaranteed.deathBenefitAnnualIncomePerYear)}/year until
-                maturity, plus {formatINRCompact(guaranteed.deathBenefitMaturityComponent)} at
-                maturity, on death during the term.
-              </p>
-            ) : (
-              <p className="text-amber-700">⚠️ Not calculated</p>
-            )}
-          </div>
+              <div>
+                <p className="text-xs font-semibold text-ink-500">❤️ Family Protection</p>
+                {guaranteed ? (
+                  <p className="text-ink-900">
+                    {formatINRCompact(guaranteed.deathBenefitAnnualIncomePerYear)}/year until
+                    maturity, plus {formatINRCompact(guaranteed.deathBenefitMaturityComponent)} at
+                    maturity, on death during the term.
+                  </p>
+                ) : (
+                  <p className="text-amber-700">⚠️ Not calculated</p>
+                )}
+              </div>
 
-          <div>
-            <p className="text-xs font-semibold text-ink-500">🎯 Maturity</p>
-            {benefits?.available && benefits.maturityBenefit != null ? (
-              <p className="text-ink-900">
-                {formatINRCompact(benefits.maturityBenefit)} guaranteed (excludes any future
-                bonus)
-              </p>
-            ) : (
-              <p className="text-amber-700">⚠️ Not calculated</p>
-            )}
-          </div>
+              <div>
+                <p className="text-xs font-semibold text-ink-500">🎯 Maturity</p>
+                {benefits?.available && benefits.maturityBenefit != null ? (
+                  <p className="text-ink-900">
+                    {formatINRCompact(benefits.maturityBenefit)} guaranteed (excludes any future
+                    bonus)
+                  </p>
+                ) : (
+                  <p className="text-amber-700">⚠️ Not calculated</p>
+                )}
+              </div>
 
-          <div>
-            <p className="text-xs font-semibold text-ink-500">🎁 Bonuses</p>
-            <p className="text-ink-500">
-              Future LIC bonuses are not guaranteed and are not included in this calculation.
-            </p>
-          </div>
+              <div>
+                <p className="text-xs font-semibold text-ink-500">🎁 Bonuses</p>
+                <p className="text-ink-500">
+                  Future LIC bonuses are not guaranteed and are not included in this calculation.
+                </p>
+              </div>
 
-          {guaranteed && (
-            <Disclosure label="How is this calculated? 🤔">
-              Guaranteed figures come directly from your chosen Sum Assured using this
-              plan&apos;s published benefit formula. They exclude bonuses and exclude the
-              alternative &ldquo;7× annual premium&rdquo; death benefit, which needs a verified
-              premium to compare.
-            </Disclosure>
+              {guaranteed && (
+                <Disclosure label="How is this calculated? 🤔">
+                  Guaranteed figures come directly from your chosen Sum Assured using this
+                  plan&apos;s published benefit formula. They exclude bonuses and exclude the
+                  alternative &ldquo;7× annual premium&rdquo; death benefit, which needs a
+                  verified premium to compare.
+                </Disclosure>
+              )}
+            </>
           )}
         </div>
 
