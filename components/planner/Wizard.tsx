@@ -5,6 +5,7 @@ import { GoalInput, StrategyId } from "@/types";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Step1Goal } from "@/components/planner/Step1Goal";
 import { Step2Summary } from "@/components/planner/Step2Summary";
+import { StepLicOptions } from "@/components/planner/StepLicOptions";
 import { Step3Strategy } from "@/components/planner/Step3Strategy";
 import { Step4Compare } from "@/components/planner/Step4Compare";
 import { Step5Investment } from "@/components/planner/Step5Investment";
@@ -13,7 +14,7 @@ import { Step7Family } from "@/components/planner/Step7Family";
 import { Step8Final } from "@/components/planner/Step8Final";
 import { Button } from "@/components/ui/Button";
 
-export const TOTAL_STEPS = 8;
+export const TOTAL_STEPS = 9;
 
 const DEFAULT_GOAL: GoalInput = {
   age: 35,
@@ -33,7 +34,7 @@ export function Wizard() {
   const goNext = () => setStep((s) => Math.min(TOTAL_STEPS, s + 1));
   const goBack = () => setStep((s) => Math.max(1, s - 1));
 
-  const canAdvance = step !== 3 || Boolean(strategyId);
+  const canAdvance = step !== 4 || Boolean(strategyId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -47,14 +48,15 @@ export function Wizard() {
       <div className="min-h-[420px]">
         {step === 1 && <Step1Goal goal={goal} onChange={setGoal} />}
         {step === 2 && <Step2Summary goal={goal} />}
-        {step === 3 && (
+        {step === 3 && <StepLicOptions goal={goal} />}
+        {step === 4 && (
           <Step3Strategy selectedId={strategyId} onSelect={setStrategyId} />
         )}
-        {step === 4 && <Step4Compare />}
-        {step === 5 && <Step5Investment goal={goal} />}
-        {step === 6 && <Step6Risk />}
-        {step === 7 && <Step7Family />}
-        {step === 8 && <Step8Final goal={goal} strategyId={strategyId} />}
+        {step === 5 && <Step4Compare />}
+        {step === 6 && <Step5Investment goal={goal} />}
+        {step === 7 && <Step6Risk />}
+        {step === 8 && <Step7Family />}
+        {step === 9 && <Step8Final goal={goal} strategyId={strategyId} />}
       </div>
 
       <div className="flex items-center justify-between gap-3 pb-2">
