@@ -4,6 +4,7 @@ import { GoalInput } from "@/types";
 import { InsuranceProduct } from "@/types/insurance";
 import { formatINRCompact } from "@/lib/calculations/format";
 import { getPlanEngineForProduct } from "@/lib/insurance/engineRegistry";
+import { Disclosure } from "@/components/ui/Disclosure";
 
 export function LicProductDetailSheet({
   product,
@@ -15,11 +16,22 @@ export function LicProductDetailSheet({
   onClose: () => void;
 }) {
   const engine = getPlanEngineForProduct(product);
-  const calculatorInput = { age: goal.age, product };
+  const calculatorInput = { age: goal.age, policyTermYears: goal.yearsToGoal, product };
 
   const eligibility = engine.eligibility?.evaluateEligibility(calculatorInput);
   const premium = engine.premium?.calculatePremium(calculatorInput);
   const benefits = engine.benefit?.calculateBenefits(calculatorInput);
+  const guaranteed = benefits?.available ? benefits.guaranteedBenefits : undefined;
+
+  const eligibilityText = !eligibility
+    ? "⚠️ Verification engine not integrated"
+    : eligibility.eligible === true
+      ? "✓ Passes product-level rules"
+      : eligibility.eligible === false
+        ? "✗ Not eligible based on selected product parameters"
+        : "⚠️ Needs more details to verify eligibility";
+  const eligibilityReason =
+    eligibility && eligibility.eligible !== true ? eligibility.reasons[0] : undefined;
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center">
@@ -62,61 +74,66 @@ export function LicProductDetailSheet({
           </div>
 
           <div>
-            <p className="text-xs font-semibold text-ink-500">Eligibility</p>
-            <p className="text-amber-700">
-              {eligibility?.eligible == null
-                ? "⚠️ Verification engine not integrated"
-                : eligibility.eligible
-                  ? "✓ Eligible"
-                  : "✗ Not eligible"}
-            </p>
+            <p className="text-xs font-semibold text-ink-500">👤 Eligibility</p>
+            <p className="text-amber-700">{eligibilityText}</p>
+            {eligibilityReason && (
+              <p className="mt-0.5 text-xs text-ink-500">{eligibilityReason}</p>
+            )}
           </div>
+
           <div>
-            <p className="text-xs font-semibold text-ink-500">Premium</p>
+            <p className="text-xs font-semibold text-ink-500">🧾 Premium</p>
             <p className="text-amber-700">
               {premium?.available && premium.premium != null
-                ? formatINRCompact(premium.premium)
-                : "⚠️ Not calculated"}
+                ? `${formatINRCompact(premium.premium)} / year`
+                : "⚠️ Exact premium requires verified LIC premium rates"}
             </p>
           </div>
+
           <div>
-            <p className="text-xs font-semibold text-ink-500">Life Cover</p>
-            <p className="text-amber-700">
-              {benefits?.available && benefits.deathBenefit != null
-                ? formatINRCompact(benefits.deathBenefit)
-                : "⚠️ Not calculated"}
-            </p>
+            <p className="text-xs font-semibold text-ink-500">❤️ Family Protection</p>
+            {guaranteed ? (
+              <p className="text-ink-900">
+                {formatINRCompact(guaranteed.deathBenefitAnnualIncomePerYear)}/year until
+                maturity, plus {formatINRCompact(guaranteed.deathBenefitMaturityComponent)} at
+                maturity, on death during the term.
+              </p>
+            ) : (
+              <p className="text-amber-700">⚠️ Not calculated</p>
+            )}
           </div>
+
           <div>
-            <p className="text-xs font-semibold text-ink-500">Maturity</p>
-            <p className="text-amber-700">
-              {benefits?.available && benefits.maturityBenefit != null
-                ? formatINRCompact(benefits.maturityBenefit)
-                : "⚠️ Not calculated"}
-            </p>
+            <p className="text-xs font-semibold text-ink-500">🎯 Maturity</p>
+            {benefits?.available && benefits.maturityBenefit != null ? (
+              <p className="text-ink-900">
+                {formatINRCompact(benefits.maturityBenefit)} guaranteed (excludes any future
+                bonus)
+              </p>
+            ) : (
+              <p className="text-amber-700">⚠️ Not calculated</p>
+            )}
           </div>
+
           <div>
-            <p className="text-xs font-semibold text-ink-500">Guaranteed Benefits</p>
-            <p className="text-amber-700">
-              {benefits?.available && benefits.guaranteedBenefits
-                ? "See details above"
-                : "⚠️ Verified calculation required"}
+            <p className="text-xs font-semibold text-ink-500">🎁 Bonuses</p>
+            <p className="text-ink-500">
+              Future LIC bonuses are not guaranteed and are not included in this calculation.
             </p>
           </div>
-          <div>
-            <p className="text-xs font-semibold text-ink-500">
-              Non-Guaranteed Benefits
-            </p>
-            <p className="text-amber-700">
-              {benefits?.available && benefits.nonGuaranteedIllustrations
-                ? "See details above"
-                : "⚠️ Verified illustration required"}
-            </p>
-          </div>
+
+          {guaranteed && (
+            <Disclosure label="How is this calculated? 🤔">
+              Guaranteed figures come directly from your chosen Sum Assured using this
+              plan&apos;s published benefit formula. They exclude bonuses and exclude the
+              alternative &ldquo;7× annual premium&rdquo; death benefit, which needs a verified
+              premium to compare.
+            </Disclosure>
+          )}
         </div>
 
         <p className="mt-5 text-xs font-medium text-ink-700">
-          Product identity does not imply eligibility or affordability.
+          Product-level eligibility does not constitute LIC underwriting approval.
         </p>
 
         <div className="mt-3 rounded-xl2 bg-amber-50 ring-1 ring-amber-200 p-3.5 text-xs text-amber-800">

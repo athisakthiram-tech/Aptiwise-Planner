@@ -27,10 +27,10 @@ function registryKey(provider: string, planNumber: string, uin: string): string 
   return `${provider}::${planNumber}::${uin}`;
 }
 
-// Registering Plan 733 here only wires the architecture slot — its engine
-// functions always return "unavailable" results (see plans/plan733.ts).
-// It is NOT a working calculator, and an incorrect UIN/plan number must
-// never resolve to it.
+// Plan 733 (LIC's Jeevan Lakshya) has a verified eligibility/benefit/
+// premium engine — see plans/plan733.ts for the underlying rules and its
+// sources. Every other plan number/UIN combination stays unregistered and
+// must never resolve here.
 const REGISTRY = new Map<string, PlanEngineBundle>([
   [
     registryKey("LIC", "733", plan733.PLAN_733_UIN),

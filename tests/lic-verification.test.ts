@@ -2,14 +2,7 @@ import { describe, it, expect } from "vitest";
 import { GoalInput } from "@/types";
 import { matchLicProducts } from "@/lib/insurance/matching";
 import { getPlanEngine } from "@/lib/insurance/engineRegistry";
-import {
-  PLAN_733_UIN,
-  PLAN_733_NOT_INTEGRATED_REASON,
-  evaluateEligibility,
-  calculatePremium,
-  calculateBenefits,
-} from "@/lib/insurance/providers/lic/plans/plan733";
-import { LIC_CATALOGUE } from "@/lib/insurance/providers/lic/catalogue";
+import { PLAN_733_UIN } from "@/lib/insurance/providers/lic/plans/plan733";
 
 function baseGoal(overrides: Partial<GoalInput> = {}): GoalInput {
   return {
@@ -23,8 +16,6 @@ function baseGoal(overrides: Partial<GoalInput> = {}): GoalInput {
     ...overrides,
   };
 }
-
-const plan733Product = LIC_CATALOGUE.find((p) => p.id === "lic-733")!;
 
 describe("category match does not imply anything else", () => {
   const result = matchLicProducts(baseGoal());
@@ -92,37 +83,5 @@ describe("engine registry safety", () => {
   it("does not let a matching UIN under the wrong plan number resolve", () => {
     const wrongPlanNumber = getPlanEngine("LIC", "000", PLAN_733_UIN);
     expect(wrongPlanNumber.eligibility).toBeNull();
-  });
-});
-
-describe("Plan 733 slot never fabricates a value", () => {
-  const context = { age: 30, product: plan733Product };
-
-  it("eligibility is explicitly unknown, not guessed", () => {
-    const result = evaluateEligibility(context);
-    expect(result.eligible).toBeNull();
-    expect(result.reasons).toContain(PLAN_733_NOT_INTEGRATED_REASON);
-  });
-
-  it("never fabricates a premium value", () => {
-    const result = calculatePremium(context);
-    expect(result.available).toBe(false);
-    expect(result.premium).toBeUndefined();
-    // Unknown must never be represented as 0.
-    expect(result.premium).not.toBe(0);
-  });
-
-  it("never fabricates a life cover (death benefit) value", () => {
-    const result = calculateBenefits(context);
-    expect(result.available).toBe(false);
-    expect(result.deathBenefit).toBeUndefined();
-    expect(result.deathBenefit).not.toBe(0);
-  });
-
-  it("never fabricates a maturity value", () => {
-    const result = calculateBenefits(context);
-    expect(result.available).toBe(false);
-    expect(result.maturityBenefit).toBeUndefined();
-    expect(result.maturityBenefit).not.toBe(0);
   });
 });
