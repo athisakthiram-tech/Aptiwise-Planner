@@ -9,9 +9,32 @@ import { LIC_CATALOGUE } from "@/lib/insurance/providers/lic/catalogue";
 
 export const MAX_PRIMARY_MATCHES = 3;
 
+// Four independent verification levels — a product appearing here only
+// ever guarantees categoryMatch. The others must stay false until the
+// specific verified check they name has actually been performed.
+export interface MatchQuality {
+  categoryMatch: boolean;
+  eligibilityVerified: boolean;
+  budgetVerified: boolean;
+  benefitsVerified: boolean;
+}
+
 export interface ProductMatch {
   product: InsuranceProduct;
   reasons: string[];
+  quality: MatchQuality;
+}
+
+function buildMatchQuality(product: InsuranceProduct): MatchQuality {
+  return {
+    categoryMatch: true,
+    eligibilityVerified: product.verification.eligibilityRulesVerified,
+    // Category matching never checks affordability, regardless of the
+    // monthlyBudget supplied — this can only become true once a verified
+    // premium engine actually confirms it for this product.
+    budgetVerified: false,
+    benefitsVerified: product.verification.benefitEngineAvailable,
+  };
 }
 
 export interface LicMatchResult {
@@ -89,6 +112,7 @@ export function matchLicProducts(
   const potentialMatches: ProductMatch[] = candidates.map((product) => ({
     product,
     reasons: CATEGORY_REASONS[product.category],
+    quality: buildMatchQuality(product),
   }));
 
   if (potentialMatches.length === 0 && input.goalType !== "retirement") {

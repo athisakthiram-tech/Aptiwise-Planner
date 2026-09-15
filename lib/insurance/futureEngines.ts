@@ -2,7 +2,13 @@
 // no premium, benefit, or protection-requirement number may be invented
 // before verified LIC data/rules are integrated.
 
-import { InsuranceProduct } from "@/types/insurance";
+import {
+  BenefitCalculationResult,
+  EligibilityResult,
+  InsuranceProduct,
+  LicCalculatorInput,
+  PremiumCalculationResult,
+} from "@/types/insurance";
 
 export interface ProtectionNeedsResult {
   status: "not_assessed";
@@ -28,24 +34,16 @@ export interface ProtectionNeedsCalculator {
 //   -> guaranteed benefit (LicBenefitCalculator)
 //   -> non-guaranteed illustration (LicBenefitCalculator)
 
+export type LicCalculatorContext = LicCalculatorInput & { product: InsuranceProduct };
+
 export interface LicEligibilityEngine {
-  checkEligibility(input: {
-    age: number;
-    product: InsuranceProduct;
-    yearsToGoal: number;
-  }): unknown;
+  evaluateEligibility(input: LicCalculatorContext): EligibilityResult;
 }
 
 export interface LicPremiumCalculator {
-  calculatePremium(input: {
-    age: number;
-    product: InsuranceProduct;
-    sumAssured: number;
-    policyTermYears: number;
-  }): unknown;
+  calculatePremium(input: LicCalculatorContext): PremiumCalculationResult;
 }
 
 export interface LicBenefitCalculator {
-  calculateGuaranteedBenefit(input: { product: InsuranceProduct }): unknown;
-  calculateNonGuaranteedIllustration(input: { product: InsuranceProduct }): unknown;
+  calculateBenefits(input: LicCalculatorContext): BenefitCalculationResult;
 }

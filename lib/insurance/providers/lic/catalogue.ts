@@ -38,6 +38,17 @@ function licProduct(
     status: "ACTIVE",
     officialSourceUrl: OFFICIAL_SOURCE_URL,
     sourceCheckedDate: SOURCE_CHECKED_DATE,
+    // Identity (name/plan number/UIN) has been transcribed from the
+    // catalogue list — nothing else. Eligibility, premium and benefit
+    // engines are not implemented for any plan yet, Plan 733 included:
+    // its architecture slot (see providers/lic/plans/plan733.ts) does not
+    // change these flags until real verified rules are integrated.
+    verification: {
+      identityVerified: true,
+      eligibilityRulesVerified: false,
+      premiumEngineAvailable: false,
+      benefitEngineAvailable: false,
+    },
   };
 }
 

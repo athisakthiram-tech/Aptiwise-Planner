@@ -79,6 +79,12 @@ describe("status filtering", () => {
     status: "ACTIVE",
     officialSourceUrl: "https://licindia.in/",
     sourceCheckedDate: "2026-09-15",
+    verification: {
+      identityVerified: true,
+      eligibilityRulesVerified: false,
+      premiumEngineAvailable: false,
+      benefitEngineAvailable: false,
+    },
   };
   const withdrawn: InsuranceProduct = { ...active, id: "test-withdrawn", status: "WITHDRAWN" };
   const unknown: InsuranceProduct = { ...active, id: "test-unknown", status: "UNKNOWN" };
