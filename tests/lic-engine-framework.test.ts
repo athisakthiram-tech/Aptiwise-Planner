@@ -11,9 +11,10 @@ import { InsuranceProduct } from "@/types/insurance";
 
 const plan733Product = getLicProductByIdentity("733", plan733.PLAN_733_UIN) as InsuranceProduct;
 // A catalogue-only product (no engine registered) to prove the resolver
-// never invents capability for products it hasn't verified. Plan 736
-// gained an engine in Stage 4C, so a still-unregistered plan is used here.
-const catalogueOnlyProduct = getLicProductByIdentity("714", "512N277V03") as InsuranceProduct;
+// never invents capability for products it hasn't verified. Plans 736,
+// 717, 714, 715, 774 and 912 all gained engines in Stage 4C/4D, so a
+// still-unregistered plan (Jeevan Umang) is used here.
+const catalogueOnlyProduct = getLicProductByIdentity("745", "512N312V03") as InsuranceProduct;
 
 describe("A. LicProductEngine registry", () => {
   it("resolves Plan 733 by exact planNumber+UIN", () => {
@@ -27,7 +28,7 @@ describe("A. LicProductEngine registry", () => {
   });
 
   it("never resolves an engine for an unregistered product", () => {
-    expect(getLicProductEngine("714", "512N277V03")).toBeUndefined();
+    expect(getLicProductEngine("745", "512N312V03")).toBeUndefined();
   });
 
   it("coexists with the existing per-plan engineRegistry.ts without conflict", () => {
@@ -194,11 +195,12 @@ describe("F. LIC verification summary", () => {
   it("derives counts live from the catalogue and registry", () => {
     const summary = getLicVerificationSummary();
     expect(summary.totalActiveProducts).toBe(40);
-    // Plan 733 and Plan 736 are registered as of Stage 4C.
-    expect(summary.productsWithEngines).toBe(2);
+    // Plans 733, 736, 717, 714, 715, 774 and 912 are registered as of
+    // Stage 4D.
+    expect(summary.productsWithEngines).toBe(7);
     expect(summary.fullyVerifiedProducts).toBe(0);
-    expect(summary.partiallyVerifiedProducts).toBe(2);
-    expect(summary.catalogueOnlyProducts).toBe(38);
+    expect(summary.partiallyVerifiedProducts).toBe(7);
+    expect(summary.catalogueOnlyProducts).toBe(33);
     expect(
       summary.fullyVerifiedProducts + summary.partiallyVerifiedProducts + summary.catalogueOnlyProducts
     ).toBe(summary.totalActiveProducts);

@@ -23,13 +23,60 @@ const REGISTRY = new Map<string, OfficialProductSource[]>(
 // list has to change shape for the other. `url` stays a real, already
 // -verified LIC page (never a fabricated link for a local PDF); `title`
 // + `id` identify the specific supplied document being cited.
+const ENDOWMENT_CATEGORY_URL = "https://www.licindia.in/en/web/guest/endowment-plans";
+
 const SUPPLEMENTAL_SOURCES: Record<string, OfficialProductSource[]> = {
   [key("736", "512N304V03")]: [
     {
       id: "lic-plan736-sales-brochure-current",
       sourceType: "sales_brochure",
-      url: "https://www.licindia.in/en/web/guest/endowment-plans",
+      url: ENDOWMENT_CATEGORY_URL,
       title: "LIC's Jeevan Labh Sales Brochure (doc ref LIC/P1/2024-25/18/Eng/SB)",
+      checkedAt: "2026-09-16",
+    },
+  ],
+  [key("717", "512N283V03")]: [
+    {
+      id: "lic-plan717-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: ENDOWMENT_CATEGORY_URL,
+      title: "LIC's Single Premium Endowment Plan Sales Brochure",
+      checkedAt: "2026-09-16",
+    },
+  ],
+  [key("714", "512N277V03")]: [
+    {
+      id: "lic-plan714-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: ENDOWMENT_CATEGORY_URL,
+      title: "LIC's New Endowment Plan Sales Brochure",
+      checkedAt: "2026-09-16",
+    },
+  ],
+  [key("715", "512N279V03")]: [
+    {
+      id: "lic-plan715-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: ENDOWMENT_CATEGORY_URL,
+      title: "LIC's New Jeevan Anand Sales Brochure",
+      checkedAt: "2026-09-16",
+    },
+  ],
+  [key("774", "512N365V02")]: [
+    {
+      id: "lic-plan774-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: ENDOWMENT_CATEGORY_URL,
+      title: "LIC's Amritbaal Sales Brochure",
+      checkedAt: "2026-09-16",
+    },
+  ],
+  [key("912", "512N387V02")]: [
+    {
+      id: "lic-plan912-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: ENDOWMENT_CATEGORY_URL,
+      title: "LIC's Nav Jeevan Shree Sales Brochure",
       checkedAt: "2026-09-16",
     },
   ],

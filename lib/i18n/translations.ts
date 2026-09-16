@@ -292,6 +292,69 @@ const en: TranslationDict = {
     "Base maturity benefit equals your chosen Basic Sum Assured. Family protection (Sum Assured on Death) is the higher of the Basic Sum Assured or 7× your annualised premium — shown in full only when your exact premium is verified from the brochure's sample table; otherwise only the guaranteed Basic-Sum-Assured floor is shown. Bonuses are excluded because LIC has not published a rate.",
   "plan736.noValidTerm":
     "⚠️ No Plan 736 policy term satisfies the eligibility rules for age {age}.",
+  "lic.std.configLabel": "Plan configuration",
+  "lic.std.basicSumAssured": "Basic Sum Assured",
+  "lic.std.configHint": "Plan configuration — not a recommended cover amount.",
+  "lic.std.policyTerm": "⏳ Policy Term",
+  "lic.std.premiumPayingTerm": "Premium Paying Term",
+  "lic.std.pptFollowsTerm": "Premium Paying Term is fixed at {ppt} years for this policy term.",
+  "lic.std.deathBenefitOption": "Sum Assured on Death option",
+  "lic.std.option.I": "Option I",
+  "lic.std.option.II": "Option II",
+  "lic.std.option.III": "Option III",
+  "lic.std.option.IV": "Option IV",
+  "lic.std.eligibilityPass": "✓ Passes Plan {plan} product-level rules",
+  "lic.std.eligibilityFail": "⚠️ Configuration doesn't satisfy Plan {plan} product rules",
+  "lic.std.reason.age_below_min": "Age must be at least {min} (entered {actual}).",
+  "lic.std.reason.age_above_max": "Age must be at most {max} (entered {actual}).",
+  "lic.std.reason.age_out_of_range": "Age must be between {min} and {max} (entered {actual}).",
+  "lic.std.reason.age_above_max_for_ppt":
+    "For a {ppt}-year Premium Paying Term, age must be at most {max} (entered {actual}).",
+  "lic.std.reason.term_out_of_range":
+    "Policy term must be between {min} and {max} years (entered {actual}).",
+  "lic.std.reason.term_out_of_range_for_ppt":
+    "For a {ppt}-year Premium Paying Term, policy term must be between {min} and {max} years (entered {actual}).",
+  "lic.std.reason.maturity_age_too_high":
+    "Age at maturity ({actual}) would exceed the maximum of {max}.",
+  "lic.std.reason.maturity_age_too_low":
+    "Age at maturity ({actual}) would be below the minimum of {min}.",
+  "lic.std.reason.ppt_must_equal_term": "Premium Paying Term must equal Policy Term for this plan.",
+  "lic.std.reason.invalid_premium_paying_term": "This Premium Paying Term is not offered by this plan.",
+  "lic.std.reason.sum_assured_below_min":
+    "Basic Sum Assured must be at least {min} (entered {actual}).",
+  "lic.std.reason.sum_assured_invalid_increment":
+    "Basic Sum Assured is not a valid increment for its range.",
+  "lic.std.reason.death_benefit_option_mode_mismatch":
+    "The chosen Option requires a different premium payment mode.",
+  "lic.std.verifiedPremium": "Verified brochure example premium: {amount} / year",
+  "lic.std.verifiedSinglePremium": "Verified brochure example premium: {amount} (one-time payment)",
+  "lic.std.monthlyEquivalentNote":
+    "≈ {amount}/month. Monthly equivalent for comparison only; the brochure premium above is the verified value.",
+  "lic.std.premiumUnavailable": "⚠️ Exact premium unavailable for this configuration",
+  "lic.std.premiumUnavailableReason": "Verified LIC premium rate data is required.",
+  "lic.std.budgetComparison": "💰 Budget Comparison",
+  "lic.std.premiumEquivalent": "Premium equivalent",
+  "lic.std.withinBudget": "✓ Within entered budget",
+  "lic.std.aboveBudget": "⚠️ Above entered budget",
+  "lic.std.budgetNote": "Based on annual premium equivalent for planning comparison.",
+  "lic.std.budgetNotVerified": "Budget fit = Not verified",
+  "lic.std.baseMaturityBenefit": "🎯 Base maturity benefit",
+  "lic.std.guaranteedAdditionNote":
+    "Includes {amount} in guaranteed additions — a fixed rate that does not depend on LIC's investment performance.",
+  "lic.std.familyProtection": "❤️ Family protection (Sum Assured on Death)",
+  "lic.std.familyProtectionFloor":
+    "Family protection is at least {amount} (the guaranteed floor); the full amount also depends on your premium, which isn't verified for this exact configuration.",
+  "lic.std.liquidity": "Liquidity",
+  "lic.std.liquidityFacts":
+    "Loan and surrender are available once at least one full year's premium has been paid. Exact loan/surrender amounts are not calculated here.",
+  "lic.std.calculationExplain":
+    "Base maturity benefit equals your chosen Basic Sum Assured, plus any guaranteed addition this plan applies at a fixed, published rate. Family protection (Sum Assured on Death) follows this plan's official formula and is shown in full only when your exact premium is verified from the brochure's sample table; otherwise only the guaranteed floor is shown. Any additional bonus depends on LIC's future performance and is never included here unless a rate has been published.",
+  "lic.std.noValidTerm": "⚠️ No Plan {plan} policy term satisfies the eligibility rules for age {age}.",
+  "lic774.premiumPaymentMode": "Premium payment",
+  "lic774.mode.limited": "Limited Premium",
+  "lic774.mode.single": "Single Premium",
+  "lic774.nonParNote":
+    "This is a Non-Par plan — its maturity and death benefits are fixed and guaranteed, with no participation in LIC's profits or bonus.",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "3 Ways To Reach Your Goal",
@@ -689,6 +752,77 @@ const ta: TranslationDict = {
     "அடிப்படை முதிர்வு பலன் நீங்கள் தேர்ந்தெடுத்த காப்பீட்டுத் தொகைக்கு சமம். குடும்ப பாதுகாப்பு (மரணத்தின்போது காப்பீட்டுத் தொகை) அடிப்படை காப்பீட்டுத் தொகை அல்லது உங்கள் ஆண்டு பிரீமியத்தின் 7 மடங்கு — இவற்றில் அதிகமானது — இது உங்கள் சரியான பிரீமியம் விளம்பரத்தின் எடுத்துக்காட்டு அட்டவணையில் சரிபார்க்கப்பட்டால் மட்டுமே முழுமையாக காட்டப்படும்; இல்லையெனில் உறுதியான அடிப்படை காப்பீட்டுத் தொகை குறைந்தபட்சம் மட்டுமே காட்டப்படும். LIC போனஸ் விகிதத்தை வெளியிடாததால் போனஸ் சேர்க்கப்படவில்லை.",
   "plan736.noValidTerm":
     "⚠️ வயது {age}-க்கு தகுதி விதிகளுக்குப் பொருந்தும் Plan 736 பாலிசி காலம் இல்லை.",
+  "lic.std.configLabel": "திட்ட கட்டமைப்பு",
+  "lic.std.basicSumAssured": "அடிப்படை காப்பீட்டுத் தொகை",
+  "lic.std.configHint": "இது திட்ட கட்டமைப்பு — பரிந்துரைக்கப்பட்ட காப்பீட்டுத் தொகை அல்ல.",
+  "lic.std.policyTerm": "⏳ பாலிசி காலம்",
+  "lic.std.premiumPayingTerm": "பிரீமியம் செலுத்தும் காலம்",
+  "lic.std.pptFollowsTerm":
+    "இந்த பாலிசி காலத்திற்கு பிரீமியம் செலுத்தும் காலம் {ppt} ஆண்டுகளாக நிர்ணயிக்கப்பட்டுள்ளது.",
+  "lic.std.deathBenefitOption": "மரணத்தின்போது காப்பீட்டுத் தொகை விருப்பம்",
+  "lic.std.option.I": "விருப்பம் I",
+  "lic.std.option.II": "விருப்பம் II",
+  "lic.std.option.III": "விருப்பம் III",
+  "lic.std.option.IV": "விருப்பம் IV",
+  "lic.std.eligibilityPass": "✓ Plan {plan} திட்ட-மட்ட விதிகளை பூர்த்தி செய்கிறது",
+  "lic.std.eligibilityFail": "⚠️ இந்த கட்டமைப்பு Plan {plan} திட்ட விதிகளை பூர்த்தி செய்யவில்லை",
+  "lic.std.reason.age_below_min":
+    "வயது குறைந்தபட்சம் {min} ஆக இருக்க வேண்டும் (உள்ளிட்டது {actual}).",
+  "lic.std.reason.age_above_max":
+    "வயது அதிகபட்சம் {max} ஆக இருக்க வேண்டும் (உள்ளிட்டது {actual}).",
+  "lic.std.reason.age_out_of_range":
+    "வயது {min} மற்றும் {max}-க்கு இடையில் இருக்க வேண்டும் (உள்ளிட்டது {actual}).",
+  "lic.std.reason.age_above_max_for_ppt":
+    "{ppt} ஆண்டு பிரீமியம் செலுத்தும் காலத்திற்கு, வயது அதிகபட்சம் {max} ஆக இருக்க வேண்டும் (உள்ளிட்டது {actual}).",
+  "lic.std.reason.term_out_of_range":
+    "பாலிசி காலம் {min} முதல் {max} ஆண்டுகளுக்குள் இருக்க வேண்டும் (உள்ளிட்டது {actual}).",
+  "lic.std.reason.term_out_of_range_for_ppt":
+    "{ppt} ஆண்டு பிரீமியம் செலுத்தும் காலத்திற்கு, பாலிசி காலம் {min} முதல் {max} ஆண்டுகளுக்குள் இருக்க வேண்டும் (உள்ளிட்டது {actual}).",
+  "lic.std.reason.maturity_age_too_high":
+    "முதிர்வு வயது ({actual}) அதிகபட்ச வரம்பான {max}-ஐ தாண்டிவிடும்.",
+  "lic.std.reason.maturity_age_too_low":
+    "முதிர்வு வயது ({actual}) குறைந்தபட்ச வரம்பான {min}-ஐ விட குறைவாக இருக்கும்.",
+  "lic.std.reason.ppt_must_equal_term":
+    "இந்த திட்டத்திற்கு பிரீமியம் செலுத்தும் காலம் பாலிசி காலத்திற்கு சமமாக இருக்க வேண்டும்.",
+  "lic.std.reason.invalid_premium_paying_term":
+    "இந்த பிரீமியம் செலுத்தும் காலம் இந்த திட்டத்தில் வழங்கப்படவில்லை.",
+  "lic.std.reason.sum_assured_below_min":
+    "அடிப்படை காப்பீட்டுத் தொகை குறைந்தபட்சம் {min} ஆக இருக்க வேண்டும் (உள்ளிட்டது {actual}).",
+  "lic.std.reason.sum_assured_invalid_increment":
+    "அடிப்படை காப்பீட்டுத் தொகை அதன் வரம்புக்கான சரியான அளவீட்டில் இல்லை.",
+  "lic.std.reason.death_benefit_option_mode_mismatch":
+    "தேர்ந்தெடுக்கப்பட்ட விருப்பத்திற்கு வேறு பிரீமியம் செலுத்தும் முறை தேவை.",
+  "lic.std.verifiedPremium": "சரிபார்க்கப்பட்ட விளம்பர எடுத்துக்காட்டு பிரீமியம்: {amount} / ஆண்டு",
+  "lic.std.verifiedSinglePremium":
+    "சரிபார்க்கப்பட்ட விளம்பர எடுத்துக்காட்டு பிரீமியம்: {amount} (ஒரு முறை கட்டணம்)",
+  "lic.std.monthlyEquivalentNote":
+    "≈ {amount}/மாதம். இது ஒப்பீட்டிற்கு மட்டுமே; மேலே உள்ள ஆண்டு பிரீமியம் மட்டுமே சரிபார்க்கப்பட்ட மதிப்பு.",
+  "lic.std.premiumUnavailable": "⚠️ இந்த கட்டமைப்பிற்கு சரியான பிரீமியம் கிடைக்கவில்லை",
+  "lic.std.premiumUnavailableReason": "சரிபார்க்கப்பட்ட LIC பிரீமியம் விகித தரவு தேவை.",
+  "lic.std.budgetComparison": "💰 பட்ஜெட் ஒப்பீடு",
+  "lic.std.premiumEquivalent": "பிரீமியத்திற்கு நிகரான தொகை",
+  "lic.std.withinBudget": "✓ உள்ளிட்ட பட்ஜெட்டிற்குள் உள்ளது",
+  "lic.std.aboveBudget": "⚠️ உள்ளிட்ட பட்ஜெட்டை விட அதிகம்",
+  "lic.std.budgetNote": "திட்டமிடல் ஒப்பீட்டிற்காக ஆண்டு பிரீமியத்தின் அடிப்படையில்.",
+  "lic.std.budgetNotVerified": "பட்ஜெட் பொருத்தம் = சரிபார்க்கப்படவில்லை",
+  "lic.std.baseMaturityBenefit": "🎯 அடிப்படை முதிர்வு பலன்",
+  "lic.std.guaranteedAdditionNote":
+    "{amount} உறுதியான கூடுதல் தொகை சேர்க்கப்பட்டுள்ளது — இது LIC-யின் முதலீட்டு செயல்திறனைச் சாராத நிலையான விகிதம்.",
+  "lic.std.familyProtection": "❤️ குடும்ப பாதுகாப்பு (மரணத்தின்போது காப்பீட்டுத் தொகை)",
+  "lic.std.familyProtectionFloor":
+    "குடும்ப பாதுகாப்பு குறைந்தது {amount} ஆக இருக்கும் (உறுதியான குறைந்தபட்சம்); முழு தொகையும் உங்கள் பிரீமியத்தையும் சார்ந்துள்ளது, இது இந்த கட்டமைப்பிற்கு சரிபார்க்கப்படவில்லை.",
+  "lic.std.liquidity": "பணப்புழக்கம்",
+  "lic.std.liquidityFacts":
+    "குறைந்தது ஒரு முழு ஆண்டு பிரீமியம் செலுத்தப்பட்டதும் கடன் மற்றும் surrender வசதி கிடைக்கும். சரியான கடன்/surrender தொகைகள் இங்கு கணக்கிடப்படவில்லை.",
+  "lic.std.calculationExplain":
+    "அடிப்படை முதிர்வு பலன் நீங்கள் தேர்ந்தெடுத்த காப்பீட்டுத் தொகைக்கு சமம், மேலும் இந்த திட்டம் நிலையான, வெளியிடப்பட்ட விகிதத்தில் வழங்கும் எந்தவொரு உறுதியான கூடுதல் தொகையும் சேர்க்கப்படும். குடும்ப பாதுகாப்பு (மரணத்தின்போது காப்பீட்டுத் தொகை) இந்த திட்டத்தின் அதிகாரப்பூர்வ சூத்திரத்தைப் பின்பற்றுகிறது, உங்கள் சரியான பிரீமியம் விளம்பரத்தின் எடுத்துக்காட்டு அட்டவணையில் சரிபார்க்கப்பட்டால் மட்டுமே முழுமையாக காட்டப்படும்; இல்லையெனில் உறுதியான குறைந்தபட்சம் மட்டுமே காட்டப்படும். கூடுதல் போனஸ் ஏதேனும் LIC-யின் எதிர்கால செயல்திறனைச் சார்ந்துள்ளது, விகிதம் வெளியிடப்படாத வரை இங்கு சேர்க்கப்படாது.",
+  "lic.std.noValidTerm":
+    "⚠️ வயது {age}-க்கு தகுதி விதிகளுக்குப் பொருந்தும் Plan {plan} பாலிசி காலம் இல்லை.",
+  "lic774.premiumPaymentMode": "பிரீமியம் செலுத்துதல்",
+  "lic774.mode.limited": "வரையறுக்கப்பட்ட பிரீமியம்",
+  "lic774.mode.single": "ஒற்றை பிரீமியம்",
+  "lic774.nonParNote":
+    "இது Non-Par திட்டம் — இதன் முதிர்வு மற்றும் மரண பலன்கள் நிலையானவை மற்றும் உறுதியானவை, LIC-யின் லாபம் அல்லது போனஸில் பங்கேற்பு இல்லை.",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "உங்கள் இலக்கை அடைய 3 வழிகள்",
@@ -1076,6 +1210,69 @@ const hi: TranslationDict = {
     "मूल परिपक्वता लाभ आपकी चुनी गई मूल बीमा राशि के बराबर है। पारिवारिक सुरक्षा (मृत्यु पर बीमा राशि) मूल बीमा राशि या आपके वार्षिक प्रीमियम के 7 गुना में से जो अधिक हो, वह है — यह पूरी तरह तभी दिखाई जाती है जब आपका सटीक प्रीमियम ब्रोशर की उदाहरण तालिका से सत्यापित हो; अन्यथा केवल गारंटीड मूल बीमा राशि न्यूनतम दिखाई जाती है। LIC ने बोनस दर प्रकाशित नहीं की है इसलिए बोनस शामिल नहीं किया गया है।",
   "plan736.noValidTerm":
     "⚠️ उम्र {age} के लिए पात्रता नियमों को पूरा करने वाली कोई Plan 736 पॉलिसी अवधि नहीं है।",
+  "lic.std.configLabel": "योजना कॉन्फ़िगरेशन",
+  "lic.std.basicSumAssured": "मूल बीमा राशि",
+  "lic.std.configHint": "यह योजना कॉन्फ़िगरेशन है — अनुशंसित कवर राशि नहीं।",
+  "lic.std.policyTerm": "⏳ पॉलिसी अवधि",
+  "lic.std.premiumPayingTerm": "प्रीमियम भुगतान अवधि",
+  "lic.std.pptFollowsTerm": "इस पॉलिसी अवधि के लिए प्रीमियम भुगतान अवधि {ppt} वर्ष निर्धारित है।",
+  "lic.std.deathBenefitOption": "मृत्यु पर बीमा राशि विकल्प",
+  "lic.std.option.I": "विकल्प I",
+  "lic.std.option.II": "विकल्प II",
+  "lic.std.option.III": "विकल्प III",
+  "lic.std.option.IV": "विकल्प IV",
+  "lic.std.eligibilityPass": "✓ Plan {plan} के उत्पाद-स्तर नियमों को पूरा करता है",
+  "lic.std.eligibilityFail": "⚠️ यह कॉन्फ़िगरेशन Plan {plan} के नियमों को पूरा नहीं करता",
+  "lic.std.reason.age_below_min": "उम्र कम से कम {min} होनी चाहिए (दर्ज: {actual})।",
+  "lic.std.reason.age_above_max": "उम्र अधिकतम {max} होनी चाहिए (दर्ज: {actual})।",
+  "lic.std.reason.age_out_of_range": "उम्र {min} और {max} के बीच होनी चाहिए (दर्ज: {actual})।",
+  "lic.std.reason.age_above_max_for_ppt":
+    "{ppt} वर्ष की प्रीमियम भुगतान अवधि के लिए, उम्र अधिकतम {max} होनी चाहिए (दर्ज: {actual})।",
+  "lic.std.reason.term_out_of_range":
+    "पॉलिसी अवधि {min} से {max} वर्ष के बीच होनी चाहिए (दर्ज: {actual})।",
+  "lic.std.reason.term_out_of_range_for_ppt":
+    "{ppt} वर्ष की प्रीमियम भुगतान अवधि के लिए, पॉलिसी अवधि {min} से {max} वर्ष के बीच होनी चाहिए (दर्ज: {actual})।",
+  "lic.std.reason.maturity_age_too_high":
+    "परिपक्वता पर उम्र ({actual}) अधिकतम सीमा {max} से अधिक हो जाएगी।",
+  "lic.std.reason.maturity_age_too_low":
+    "परिपक्वता पर उम्र ({actual}) न्यूनतम सीमा {min} से कम होगी।",
+  "lic.std.reason.ppt_must_equal_term":
+    "इस योजना के लिए प्रीमियम भुगतान अवधि पॉलिसी अवधि के बराबर होनी चाहिए।",
+  "lic.std.reason.invalid_premium_paying_term": "यह प्रीमियम भुगतान अवधि इस योजना में उपलब्ध नहीं है।",
+  "lic.std.reason.sum_assured_below_min":
+    "मूल बीमा राशि कम से कम {min} होनी चाहिए (दर्ज: {actual})।",
+  "lic.std.reason.sum_assured_invalid_increment": "मूल बीमा राशि अपनी सीमा के लिए सही चरण में नहीं है।",
+  "lic.std.reason.death_benefit_option_mode_mismatch":
+    "चुने गए विकल्प के लिए एक अलग प्रीमियम भुगतान मोड आवश्यक है।",
+  "lic.std.verifiedPremium": "सत्यापित ब्रोशर उदाहरण प्रीमियम: {amount} / वर्ष",
+  "lic.std.verifiedSinglePremium": "सत्यापित ब्रोशर उदाहरण प्रीमियम: {amount} (एकमुश्त भुगतान)",
+  "lic.std.monthlyEquivalentNote":
+    "≈ {amount}/माह। यह केवल तुलना के लिए है; ऊपर दिखाया गया वार्षिक प्रीमियम ही सत्यापित मूल्य है।",
+  "lic.std.premiumUnavailable": "⚠️ इस कॉन्फ़िगरेशन के लिए सटीक प्रीमियम उपलब्ध नहीं है",
+  "lic.std.premiumUnavailableReason": "सत्यापित LIC प्रीमियम दर डेटा आवश्यक है।",
+  "lic.std.budgetComparison": "💰 बजट तुलना",
+  "lic.std.premiumEquivalent": "प्रीमियम के बराबर राशि",
+  "lic.std.withinBudget": "✓ आपके बजट के भीतर",
+  "lic.std.aboveBudget": "⚠️ आपके बजट से अधिक",
+  "lic.std.budgetNote": "योजना तुलना के लिए वार्षिक प्रीमियम के बराबर राशि पर आधारित।",
+  "lic.std.budgetNotVerified": "बजट फिट = सत्यापित नहीं",
+  "lic.std.baseMaturityBenefit": "🎯 मूल परिपक्वता लाभ",
+  "lic.std.guaranteedAdditionNote":
+    "इसमें {amount} की गारंटीड अतिरिक्त राशि शामिल है — यह एक निश्चित दर है जो LIC के निवेश प्रदर्शन पर निर्भर नहीं करती।",
+  "lic.std.familyProtection": "❤️ पारिवारिक सुरक्षा (मृत्यु पर बीमा राशि)",
+  "lic.std.familyProtectionFloor":
+    "पारिवारिक सुरक्षा कम से कम {amount} है (गारंटीड न्यूनतम); पूरी राशि आपके प्रीमियम पर भी निर्भर करती है, जो इस सटीक कॉन्फ़िगरेशन के लिए सत्यापित नहीं है।",
+  "lic.std.liquidity": "तरलता",
+  "lic.std.liquidityFacts":
+    "कम से कम एक पूर्ण वर्ष का प्रीमियम चुकाने के बाद ऋण और सरेंडर उपलब्ध होते हैं। सटीक ऋण/सरेंडर राशि की गणना यहाँ नहीं की गई है।",
+  "lic.std.calculationExplain":
+    "मूल परिपक्वता लाभ आपकी चुनी गई मूल बीमा राशि के बराबर है, साथ ही इस योजना द्वारा निश्चित, प्रकाशित दर पर दी जाने वाली कोई भी गारंटीड अतिरिक्त राशि। पारिवारिक सुरक्षा (मृत्यु पर बीमा राशि) इस योजना के आधिकारिक सूत्र का पालन करती है और पूरी तरह तभी दिखाई जाती है जब आपका सटीक प्रीमियम ब्रोशर की उदाहरण तालिका से सत्यापित हो; अन्यथा केवल गारंटीड न्यूनतम दिखाई जाती है। कोई भी अतिरिक्त बोनस LIC के भविष्य के प्रदर्शन पर निर्भर करता है और दर प्रकाशित होने तक यहाँ शामिल नहीं किया जाता।",
+  "lic.std.noValidTerm": "⚠️ उम्र {age} के लिए पात्रता नियमों को पूरा करने वाली कोई Plan {plan} पॉलिसी अवधि नहीं है।",
+  "lic774.premiumPaymentMode": "प्रीमियम भुगतान",
+  "lic774.mode.limited": "सीमित प्रीमियम",
+  "lic774.mode.single": "एकल प्रीमियम",
+  "lic774.nonParNote":
+    "यह एक Non-Par योजना है — इसके परिपक्वता और मृत्यु लाभ निश्चित और गारंटीड हैं, इसमें LIC के लाभ या बोनस में कोई भागीदारी नहीं है।",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "आपके लक्ष्य तक पहुँचने के 3 तरीके",

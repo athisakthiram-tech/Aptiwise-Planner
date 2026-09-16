@@ -234,6 +234,12 @@ export interface LicCalculationContext {
     regime?: "old" | "new";
     annualIncome?: number;
   };
+  // Mirrors LicCalculatorInput.productSpecificInputs — for a documented
+  // per-product choice made at inception that this generic context has no
+  // dedicated field for (e.g. Amritbaal/Nav Jeevan Shree's Sum-Assured-on
+  // -Death Option I/II/III/IV, chosen once and never altered). Each plan
+  // module documents which keys it reads here; nothing is inferred.
+  productSpecificInputs?: Record<string, unknown>;
 }
 
 export interface TaxTreatmentResult {
