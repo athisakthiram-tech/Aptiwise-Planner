@@ -8,20 +8,48 @@ import { GoalType } from "@/types";
 export type InsuranceCategory =
   | "term_protection"
   | "savings_endowment"
+  | "whole_life"
+  | "money_back_child"
+  | "pension"
   | "market_linked_ulip"
-  | "money_back_child";
+  | "micro_insurance";
 
-export type ProductStatus = "ACTIVE" | "WITHDRAWN" | "UNKNOWN";
+export type ProductStatus = "ACTIVE" | "WITHDRAWN" | "REPLACED" | "UNKNOWN";
 
 // Deliberately separate concerns: catalogue identity (name/plan/UIN) being
-// verified says nothing about whether eligibility rules, premium
-// calculation, or benefit calculation have been verified. Each flag must
-// only flip to true when that specific thing has actually been verified.
+// verified says nothing about whether eligibility rules, premium,
+// benefit, family-protection, tax, cost or liquidity calculations have
+// been verified. Each flag must only flip to true when that specific
+// thing has actually been verified. The newer fields are optional so
+// existing product literals (tests included) don't need updating just to
+// add a field they don't yet have an opinion on.
 export interface ProductVerification {
   identityVerified: boolean;
   eligibilityRulesVerified: boolean;
   premiumEngineAvailable: boolean;
   benefitEngineAvailable: boolean;
+  activeStatusVerified?: boolean;
+  familyProtectionVerified?: boolean;
+  taxTreatmentVerified?: boolean;
+  costStructureVerified?: boolean;
+  liquidityVerified?: boolean;
+}
+
+// A single piece of official evidence backing a catalogue entry. A
+// product may have more than one (e.g. a category-page listing plus a
+// brochure). Only small structured facts are stored here — never large
+// excerpts of the source document itself.
+export interface OfficialProductSource {
+  sourceType:
+    | "product_category_page"
+    | "product_page"
+    | "sales_brochure"
+    | "policy_document"
+    | "press_release"
+    | "withdrawn_page";
+  url: string;
+  checkedAt: string;
+  title?: string;
 }
 
 export interface InsuranceProduct {
@@ -37,6 +65,7 @@ export interface InsuranceProduct {
   status: ProductStatus;
   officialSourceUrl: string;
   sourceCheckedDate: string;
+  officialSources?: OfficialProductSource[];
   verification: ProductVerification;
 }
 

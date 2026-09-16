@@ -63,12 +63,24 @@ const CATEGORY_REASONS: Record<InsuranceCategory, string[]> = {
     "🎯 Relevant to long-term goal planning",
     "🛡️ Includes a protection component",
   ],
+  whole_life: [
+    "🛡️ Provides cover for the whole of life",
+    "🛡️ Includes a protection component",
+  ],
   money_back_child: [
     "🎓 Structured around periodic payouts / child-oriented goals",
     "🛡️ Includes a protection component",
   ],
+  pension: [
+    "🌴 Structured around retirement/income planning",
+    "💰 Provides an income/payout structure",
+  ],
   market_linked_ulip: [
     "📈 Offers market-linked growth potential",
+    "🛡️ Includes a protection component",
+  ],
+  micro_insurance: [
+    "🛡️ Designed as an accessible, lower-premium protection option",
     "🛡️ Includes a protection component",
   ],
 };
