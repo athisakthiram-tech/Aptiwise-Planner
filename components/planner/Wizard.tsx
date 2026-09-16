@@ -6,6 +6,7 @@ import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Step1Goal } from "@/components/planner/Step1Goal";
 import { Step2Summary } from "@/components/planner/Step2Summary";
 import { StepGoalGap } from "@/components/planner/StepGoalGap";
+import { StepFullPicture } from "@/components/planner/StepFullPicture";
 import { StepPlanBuilder } from "@/components/planner/StepPlanBuilder";
 import { StepLicOptions } from "@/components/planner/StepLicOptions";
 import { Step3Strategy } from "@/components/planner/Step3Strategy";
@@ -20,7 +21,7 @@ import { t } from "@/lib/i18n/translations";
 import { ILLUSTRATION_RATES_PCT } from "@/lib/calculations/sip";
 import { DEFAULT_PROTECTION_ALLOCATION_PERCENT } from "@/lib/planner/planBuilder";
 
-export const TOTAL_STEPS = 11;
+export const TOTAL_STEPS = 12;
 
 const DEFAULT_GOAL: GoalInput = {
   age: 35,
@@ -53,7 +54,7 @@ export function Wizard() {
   const goNext = () => setStep((s) => Math.min(TOTAL_STEPS, s + 1));
   const goBack = () => setStep((s) => Math.max(1, s - 1));
 
-  const canAdvance = step !== 6 || Boolean(strategyId);
+  const canAdvance = step !== 7 || Boolean(strategyId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -84,7 +85,8 @@ export function Wizard() {
         {step === 1 && <Step1Goal goal={goal} onChange={setGoal} locale={locale} />}
         {step === 2 && <Step2Summary goal={goal} locale={locale} />}
         {step === 3 && <StepGoalGap goal={goal} locale={locale} />}
-        {step === 4 && (
+        {step === 4 && <StepFullPicture goal={goal} locale={locale} />}
+        {step === 5 && (
           <StepPlanBuilder
             goal={goal}
             selection={planBuilderSelection}
@@ -92,15 +94,15 @@ export function Wizard() {
             locale={locale}
           />
         )}
-        {step === 5 && <StepLicOptions goal={goal} locale={locale} />}
-        {step === 6 && (
+        {step === 6 && <StepLicOptions goal={goal} locale={locale} />}
+        {step === 7 && (
           <Step3Strategy selectedId={strategyId} onSelect={setStrategyId} locale={locale} />
         )}
-        {step === 7 && <Step4Compare locale={locale} />}
-        {step === 8 && <Step5Investment goal={goal} locale={locale} />}
-        {step === 9 && <Step6Risk locale={locale} />}
-        {step === 10 && <Step7Family locale={locale} />}
-        {step === 11 && <Step8Final goal={goal} strategyId={strategyId} locale={locale} />}
+        {step === 8 && <Step4Compare locale={locale} />}
+        {step === 9 && <Step5Investment goal={goal} locale={locale} />}
+        {step === 10 && <Step6Risk locale={locale} />}
+        {step === 11 && <Step7Family locale={locale} />}
+        {step === 12 && <Step8Final goal={goal} strategyId={strategyId} locale={locale} />}
       </div>
 
       <div className="flex items-center justify-between gap-3 pb-2">
