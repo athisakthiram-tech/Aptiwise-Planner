@@ -6,6 +6,7 @@ import { formatINRCompact } from "@/lib/calculations/format";
 import { getPlanEngineForProduct } from "@/lib/insurance/engineRegistry";
 import { Disclosure } from "@/components/ui/Disclosure";
 import { Plan733Configurator } from "@/components/planner/Plan733Configurator";
+import { Plan736Configurator } from "@/components/planner/Plan736Configurator";
 import { Locale } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
 
@@ -84,6 +85,8 @@ export function LicProductDetailSheet({
 
           {product.planNumber === "733" ? (
             <Plan733Configurator product={product} goal={goal} locale={locale} />
+          ) : product.planNumber === "736" ? (
+            <Plan736Configurator product={product} goal={goal} locale={locale} />
           ) : (
             <>
               <div>

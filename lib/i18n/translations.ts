@@ -252,6 +252,46 @@ const en: TranslationDict = {
     "Base maturity benefit equals your chosen Basic Sum Assured. The death-benefit structure shown is 110% of Basic Sum Assured payable at maturity plus 10% of Basic Sum Assured paid yearly until maturity — the plan's actual death benefit may be higher if 7× your annual premium exceeds this, which needs a verified premium to compare. Bonuses are excluded because LIC has not published a rate.",
   "plan733.noValidTerm":
     "⚠️ No Plan 733 policy term satisfies the maturity-age rules for age {age}.",
+  "plan736.configLabel": "Plan configuration",
+  "plan736.basicSumAssured": "Basic Sum Assured",
+  "plan736.configHint": "Plan configuration — not a recommended cover amount.",
+  "plan736.policyTerm": "⏳ Policy Term",
+  "plan736.pptFollowsTerm": "Premium Paying Term is fixed at {ppt} years for this policy term.",
+  "plan736.eligibilityPass": "✓ Passes Plan 736 product-level rules",
+  "plan736.eligibilityFail": "⚠️ Configuration doesn't satisfy Plan 736 product rules",
+  "plan736.reason.age_below_min": "Age must be at least {min} (entered {actual}).",
+  "plan736.reason.age_above_max_for_term":
+    "For a {term}-year term, age must be at most {max} (entered {actual}).",
+  "plan736.reason.invalid_term_ppt_combination":
+    "Policy Term and Premium Paying Term must be one of the offered combinations (16/10, 21/15, 25/16).",
+  "plan736.reason.maturity_age_exceeded":
+    "Age at maturity ({actual}) would exceed the maximum of {max}.",
+  "plan736.reason.sum_assured_below_min":
+    "Basic Sum Assured must be at least {min} (entered {actual}).",
+  "plan736.reason.sum_assured_invalid_increment":
+    "Basic Sum Assured is not a valid increment for its range.",
+  "plan736.verifiedPremium": "Verified brochure example premium: {amount} / year",
+  "plan736.monthlyEquivalentNote":
+    "≈ {amount}/month. Monthly equivalent for comparison only; the brochure premium above is the verified value.",
+  "plan736.premiumUnavailable": "⚠️ Exact premium unavailable for this configuration",
+  "plan736.premiumUnavailableReason": "Verified LIC premium rate data is required.",
+  "plan736.budgetComparison": "💰 Budget Comparison",
+  "plan736.premiumEquivalent": "Premium equivalent",
+  "plan736.withinBudget": "✓ Within entered budget",
+  "plan736.aboveBudget": "⚠️ Above entered budget",
+  "plan736.budgetNote": "Based on annual premium equivalent for planning comparison.",
+  "plan736.budgetNotVerified": "Budget fit = Not verified",
+  "plan736.baseMaturityBenefit": "🎯 Base maturity benefit",
+  "plan736.familyProtection": "❤️ Family protection (Sum Assured on Death)",
+  "plan736.familyProtectionFloor":
+    "Family protection is at least {amount} (the guaranteed floor); the full amount also depends on your premium, which isn't verified for this exact configuration.",
+  "plan736.liquidity": "Liquidity",
+  "plan736.liquidityFacts":
+    "Loan and surrender are available once at least one full year's premium has been paid. Exact loan/surrender amounts are not calculated here.",
+  "plan736.calculationExplain":
+    "Base maturity benefit equals your chosen Basic Sum Assured. Family protection (Sum Assured on Death) is the higher of the Basic Sum Assured or 7× your annualised premium — shown in full only when your exact premium is verified from the brochure's sample table; otherwise only the guaranteed Basic-Sum-Assured floor is shown. Bonuses are excluded because LIC has not published a rate.",
+  "plan736.noValidTerm":
+    "⚠️ No Plan 736 policy term satisfies the eligibility rules for age {age}.",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "3 Ways To Reach Your Goal",
@@ -607,6 +647,48 @@ const ta: TranslationDict = {
     "அடிப்படை முதிர்வு பலன் நீங்கள் தேர்ந்தெடுத்த காப்பீட்டுத் தொகைக்கு சமம். காட்டப்படும் மரண பலன் அமைப்பு காப்பீட்டுத் தொகையில் 110% முதிர்வில் மற்றும் 10% ஆண்டுதோறும் முதிர்வு வரை — இதை விட 7× ஆண்டு பிரீமியம் அதிகமாக இருந்தால் உண்மையான மரண பலன் அதிகமாக இருக்கலாம், அதற்கு சரிபார்க்கப்பட்ட பிரீமியம் தேவை. LIC போனஸ் விகிதத்தை வெளியிடாததால் போனஸ் சேர்க்கப்படவில்லை.",
   "plan733.noValidTerm":
     "⚠️ வயது {age}-க்கு முதிர்வு வயது விதிகளுக்குப் பொருந்தும் Plan 733 பாலிசி காலம் இல்லை.",
+  "plan736.configLabel": "திட்ட கட்டமைப்பு",
+  "plan736.basicSumAssured": "அடிப்படை காப்பீட்டுத் தொகை",
+  "plan736.configHint": "இது திட்ட கட்டமைப்பு — பரிந்துரைக்கப்பட்ட காப்பீட்டுத் தொகை அல்ல.",
+  "plan736.policyTerm": "⏳ பாலிசி காலம்",
+  "plan736.pptFollowsTerm":
+    "இந்த பாலிசி காலத்திற்கு பிரீமியம் செலுத்தும் காலம் {ppt} ஆண்டுகளாக நிர்ணயிக்கப்பட்டுள்ளது.",
+  "plan736.eligibilityPass": "✓ Plan 736 திட்ட-மட்ட விதிகளை பூர்த்தி செய்கிறது",
+  "plan736.eligibilityFail": "⚠️ இந்த கட்டமைப்பு Plan 736 திட்ட விதிகளை பூர்த்தி செய்யவில்லை",
+  "plan736.reason.age_below_min":
+    "வயது குறைந்தபட்சம் {min} ஆக இருக்க வேண்டும் (உள்ளிட்டது {actual}).",
+  "plan736.reason.age_above_max_for_term":
+    "{term} ஆண்டு காலத்திற்கு, வயது அதிகபட்சம் {max} ஆக இருக்க வேண்டும் (உள்ளிட்டது {actual}).",
+  "plan736.reason.invalid_term_ppt_combination":
+    "பாலிசி காலமும் பிரீமியம் செலுத்தும் காலமும் வழங்கப்படும் சேர்க்கைகளில் ஒன்றாக இருக்க வேண்டும் (16/10, 21/15, 25/16).",
+  "plan736.reason.maturity_age_exceeded":
+    "முதிர்வு வயது ({actual}) அதிகபட்ச வரம்பான {max}-ஐ தாண்டிவிடும்.",
+  "plan736.reason.sum_assured_below_min":
+    "அடிப்படை காப்பீட்டுத் தொகை குறைந்தபட்சம் {min} ஆக இருக்க வேண்டும் (உள்ளிட்டது {actual}).",
+  "plan736.reason.sum_assured_invalid_increment":
+    "அடிப்படை காப்பீட்டுத் தொகை அதன் வரம்புக்கான சரியான அளவீட்டில் இல்லை.",
+  "plan736.verifiedPremium": "சரிபார்க்கப்பட்ட விளம்பர எடுத்துக்காட்டு பிரீமியம்: {amount} / ஆண்டு",
+  "plan736.monthlyEquivalentNote":
+    "≈ {amount}/மாதம். இது ஒப்பீட்டிற்கு மட்டுமே; மேலே உள்ள ஆண்டு பிரீமியம் மட்டுமே சரிபார்க்கப்பட்ட மதிப்பு.",
+  "plan736.premiumUnavailable": "⚠️ இந்த கட்டமைப்பிற்கு சரியான பிரீமியம் கிடைக்கவில்லை",
+  "plan736.premiumUnavailableReason": "சரிபார்க்கப்பட்ட LIC பிரீமியம் விகித தரவு தேவை.",
+  "plan736.budgetComparison": "💰 பட்ஜெட் ஒப்பீடு",
+  "plan736.premiumEquivalent": "பிரீமியத்திற்கு நிகரான தொகை",
+  "plan736.withinBudget": "✓ உள்ளிட்ட பட்ஜெட்டிற்குள் உள்ளது",
+  "plan736.aboveBudget": "⚠️ உள்ளிட்ட பட்ஜெட்டை விட அதிகம்",
+  "plan736.budgetNote": "திட்டமிடல் ஒப்பீட்டிற்காக ஆண்டு பிரீமியத்தின் அடிப்படையில்.",
+  "plan736.budgetNotVerified": "பட்ஜெட் பொருத்தம் = சரிபார்க்கப்படவில்லை",
+  "plan736.baseMaturityBenefit": "🎯 அடிப்படை முதிர்வு பலன்",
+  "plan736.familyProtection": "❤️ குடும்ப பாதுகாப்பு (மரணத்தின்போது காப்பீட்டுத் தொகை)",
+  "plan736.familyProtectionFloor":
+    "குடும்ப பாதுகாப்பு குறைந்தது {amount} ஆக இருக்கும் (உறுதியான குறைந்தபட்சம்); முழு தொகையும் உங்கள் பிரீமியத்தையும் சார்ந்துள்ளது, இது இந்த கட்டமைப்பிற்கு சரிபார்க்கப்படவில்லை.",
+  "plan736.liquidity": "பணப்புழக்கம்",
+  "plan736.liquidityFacts":
+    "குறைந்தது ஒரு முழு ஆண்டு பிரீமியம் செலுத்தப்பட்டதும் கடன் மற்றும் surrender வசதி கிடைக்கும். சரியான கடன்/surrender தொகைகள் இங்கு கணக்கிடப்படவில்லை.",
+  "plan736.calculationExplain":
+    "அடிப்படை முதிர்வு பலன் நீங்கள் தேர்ந்தெடுத்த காப்பீட்டுத் தொகைக்கு சமம். குடும்ப பாதுகாப்பு (மரணத்தின்போது காப்பீட்டுத் தொகை) அடிப்படை காப்பீட்டுத் தொகை அல்லது உங்கள் ஆண்டு பிரீமியத்தின் 7 மடங்கு — இவற்றில் அதிகமானது — இது உங்கள் சரியான பிரீமியம் விளம்பரத்தின் எடுத்துக்காட்டு அட்டவணையில் சரிபார்க்கப்பட்டால் மட்டுமே முழுமையாக காட்டப்படும்; இல்லையெனில் உறுதியான அடிப்படை காப்பீட்டுத் தொகை குறைந்தபட்சம் மட்டுமே காட்டப்படும். LIC போனஸ் விகிதத்தை வெளியிடாததால் போனஸ் சேர்க்கப்படவில்லை.",
+  "plan736.noValidTerm":
+    "⚠️ வயது {age}-க்கு தகுதி விதிகளுக்குப் பொருந்தும் Plan 736 பாலிசி காலம் இல்லை.",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "உங்கள் இலக்கை அடைய 3 வழிகள்",
@@ -955,6 +1037,45 @@ const hi: TranslationDict = {
     "मूल परिपक्वता लाभ आपकी चुनी गई मूल बीमा राशि के बराबर है। दिखाई गई मृत्यु-लाभ संरचना परिपक्वता पर मूल बीमा राशि का 110% और परिपक्वता तक हर साल 10% है — यदि 7× वार्षिक प्रीमियम इससे अधिक हो तो वास्तविक मृत्यु लाभ अधिक हो सकता है, जिसकी तुलना के लिए सत्यापित प्रीमियम चाहिए। LIC ने बोनस दर प्रकाशित नहीं की है इसलिए बोनस शामिल नहीं किया गया है।",
   "plan733.noValidTerm":
     "⚠️ उम्र {age} के लिए परिपक्वता-आयु नियमों को पूरा करने वाली कोई Plan 733 पॉलिसी अवधि नहीं है।",
+  "plan736.configLabel": "योजना कॉन्फ़िगरेशन",
+  "plan736.basicSumAssured": "मूल बीमा राशि",
+  "plan736.configHint": "यह योजना कॉन्फ़िगरेशन है — अनुशंसित कवर राशि नहीं।",
+  "plan736.policyTerm": "⏳ पॉलिसी अवधि",
+  "plan736.pptFollowsTerm": "इस पॉलिसी अवधि के लिए प्रीमियम भुगतान अवधि {ppt} वर्ष निर्धारित है।",
+  "plan736.eligibilityPass": "✓ Plan 736 के उत्पाद-स्तर नियमों को पूरा करता है",
+  "plan736.eligibilityFail": "⚠️ यह कॉन्फ़िगरेशन Plan 736 के नियमों को पूरा नहीं करता",
+  "plan736.reason.age_below_min": "उम्र कम से कम {min} होनी चाहिए (दर्ज: {actual})।",
+  "plan736.reason.age_above_max_for_term":
+    "{term} वर्ष की अवधि के लिए, उम्र अधिकतम {max} होनी चाहिए (दर्ज: {actual})।",
+  "plan736.reason.invalid_term_ppt_combination":
+    "पॉलिसी अवधि और प्रीमियम भुगतान अवधि उपलब्ध संयोजनों में से एक होनी चाहिए (16/10, 21/15, 25/16)।",
+  "plan736.reason.maturity_age_exceeded":
+    "परिपक्वता पर उम्र ({actual}) अधिकतम सीमा {max} से अधिक हो जाएगी।",
+  "plan736.reason.sum_assured_below_min":
+    "मूल बीमा राशि कम से कम {min} होनी चाहिए (दर्ज: {actual})।",
+  "plan736.reason.sum_assured_invalid_increment": "मूल बीमा राशि अपनी सीमा के लिए सही चरण में नहीं है।",
+  "plan736.verifiedPremium": "सत्यापित ब्रोशर उदाहरण प्रीमियम: {amount} / वर्ष",
+  "plan736.monthlyEquivalentNote":
+    "≈ {amount}/माह। यह केवल तुलना के लिए है; ऊपर दिखाया गया वार्षिक प्रीमियम ही सत्यापित मूल्य है।",
+  "plan736.premiumUnavailable": "⚠️ इस कॉन्फ़िगरेशन के लिए सटीक प्रीमियम उपलब्ध नहीं है",
+  "plan736.premiumUnavailableReason": "सत्यापित LIC प्रीमियम दर डेटा आवश्यक है।",
+  "plan736.budgetComparison": "💰 बजट तुलना",
+  "plan736.premiumEquivalent": "प्रीमियम के बराबर राशि",
+  "plan736.withinBudget": "✓ आपके बजट के भीतर",
+  "plan736.aboveBudget": "⚠️ आपके बजट से अधिक",
+  "plan736.budgetNote": "योजना तुलना के लिए वार्षिक प्रीमियम के बराबर राशि पर आधारित।",
+  "plan736.budgetNotVerified": "बजट फिट = सत्यापित नहीं",
+  "plan736.baseMaturityBenefit": "🎯 मूल परिपक्वता लाभ",
+  "plan736.familyProtection": "❤️ पारिवारिक सुरक्षा (मृत्यु पर बीमा राशि)",
+  "plan736.familyProtectionFloor":
+    "पारिवारिक सुरक्षा कम से कम {amount} है (गारंटीड न्यूनतम); पूरी राशि आपके प्रीमियम पर भी निर्भर करती है, जो इस सटीक कॉन्फ़िगरेशन के लिए सत्यापित नहीं है।",
+  "plan736.liquidity": "तरलता",
+  "plan736.liquidityFacts":
+    "कम से कम एक पूर्ण वर्ष का प्रीमियम चुकाने के बाद ऋण और सरेंडर उपलब्ध होते हैं। सटीक ऋण/सरेंडर राशि की गणना यहाँ नहीं की गई है।",
+  "plan736.calculationExplain":
+    "मूल परिपक्वता लाभ आपकी चुनी गई मूल बीमा राशि के बराबर है। पारिवारिक सुरक्षा (मृत्यु पर बीमा राशि) मूल बीमा राशि या आपके वार्षिक प्रीमियम के 7 गुना में से जो अधिक हो, वह है — यह पूरी तरह तभी दिखाई जाती है जब आपका सटीक प्रीमियम ब्रोशर की उदाहरण तालिका से सत्यापित हो; अन्यथा केवल गारंटीड मूल बीमा राशि न्यूनतम दिखाई जाती है। LIC ने बोनस दर प्रकाशित नहीं की है इसलिए बोनस शामिल नहीं किया गया है।",
+  "plan736.noValidTerm":
+    "⚠️ उम्र {age} के लिए पात्रता नियमों को पूरा करने वाली कोई Plan 736 पॉलिसी अवधि नहीं है।",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "आपके लक्ष्य तक पहुँचने के 3 तरीके",
