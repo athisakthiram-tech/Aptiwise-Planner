@@ -5,13 +5,17 @@ import { GOAL_TYPE_OPTIONS, RISK_COMFORT_OPTIONS } from "@/data/goalOptions";
 import { Card } from "@/components/ui/Card";
 import { Slider } from "@/components/ui/Slider";
 import { formatINRCompact } from "@/lib/calculations/format";
+import { Locale } from "@/lib/i18n/types";
+import { t } from "@/lib/i18n/translations";
 
 export function Step1Goal({
   goal,
   onChange,
+  locale,
 }: {
   goal: GoalInput;
   onChange: (goal: GoalInput) => void;
+  locale: Locale;
 }) {
   const set = <K extends keyof GoalInput>(key: K, value: GoalInput[K]) =>
     onChange({ ...goal, [key]: value });
@@ -19,14 +23,14 @@ export function Step1Goal({
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h2 className="text-xl font-bold">Let&apos;s plan your goal 🎯</h2>
-        <p className="text-sm text-ink-500 mt-1">
-          A few quick details to build a visual plan together.
-        </p>
+        <h2 className="text-xl font-bold">{t("goals.title", locale)}</h2>
+        <p className="text-sm text-ink-500 mt-1">{t("goals.subtitle", locale)}</p>
       </div>
 
       <Card>
-        <p className="text-sm font-semibold text-ink-700 mb-3">Choose a goal</p>
+        <p className="text-sm font-semibold text-ink-700 mb-3">
+          {t("goals.chooseGoal", locale)}
+        </p>
         <div className="grid grid-cols-2 gap-2">
           {GOAL_TYPE_OPTIONS.map((opt) => {
             const active = opt.id === goal.goalType;
@@ -43,7 +47,7 @@ export function Step1Goal({
               >
                 <div className="text-xl">{opt.emoji}</div>
                 <div className="mt-1 text-xs font-semibold text-ink-900">
-                  {opt.label}
+                  {t(opt.label, locale)}
                 </div>
               </button>
             );
@@ -53,16 +57,16 @@ export function Step1Goal({
 
       <Card className="flex flex-col gap-5">
         <Slider
-          label="Your age"
+          label={t("goals.age", locale)}
           emoji="🎂"
           value={goal.age}
           min={18}
           max={70}
-          displayValue={`${goal.age} yrs`}
+          displayValue={t("common.yearsValueShort", locale, { n: goal.age })}
           onChange={(v) => set("age", v)}
         />
         <Slider
-          label="Monthly budget"
+          label={t("goals.monthlyBudget", locale)}
           emoji="💰"
           value={goal.monthlyBudget}
           min={500}
@@ -72,7 +76,7 @@ export function Step1Goal({
           onChange={(v) => set("monthlyBudget", v)}
         />
         <Slider
-          label="Target amount"
+          label={t("goals.targetAmount", locale)}
           emoji="🎯"
           value={goal.targetAmount}
           min={100000}
@@ -82,16 +86,16 @@ export function Step1Goal({
           onChange={(v) => set("targetAmount", v)}
         />
         <Slider
-          label="Years to goal"
+          label={t("goals.yearsToGoal", locale)}
           emoji="⏳"
           value={goal.yearsToGoal}
           min={1}
           max={40}
-          displayValue={`${goal.yearsToGoal} yrs`}
+          displayValue={t("common.yearsValueShort", locale, { n: goal.yearsToGoal })}
           onChange={(v) => set("yearsToGoal", v)}
         />
         <Slider
-          label="Existing life cover"
+          label={t("goals.existingLifeCover", locale)}
           emoji="🛡️"
           value={goal.existingLifeCover}
           min={0}
@@ -103,9 +107,7 @@ export function Step1Goal({
       </Card>
 
       <Card>
-        <p className="text-sm font-semibold text-ink-700 mb-3">
-          Risk comfort
-        </p>
+        <p className="text-sm font-semibold text-ink-700 mb-3">{t("risk.title", locale)}</p>
         <div className="grid grid-cols-3 gap-2">
           {RISK_COMFORT_OPTIONS.map((opt) => {
             const active = opt.id === goal.riskComfort;
@@ -122,7 +124,7 @@ export function Step1Goal({
               >
                 <div className="text-xl">{opt.emoji}</div>
                 <div className="mt-1 text-xs font-semibold text-ink-900">
-                  {opt.label}
+                  {t(opt.label, locale)}
                 </div>
               </button>
             );

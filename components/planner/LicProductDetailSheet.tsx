@@ -6,14 +6,18 @@ import { formatINRCompact } from "@/lib/calculations/format";
 import { getPlanEngineForProduct } from "@/lib/insurance/engineRegistry";
 import { Disclosure } from "@/components/ui/Disclosure";
 import { Plan733Configurator } from "@/components/planner/Plan733Configurator";
+import { Locale } from "@/lib/i18n/types";
+import { t } from "@/lib/i18n/translations";
 
 export function LicProductDetailSheet({
   product,
   goal,
+  locale,
   onClose,
 }: {
   product: InsuranceProduct;
   goal: GoalInput;
+  locale: Locale;
   onClose: () => void;
 }) {
   const engine = getPlanEngineForProduct(product);
@@ -25,12 +29,12 @@ export function LicProductDetailSheet({
   const guaranteed = benefits?.available ? benefits.guaranteedBenefits : undefined;
 
   const eligibilityText = !eligibility
-    ? "⚠️ Verification engine not integrated"
+    ? t("lic.eligibility.notIntegrated", locale)
     : eligibility.eligible === true
-      ? "✓ Passes product-level rules"
+      ? t("lic.eligibility.passes", locale)
       : eligibility.eligible === false
-        ? "✗ Not eligible based on selected product parameters"
-        : "⚠️ Needs more details to verify eligibility";
+        ? t("lic.eligibility.notEligible", locale)
+        : t("lic.eligibility.needsDetails", locale);
   const eligibilityReason =
     eligibility && eligibility.eligible !== true ? eligibility.reasons[0] : undefined;
 
@@ -48,6 +52,7 @@ export function LicProductDetailSheet({
           <button
             type="button"
             onClick={onClose}
+            aria-label={t("common.close", locale)}
             className="rounded-full bg-slate-100 px-3 py-1 text-sm text-ink-700"
           >
             ✕
@@ -56,30 +61,35 @@ export function LicProductDetailSheet({
 
         <div className="mt-5 flex flex-col gap-4 text-sm">
           <div>
-            <p className="text-xs font-semibold text-ink-500">🎯 Why It Appeared</p>
-            <p className="text-ink-900">Matches your selected goal category</p>
+            <p className="text-xs font-semibold text-ink-500">{t("lic.whyItAppeared", locale)}</p>
+            <p className="text-ink-900">{t("lic.categoryMatchReason", locale)}</p>
           </div>
 
           <div>
-            <p className="text-xs font-semibold text-ink-500 mb-1.5">Your Details</p>
+            <p className="text-xs font-semibold text-ink-500 mb-1.5">{t("lic.yourDetails", locale)}</p>
             <div className="grid grid-cols-2 gap-y-1 rounded-lg bg-slate-50 p-3 text-ink-900">
-              <span>👤 Age</span>
+              <span>👤 {t("common.age", locale)}</span>
               <span className="text-right font-medium">{goal.age}</span>
-              <span>💰 Budget</span>
+              <span>💰 {t("common.budget", locale)}</span>
               <span className="text-right font-medium">
-                {formatINRCompact(goal.monthlyBudget)}/month
+                {formatINRCompact(goal.monthlyBudget)}
+                {t("common.perMonthSuffix", locale)}
               </span>
-              <span>⏳ Horizon</span>
-              <span className="text-right font-medium">{goal.yearsToGoal} years</span>
+              <span>⏳ {t("common.horizon", locale)}</span>
+              <span className="text-right font-medium">
+                {t("common.yearsValue", locale, { n: goal.yearsToGoal })}
+              </span>
             </div>
           </div>
 
           {product.planNumber === "733" ? (
-            <Plan733Configurator product={product} goal={goal} />
+            <Plan733Configurator product={product} goal={goal} locale={locale} />
           ) : (
             <>
               <div>
-                <p className="text-xs font-semibold text-ink-500">👤 Eligibility</p>
+                <p className="text-xs font-semibold text-ink-500">
+                  👤 {t("common.eligibilityLabel", locale)}
+                </p>
                 <p className="text-amber-700">{eligibilityText}</p>
                 {eligibilityReason && (
                   <p className="mt-0.5 text-xs text-ink-500">{eligibilityReason}</p>
@@ -87,52 +97,57 @@ export function LicProductDetailSheet({
               </div>
 
               <div>
-                <p className="text-xs font-semibold text-ink-500">🧾 Premium</p>
+                <p className="text-xs font-semibold text-ink-500">
+                  🧾 {t("common.premiumLabel", locale)}
+                </p>
                 <p className="text-amber-700">
                   {premium?.available && premium.premium != null
-                    ? `${formatINRCompact(premium.premium)} / year`
-                    : "⚠️ Exact premium requires verified LIC premium rates"}
+                    ? `${formatINRCompact(premium.premium)}${t("common.perYearSuffix", locale)}`
+                    : t("lic.premiumUnavailable", locale)}
                 </p>
               </div>
 
               <div>
-                <p className="text-xs font-semibold text-ink-500">❤️ Family Protection</p>
+                <p className="text-xs font-semibold text-ink-500">
+                  ❤️ {t("common.familyProtectionLabel", locale)}
+                </p>
                 {guaranteed ? (
                   <p className="text-ink-900">
-                    {formatINRCompact(guaranteed.deathBenefitAnnualIncomePerYear)}/year until
-                    maturity, plus {formatINRCompact(guaranteed.deathBenefitMaturityComponent)} at
-                    maturity, on death during the term.
+                    {t("lic.deathBenefitStructure", locale, {
+                      income: formatINRCompact(guaranteed.deathBenefitAnnualIncomePerYear),
+                      lumpsum: formatINRCompact(guaranteed.deathBenefitMaturityComponent),
+                    })}
                   </p>
                 ) : (
-                  <p className="text-amber-700">⚠️ Not calculated</p>
+                  <p className="text-amber-700">{t("common.notCalculated", locale)}</p>
                 )}
               </div>
 
               <div>
-                <p className="text-xs font-semibold text-ink-500">🎯 Maturity</p>
+                <p className="text-xs font-semibold text-ink-500">
+                  🎯 {t("common.maturityLabel", locale)}
+                </p>
                 {benefits?.available && benefits.maturityBenefit != null ? (
                   <p className="text-ink-900">
-                    {formatINRCompact(benefits.maturityBenefit)} guaranteed (excludes any future
-                    bonus)
+                    {t("lic.maturityGuaranteed", locale, {
+                      amount: formatINRCompact(benefits.maturityBenefit),
+                    })}
                   </p>
                 ) : (
-                  <p className="text-amber-700">⚠️ Not calculated</p>
+                  <p className="text-amber-700">{t("common.notCalculated", locale)}</p>
                 )}
               </div>
 
               <div>
-                <p className="text-xs font-semibold text-ink-500">🎁 Bonuses</p>
-                <p className="text-ink-500">
-                  Future LIC bonuses are not guaranteed and are not included in this calculation.
+                <p className="text-xs font-semibold text-ink-500">
+                  🎁 {t("common.bonusesLabel", locale)}
                 </p>
+                <p className="text-ink-500">{t("common.bonusDisclaimer", locale)}</p>
               </div>
 
               {guaranteed && (
-                <Disclosure label="How is this calculated? 🤔">
-                  Guaranteed figures come directly from your chosen Sum Assured using this
-                  plan&apos;s published benefit formula. They exclude bonuses and exclude the
-                  alternative &ldquo;7× annual premium&rdquo; death benefit, which needs a
-                  verified premium to compare.
+                <Disclosure locale={locale} label={t("common.howCalculated", locale)}>
+                  {t("lic.calculationExplain", locale)}
                 </Disclosure>
               )}
             </>
@@ -140,13 +155,11 @@ export function LicProductDetailSheet({
         </div>
 
         <p className="mt-5 text-xs font-medium text-ink-700">
-          Product-level eligibility does not constitute LIC underwriting approval.
+          {t("common.underwritingDisclaimer", locale)}
         </p>
 
         <div className="mt-3 rounded-xl2 bg-amber-50 ring-1 ring-amber-200 p-3.5 text-xs text-amber-800">
-          ⚠️ Verify before sale — eligibility, premium, benefits, exclusions
-          and policy conditions must be checked against current official LIC
-          documents ({product.officialSourceUrl}).
+          {t("lic.verifyBeforeSale", locale, { url: product.officialSourceUrl })}
         </div>
       </div>
     </div>

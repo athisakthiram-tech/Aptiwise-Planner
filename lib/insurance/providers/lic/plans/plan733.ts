@@ -20,6 +20,7 @@
 
 import {
   BenefitCalculationResult,
+  EligibilityReason,
   EligibilityResult,
   InsuranceProduct,
   LicCalculatorInput,
@@ -125,6 +126,9 @@ function isValidSumAssuredIncrement(sumAssured: number): boolean {
 // ---- Phase 2: eligibility engine ----
 export function evaluateEligibility(input: Plan733Input): EligibilityResult {
   const reasons: string[] = [];
+  // Stable, parameterized codes so the UI can translate these instead of
+  // displaying the English `reasons` sentences to the customer.
+  const reasonCodes: EligibilityReason[] = [];
   const missingInputs: string[] = [];
   let eligible: boolean | null = true;
 
@@ -133,11 +137,19 @@ export function evaluateEligibility(input: Plan733Input): EligibilityResult {
     reasons.push(
       `Age ${input.age} is below the minimum entry age of ${PLAN_733_RULES.minEntryAge}.`
     );
+    reasonCodes.push({
+      code: "age_below_min",
+      params: { min: PLAN_733_RULES.minEntryAge, actual: input.age },
+    });
   } else if (input.age > PLAN_733_RULES.maxEntryAge) {
     eligible = false;
     reasons.push(
       `Age ${input.age} is above the maximum entry age of ${PLAN_733_RULES.maxEntryAge}.`
     );
+    reasonCodes.push({
+      code: "age_above_max",
+      params: { max: PLAN_733_RULES.maxEntryAge, actual: input.age },
+    });
   }
 
   if (input.policyTermYears == null) {
@@ -152,6 +164,14 @@ export function evaluateEligibility(input: Plan733Input): EligibilityResult {
         `Policy term ${input.policyTermYears} years is outside the allowed range of ` +
           `${PLAN_733_RULES.minPolicyTermYears}-${PLAN_733_RULES.maxPolicyTermYears} years.`
       );
+      reasonCodes.push({
+        code: "term_out_of_range",
+        params: {
+          min: PLAN_733_RULES.minPolicyTermYears,
+          max: PLAN_733_RULES.maxPolicyTermYears,
+          actual: input.policyTermYears,
+        },
+      });
     }
 
     const maturityAge = input.age + input.policyTermYears;
@@ -161,12 +181,20 @@ export function evaluateEligibility(input: Plan733Input): EligibilityResult {
         `Age at maturity (${maturityAge}) would exceed the maximum maturity age of ` +
           `${PLAN_733_RULES.maxMaturityAge}.`
       );
+      reasonCodes.push({
+        code: "maturity_age_too_high",
+        params: { max: PLAN_733_RULES.maxMaturityAge, actual: maturityAge },
+      });
     } else if (maturityAge < PLAN_733_RULES.minMaturityAge) {
       eligible = false;
       reasons.push(
         `Age at maturity (${maturityAge}) would be below the minimum maturity age of ` +
           `${PLAN_733_RULES.minMaturityAge}.`
       );
+      reasonCodes.push({
+        code: "maturity_age_too_low",
+        params: { min: PLAN_733_RULES.minMaturityAge, actual: maturityAge },
+      });
     }
 
     if (
@@ -178,6 +206,10 @@ export function evaluateEligibility(input: Plan733Input): EligibilityResult {
       reasons.push(
         `Premium Paying Term must equal Policy Term minus ${PLAN_733_RULES.premiumPayingTermOffsetYears} years.`
       );
+      reasonCodes.push({
+        code: "ppt_mismatch",
+        params: { offset: PLAN_733_RULES.premiumPayingTermOffsetYears },
+      });
     }
   }
 
@@ -188,9 +220,14 @@ export function evaluateEligibility(input: Plan733Input): EligibilityResult {
     reasons.push(
       `Basic Sum Assured of ${input.sumAssured} is below the minimum of ${PLAN_733_RULES.minBasicSumAssured}.`
     );
+    reasonCodes.push({
+      code: "sum_assured_below_min",
+      params: { min: PLAN_733_RULES.minBasicSumAssured, actual: input.sumAssured },
+    });
   } else if (!isValidSumAssuredIncrement(input.sumAssured)) {
     eligible = false;
     reasons.push("Basic Sum Assured is not a valid increment for its range.");
+    reasonCodes.push({ code: "sum_assured_invalid_increment" });
   }
 
   // A definite pass/fail is only reported once nothing relevant is
@@ -201,7 +238,7 @@ export function evaluateEligibility(input: Plan733Input): EligibilityResult {
 
   reasons.push(UNDERWRITING_DISCLAIMER);
 
-  return { eligible, reasons, missingInputs, sourceVersion: SOURCE_VERSION };
+  return { eligible, reasons, reasonCodes, missingInputs, sourceVersion: SOURCE_VERSION };
 }
 
 // ---- Phase 4: premium engine safety ----

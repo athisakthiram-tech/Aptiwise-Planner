@@ -51,9 +51,21 @@ export type PremiumFrequency =
   | "yearly"
   | "single";
 
+// A stable, translatable reason code with the numeric parameters needed
+// to render it — the UI translates `code` + `params` via t(), so a
+// calculator never needs to produce customer-facing English (or Tamil/
+// Hindi) sentences itself.
+export interface EligibilityReason {
+  code: string;
+  params?: Record<string, number>;
+}
+
 export interface EligibilityResult {
   eligible: boolean | null;
+  // Human-readable (English) — kept for logs/dev tooling and backward
+  // compatibility. Customer-facing UI should prefer reasonCodes below.
   reasons: string[];
+  reasonCodes?: EligibilityReason[];
   missingInputs: string[];
   sourceVersion?: string;
 }

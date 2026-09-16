@@ -63,21 +63,21 @@ export function Wizard() {
         </div>
       </header>
 
-      <ProgressBar step={step} totalSteps={TOTAL_STEPS} />
+      <ProgressBar step={step} totalSteps={TOTAL_STEPS} locale={locale} />
 
       <div className="min-h-[420px]">
-        {step === 1 && <Step1Goal goal={goal} onChange={setGoal} />}
-        {step === 2 && <Step2Summary goal={goal} />}
+        {step === 1 && <Step1Goal goal={goal} onChange={setGoal} locale={locale} />}
+        {step === 2 && <Step2Summary goal={goal} locale={locale} />}
         {step === 3 && <StepGoalGap goal={goal} locale={locale} />}
-        {step === 4 && <StepLicOptions goal={goal} />}
+        {step === 4 && <StepLicOptions goal={goal} locale={locale} />}
         {step === 5 && (
-          <Step3Strategy selectedId={strategyId} onSelect={setStrategyId} />
+          <Step3Strategy selectedId={strategyId} onSelect={setStrategyId} locale={locale} />
         )}
-        {step === 6 && <Step4Compare />}
-        {step === 7 && <Step5Investment goal={goal} />}
-        {step === 8 && <Step6Risk />}
-        {step === 9 && <Step7Family />}
-        {step === 10 && <Step8Final goal={goal} strategyId={strategyId} />}
+        {step === 6 && <Step4Compare locale={locale} />}
+        {step === 7 && <Step5Investment goal={goal} locale={locale} />}
+        {step === 8 && <Step6Risk locale={locale} />}
+        {step === 9 && <Step7Family locale={locale} />}
+        {step === 10 && <Step8Final goal={goal} strategyId={strategyId} locale={locale} />}
       </div>
 
       <div className="flex items-center justify-between gap-3 pb-2">

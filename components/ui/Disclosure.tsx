@@ -1,12 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { Locale } from "@/lib/i18n/types";
+import { t } from "@/lib/i18n/translations";
 
 export function Disclosure({
-  label = "Why? 🤔",
+  label,
+  locale,
   children,
 }: {
   label?: string;
+  locale: Locale;
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
@@ -17,7 +21,7 @@ export function Disclosure({
         onClick={() => setOpen((o) => !o)}
         className="text-xs font-semibold text-brand-700 hover:text-brand-600"
       >
-        {open ? "Hide" : label}
+        {open ? t("common.hide", locale) : label ?? t("common.why", locale)}
       </button>
       {open && (
         <p className="mt-2 text-xs leading-relaxed text-ink-500">{children}</p>

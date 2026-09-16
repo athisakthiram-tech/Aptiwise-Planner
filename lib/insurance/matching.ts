@@ -39,7 +39,7 @@ function buildMatchQuality(product: InsuranceProduct): MatchQuality {
 
 export interface LicMatchResult {
   potentialMatches: ProductMatch[];
-  warnings: string[];
+  warnings: LicWarningCode[];
   missingVerification: string[];
 }
 
@@ -73,6 +73,8 @@ const CATEGORY_REASONS: Record<InsuranceCategory, string[]> = {
   ],
 };
 
+// Internal/dev-facing only — never rendered to the customer, so this
+// stays in English rather than becoming translation-key codes.
 export const MISSING_VERIFICATION_ITEMS = [
   "Premium has not been calculated",
   "Maturity/benefit amounts require an official LIC illustration",
@@ -80,14 +82,18 @@ export const MISSING_VERIFICATION_ITEMS = [
   "Guaranteed and non-guaranteed benefits are not yet available",
 ];
 
-export const RETIREMENT_CATALOGUE_WARNING =
-  "Retirement-specific product catalogue expansion required.";
+// Customer-facing warnings are stable codes, not English text, so the UI
+// layer can translate them (see lib/i18n/translations.ts, "lic.warning.*").
+export type LicWarningCode = "retirement_expansion_required" | "no_active_matches";
+
+export const RETIREMENT_CATALOGUE_WARNING: LicWarningCode = "retirement_expansion_required";
+const NO_ACTIVE_MATCHES_WARNING: LicWarningCode = "no_active_matches";
 
 export function matchLicProducts(
   input: GoalInput,
   catalogue: InsuranceProduct[] = LIC_CATALOGUE
 ): LicMatchResult {
-  const warnings: string[] = [];
+  const warnings: LicWarningCode[] = [];
   const categoryOrder = GOAL_CATEGORY_ORDER[input.goalType];
 
   if (input.goalType === "retirement") {
@@ -116,7 +122,7 @@ export function matchLicProducts(
   }));
 
   if (potentialMatches.length === 0 && input.goalType !== "retirement") {
-    warnings.push("No active LIC catalogue entries currently map to this goal.");
+    warnings.push(NO_ACTIVE_MATCHES_WARNING);
   }
 
   return {

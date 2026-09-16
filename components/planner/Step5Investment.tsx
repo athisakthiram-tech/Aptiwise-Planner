@@ -2,8 +2,10 @@ import { GoalInput } from "@/types";
 import { buildInvestmentProjections } from "@/lib/calculations/sip";
 import { formatINRCompact } from "@/lib/calculations/format";
 import { Card } from "@/components/ui/Card";
+import { Locale } from "@/lib/i18n/types";
+import { t } from "@/lib/i18n/translations";
 
-export function Step5Investment({ goal }: { goal: GoalInput }) {
+export function Step5Investment({ goal, locale }: { goal: GoalInput; locale: Locale }) {
   const projections = buildInvestmentProjections({
     monthlyAmount: goal.monthlyBudget,
     years: goal.yearsToGoal,
@@ -13,10 +15,12 @@ export function Step5Investment({ goal }: { goal: GoalInput }) {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h2 className="text-xl font-bold">Investment scenario</h2>
+        <h2 className="text-xl font-bold">{t("sip.title", locale)}</h2>
         <p className="text-sm text-ink-500 mt-1">
-          Investing {formatINRCompact(goal.monthlyBudget)}/month for{" "}
-          {goal.yearsToGoal} years, at a few illustrative rates.
+          {t("sip.subtitle", locale, {
+            amount: formatINRCompact(goal.monthlyBudget),
+            years: goal.yearsToGoal,
+          })}
         </p>
       </div>
 
@@ -27,7 +31,7 @@ export function Step5Investment({ goal }: { goal: GoalInput }) {
             <div key={p.annualRatePct}>
               <div className="flex items-baseline justify-between mb-1.5">
                 <span className="text-sm font-semibold text-ink-700">
-                  {p.annualRatePct}% p.a.
+                  {t("sip.ratePa", locale, { rate: p.annualRatePct })}
                 </span>
                 <span className="text-lg font-bold text-ink-900">
                   {formatINRCompact(p.futureValue)}
@@ -45,8 +49,7 @@ export function Step5Investment({ goal }: { goal: GoalInput }) {
       </Card>
 
       <div className="rounded-xl2 bg-amber-50 ring-1 ring-amber-200 p-3.5 text-xs text-amber-800">
-        ⚠️ Illustration only — not guaranteed returns. These are not expected
-        or promised mutual-fund performance figures.
+        {t("sip.disclaimer", locale)}
       </div>
     </div>
   );

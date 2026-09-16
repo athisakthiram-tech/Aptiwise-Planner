@@ -6,9 +6,11 @@ import { InsuranceProduct } from "@/types/insurance";
 import { formatINRCompact } from "@/lib/calculations/format";
 import { getPlanEngineForProduct } from "@/lib/insurance/engineRegistry";
 import { comparePlanBudget } from "@/lib/insurance/budgetComparison";
-import { PLAN_733_RULES, PLAN_733_BONUS_DISCLAIMER } from "@/lib/insurance/providers/lic/plans/plan733";
+import { PLAN_733_RULES } from "@/lib/insurance/providers/lic/plans/plan733";
 import { Slider } from "@/components/ui/Slider";
 import { Disclosure } from "@/components/ui/Disclosure";
+import { Locale } from "@/lib/i18n/types";
+import { t } from "@/lib/i18n/translations";
 
 // UI convenience only — Plan 733 has no maximum Basic Sum Assured per the
 // brochure ("No Limit, subject to underwriting decision"). This just
@@ -29,9 +31,11 @@ function validPolicyTerms(age: number): number[] {
 export function Plan733Configurator({
   product,
   goal,
+  locale,
 }: {
   product: InsuranceProduct;
   goal: GoalInput;
+  locale: Locale;
 }) {
   const terms = validPolicyTerms(goal.age);
   const [sumAssured, setSumAssured] = useState<number>(PLAN_733_RULES.minBasicSumAssured);
@@ -42,7 +46,7 @@ export function Plan733Configurator({
   if (terms.length === 0) {
     return (
       <div className="rounded-xl2 bg-amber-50 ring-1 ring-amber-200 p-3.5 text-xs text-amber-800">
-        ⚠️ No Plan 733 policy term satisfies the maturity-age rules for age {goal.age}.
+        {t("plan733.noValidTerm", locale, { age: goal.age })}
       </div>
     );
   }
@@ -55,9 +59,7 @@ export function Plan733Configurator({
   const guaranteed = benefits?.available ? benefits.guaranteedBenefits : undefined;
   const budget = comparePlanBudget(goal.monthlyBudget, premium);
 
-  // The disclaimer is always appended last by evaluateEligibility — every
-  // other reason is a concise, concrete failure/gap explanation.
-  const failureReasons = eligibility ? eligibility.reasons.slice(0, -1) : [];
+  const reasonCodes = eligibility?.reasonCodes ?? [];
 
   const sliderStep =
     sumAssured <= PLAN_733_RULES.sumAssuredIncrement.lowerBandMaxInclusive
@@ -67,9 +69,9 @@ export function Plan733Configurator({
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <p className="text-xs font-semibold text-ink-500 mb-2">Plan configuration</p>
+        <p className="text-xs font-semibold text-ink-500 mb-2">{t("plan733.configLabel", locale)}</p>
         <Slider
-          label="Basic Sum Assured"
+          label={t("plan733.basicSumAssured", locale)}
           emoji="❤️"
           value={sumAssured}
           min={PLAN_733_RULES.minBasicSumAssured}
@@ -77,131 +79,137 @@ export function Plan733Configurator({
           step={sliderStep}
           displayValue={formatINRCompact(sumAssured)}
           onChange={setSumAssured}
-          hint="Plan configuration — not a recommended cover amount."
+          hint={t("plan733.configHint", locale)}
         />
       </div>
 
       <div>
-        <p className="text-sm font-medium text-ink-700 mb-2">⏳ Policy Term</p>
+        <p className="text-sm font-medium text-ink-700 mb-2">{t("plan733.policyTerm", locale)}</p>
         <div className="flex flex-wrap gap-2">
-          {terms.map((t) => (
+          {terms.map((term) => (
             <button
-              key={t}
+              key={term}
               type="button"
-              onClick={() => setPolicyTermYears(t)}
+              onClick={() => setPolicyTermYears(term)}
               className={`rounded-full px-3 py-1.5 text-xs font-semibold ${
-                policyTermYears === t
+                policyTermYears === term
                   ? "bg-brand-600 text-white"
                   : "bg-slate-100 text-ink-700"
               }`}
             >
-              {t} yrs
+              {t("common.yearsValueShort", locale, { n: term })}
             </button>
           ))}
         </div>
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-ink-500">✓ Eligibility</p>
+        <p className="text-xs font-semibold text-ink-500">✓ {t("common.eligibilityLabel", locale)}</p>
         <p className="text-amber-700">
           {eligibility?.eligible === true
-            ? "✓ Passes Plan 733 product-level rules"
-            : "⚠️ Configuration doesn't satisfy Plan 733 product rules"}
+            ? t("plan733.eligibilityPass", locale)
+            : t("plan733.eligibilityFail", locale)}
         </p>
-        {failureReasons.map((r) => (
-          <p key={r} className="mt-0.5 text-xs text-ink-500">
-            {r}
+        {reasonCodes.map((rc, i) => (
+          <p key={`${rc.code}-${i}`} className="mt-0.5 text-xs text-ink-500">
+            {t(`plan733.reason.${rc.code}`, locale, rc.params)}
           </p>
         ))}
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-ink-500">🧾 Premium</p>
+        <p className="text-xs font-semibold text-ink-500">🧾 {t("common.premiumLabel", locale)}</p>
         {premium?.available && premium.premium != null ? (
           <>
             <p className="text-ink-900">
-              Verified brochure example premium: {formatINRCompact(premium.premium)} / year
+              {t("plan733.verifiedPremium", locale, {
+                amount: formatINRCompact(premium.premium),
+              })}
             </p>
             <p className="mt-0.5 text-xs text-ink-500">
-              ≈ {formatINRCompact(premium.premium / 12)}/month. Monthly equivalent for
-              comparison only; the brochure premium above is the verified value.
+              {t("plan733.monthlyEquivalentNote", locale, {
+                amount: formatINRCompact(premium.premium / 12),
+              })}
             </p>
           </>
         ) : (
           <>
-            <p className="text-amber-700">⚠️ Exact premium unavailable for this configuration</p>
+            <p className="text-amber-700">{t("plan733.premiumUnavailable", locale)}</p>
             <p className="mt-0.5 text-xs text-ink-500">
-              Verified LIC premium rate data is required.
+              {t("plan733.premiumUnavailableReason", locale)}
             </p>
           </>
         )}
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-ink-500 mb-1">💰 Budget Comparison</p>
+        <p className="text-xs font-semibold text-ink-500 mb-1">
+          {t("plan733.budgetComparison", locale)}
+        </p>
         {budget.verified ? (
           <div className="rounded-lg bg-slate-50 p-3 text-sm">
             <div className="flex justify-between">
-              <span className="text-ink-500">Your budget</span>
+              <span className="text-ink-500">{t("common.yourBudget", locale)}</span>
               <span className="font-medium text-ink-900">
-                {formatINRCompact(budget.customerMonthlyBudget)}/month
+                {formatINRCompact(budget.customerMonthlyBudget)}
+                {t("common.perMonthSuffix", locale)}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-ink-500">Premium equivalent</span>
+              <span className="text-ink-500">{t("plan733.premiumEquivalent", locale)}</span>
               <span className="font-medium text-ink-900">
-                {formatINRCompact(budget.monthlyEquivalent as number)}/month
+                {formatINRCompact(budget.monthlyEquivalent as number)}
+                {t("common.perMonthSuffix", locale)}
               </span>
             </div>
             <p className={`mt-2 font-semibold ${budget.withinBudget ? "text-brand-700" : "text-amber-700"}`}>
-              {budget.withinBudget ? "✓ Within entered budget" : "⚠️ Above entered budget"}
+              {budget.withinBudget
+                ? t("plan733.withinBudget", locale)
+                : t("plan733.aboveBudget", locale)}
             </p>
-            <p className="mt-1 text-xs text-ink-500">
-              Based on annual premium equivalent for planning comparison.
-            </p>
+            <p className="mt-1 text-xs text-ink-500">{t("plan733.budgetNote", locale)}</p>
           </div>
         ) : (
-          <p className="text-amber-700">Budget fit = Not verified</p>
+          <p className="text-amber-700">{t("plan733.budgetNotVerified", locale)}</p>
         )}
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-ink-500 mb-1.5">❤️ Benefits</p>
+        <p className="text-xs font-semibold text-ink-500 mb-1.5">
+          ❤️ {t("common.benefitsLabel", locale)}
+        </p>
         <div className="rounded-lg bg-slate-50 p-3 text-sm flex flex-col gap-2">
           <div className="flex justify-between">
-            <span className="text-ink-500">❤️ Basic Sum Assured</span>
+            <span className="text-ink-500">❤️ {t("plan733.basicSumAssured", locale)}</span>
             <span className="font-medium text-ink-900">{formatINRCompact(sumAssured)}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-ink-500">🎯 Base maturity benefit</span>
+            <span className="text-ink-500">{t("plan733.baseMaturityBenefit", locale)}</span>
             <span className="font-medium text-ink-900">
               {benefits?.available && benefits.maturityBenefit != null
                 ? formatINRCompact(benefits.maturityBenefit)
-                : "⚠️ Not calculated"}
+                : t("common.notCalculated", locale)}
             </span>
           </div>
           {guaranteed && (
             <p className="text-xs text-ink-500">
-              ❤️ Death-benefit structure: {formatINRCompact(guaranteed.deathBenefitAnnualIncomePerYear)}
-              /year until maturity, plus {formatINRCompact(guaranteed.deathBenefitMaturityComponent)}{" "}
-              lump sum at maturity, if death occurs during the term.
+              {t("plan733.deathBenefitStructure", locale, {
+                income: formatINRCompact(guaranteed.deathBenefitAnnualIncomePerYear),
+                lumpsum: formatINRCompact(guaranteed.deathBenefitMaturityComponent),
+              })}
             </p>
           )}
           <div className="flex justify-between">
-            <span className="text-ink-500">🎁 Bonuses</span>
-            <span className="font-medium text-ink-900">Not included</span>
+            <span className="text-ink-500">🎁 {t("common.bonusesLabel", locale)}</span>
+            <span className="font-medium text-ink-900">{t("common.notIncluded", locale)}</span>
           </div>
-          <p className="text-xs text-ink-500">{PLAN_733_BONUS_DISCLAIMER}</p>
+          <p className="text-xs text-ink-500">{t("common.bonusDisclaimer", locale)}</p>
         </div>
       </div>
 
       {guaranteed && (
-        <Disclosure label="How is this calculated? 🤔">
-          Base maturity benefit equals your chosen Basic Sum Assured. The death-benefit
-          structure shown is 110% of Basic Sum Assured payable at maturity plus 10% of
-          Basic Sum Assured paid yearly until maturity — the plan&apos;s actual death benefit
-          may be higher if 7× your annual premium exceeds this, which needs a verified
-          premium to compare. Bonuses are excluded because LIC has not published a rate.
+        <Disclosure locale={locale} label={t("common.howCalculated", locale)}>
+          {t("plan733.calculationExplain", locale)}
         </Disclosure>
       )}
     </div>
