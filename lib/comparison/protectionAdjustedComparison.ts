@@ -11,7 +11,14 @@
 import {
   BenefitCalculationResult,
   InsuranceProduct,
+  ValueStatus,
 } from "@/types/insurance";
+
+// Re-exported so existing importers of ValueStatus from this module keep
+// working unchanged — the type now lives in types/insurance.ts so the
+// engine/capability layer can share the exact same vocabulary instead of
+// introducing a second, incompatible one.
+export type { ValueStatus };
 import { GoalCoverage, calculateGoalCoverage } from "@/lib/calculations/goalCoverage";
 import { sipFutureValue } from "@/lib/calculations/sip";
 
@@ -22,8 +29,6 @@ export type ComparisonStructureType =
   | "index_fund_scenario"
   | "midcap_fund_scenario"
   | "protection_plus_investment";
-
-export type ValueStatus = "verified" | "illustrative" | "conditional" | "not_applicable" | "unavailable";
 
 // T defaults to `null` for dimensions that are purely status/notes (tax,
 // costs, liquidity) rather than a single number.
