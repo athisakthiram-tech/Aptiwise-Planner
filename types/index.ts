@@ -73,6 +73,36 @@ export interface GoalGapResult {
   scenarios: GoalGapScenario[];
 }
 
+// Plan Builder: explores splitting monthly capacity between a protection
+// allocation and a goal-building allocation. An interactive planning
+// simulator, NOT an investment recommendation engine — see
+// lib/planner/planBuilder.ts.
+export interface PlanBuilderSelection {
+  // Minimal source-of-truth state. goalAllocation is deliberately NOT
+  // stored here — it is always derived as monthlyBudget -
+  // protectionAllocation (see lib/planner/planBuilder.ts), so the two
+  // can never drift apart.
+  protectionAllocation: number;
+  annualScenarioRate: number;
+}
+
+export interface PlanBuilderResult {
+  monthlyBudget: number;
+  years: number;
+  protectionAllocation: number;
+  goalAllocation: number;
+  annualScenarioRate: number;
+  // Reserved for protection/insurance — never treated as a savings or
+  // return-generating contribution.
+  protectionContribution: number;
+  goalContribution: number;
+  illustrativeGoalValue: number;
+  illustrativeGrowth: number;
+  goalGap: number;
+  goalSurplus: number;
+  goalCoveragePercent: number;
+}
+
 // Mock product types — placeholders only, no real insurer/fund data.
 export type ProductCategory = "protection" | "savings" | "equity";
 

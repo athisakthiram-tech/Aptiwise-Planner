@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { GoalInput, StrategyId } from "@/types";
+import { GoalInput, PlanBuilderSelection, StrategyId } from "@/types";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Step1Goal } from "@/components/planner/Step1Goal";
 import { Step2Summary } from "@/components/planner/Step2Summary";
 import { StepGoalGap } from "@/components/planner/StepGoalGap";
+import { StepPlanBuilder } from "@/components/planner/StepPlanBuilder";
 import { StepLicOptions } from "@/components/planner/StepLicOptions";
 import { Step3Strategy } from "@/components/planner/Step3Strategy";
 import { Step4Compare } from "@/components/planner/Step4Compare";
@@ -16,8 +17,10 @@ import { Step8Final } from "@/components/planner/Step8Final";
 import { Button } from "@/components/ui/Button";
 import { Locale, LOCALES, DEFAULT_LOCALE } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
+import { ILLUSTRATION_RATES_PCT } from "@/lib/calculations/sip";
+import { DEFAULT_PROTECTION_ALLOCATION_PERCENT } from "@/lib/planner/planBuilder";
 
-export const TOTAL_STEPS = 10;
+export const TOTAL_STEPS = 11;
 
 const DEFAULT_GOAL: GoalInput = {
   age: 35,
@@ -29,16 +32,28 @@ const DEFAULT_GOAL: GoalInput = {
   riskComfort: "medium",
 };
 
+// Starting illustration only — not a recommendation (see
+// lib/planner/planBuilder.ts).
+const DEFAULT_PLAN_BUILDER_SELECTION: PlanBuilderSelection = {
+  protectionAllocation: Math.round(
+    (DEFAULT_PROTECTION_ALLOCATION_PERCENT / 100) * DEFAULT_GOAL.monthlyBudget
+  ),
+  annualScenarioRate: ILLUSTRATION_RATES_PCT[0],
+};
+
 export function Wizard() {
   const [step, setStep] = useState(1);
   const [goal, setGoal] = useState<GoalInput>(DEFAULT_GOAL);
   const [strategyId, setStrategyId] = useState<StrategyId>("balanced");
   const [locale, setLocale] = useState<Locale>(DEFAULT_LOCALE);
+  const [planBuilderSelection, setPlanBuilderSelection] = useState<PlanBuilderSelection>(
+    DEFAULT_PLAN_BUILDER_SELECTION
+  );
 
   const goNext = () => setStep((s) => Math.min(TOTAL_STEPS, s + 1));
   const goBack = () => setStep((s) => Math.max(1, s - 1));
 
-  const canAdvance = step !== 5 || Boolean(strategyId);
+  const canAdvance = step !== 6 || Boolean(strategyId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -69,15 +84,23 @@ export function Wizard() {
         {step === 1 && <Step1Goal goal={goal} onChange={setGoal} locale={locale} />}
         {step === 2 && <Step2Summary goal={goal} locale={locale} />}
         {step === 3 && <StepGoalGap goal={goal} locale={locale} />}
-        {step === 4 && <StepLicOptions goal={goal} locale={locale} />}
-        {step === 5 && (
+        {step === 4 && (
+          <StepPlanBuilder
+            goal={goal}
+            selection={planBuilderSelection}
+            onChange={setPlanBuilderSelection}
+            locale={locale}
+          />
+        )}
+        {step === 5 && <StepLicOptions goal={goal} locale={locale} />}
+        {step === 6 && (
           <Step3Strategy selectedId={strategyId} onSelect={setStrategyId} locale={locale} />
         )}
-        {step === 6 && <Step4Compare locale={locale} />}
-        {step === 7 && <Step5Investment goal={goal} locale={locale} />}
-        {step === 8 && <Step6Risk locale={locale} />}
-        {step === 9 && <Step7Family locale={locale} />}
-        {step === 10 && <Step8Final goal={goal} strategyId={strategyId} locale={locale} />}
+        {step === 7 && <Step4Compare locale={locale} />}
+        {step === 8 && <Step5Investment goal={goal} locale={locale} />}
+        {step === 9 && <Step6Risk locale={locale} />}
+        {step === 10 && <Step7Family locale={locale} />}
+        {step === 11 && <Step8Final goal={goal} strategyId={strategyId} locale={locale} />}
       </div>
 
       <div className="flex items-center justify-between gap-3 pb-2">
