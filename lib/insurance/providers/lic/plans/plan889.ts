@@ -321,6 +321,13 @@ export function calculateBenefits(input: Plan889Input): BenefitCalculationResult
     maturityBenefit = basicSumAssured + gaAtMaturity;
   }
 
+  // `sumAssuredOnDeath` drives the returned `deathBenefit` and stays
+  // undefined unless an exact premium is verified — Basic Sum Assured
+  // here is only ONE side of a "higher of BSA or a multiple of premium"
+  // comparison, not a scaled, always-guaranteed figure, so (matching the
+  // convention used by plan774.ts/plan912.ts) it is never reported as if
+  // verified. The second/simultaneous-death minimums below still use the
+  // BSA floor, since a "not less than" statement is always true.
   let sumAssuredOnDeath: number | undefined;
   const option = readOption(input);
   if (option != null) {
@@ -333,18 +340,18 @@ export function calculateBenefits(input: Plan889Input): BenefitCalculationResult
       // survivor (future premiums waived).
       guaranteedBenefits.sumAssuredOnDeath = sumAssuredOnDeath;
     } else {
-      sumAssuredOnDeath = basicSumAssured;
-      guaranteedBenefits.sumAssuredOnDeathMinimum = sumAssuredOnDeath;
+      guaranteedBenefits.sumAssuredOnDeathMinimum = basicSumAssured;
     }
+    const firstDeathFloor = sumAssuredOnDeath ?? basicSumAssured;
     // Second death: Sum Assured on Death plus accrued Guaranteed
     // Additions at that point — since the timing of the second death
     // (and thus how much Guaranteed Addition has accrued) is unknown in
     // advance, only the guaranteed minimum (before any Guaranteed
     // Addition) is reported here.
-    guaranteedBenefits.sumAssuredOnSecondDeathMinimum = sumAssuredOnDeath;
+    guaranteedBenefits.sumAssuredOnSecondDeathMinimum = firstDeathFloor;
     // Simultaneous death: sum of the first-death and second-death
     // benefits above.
-    guaranteedBenefits.sumAssuredOnSimultaneousDeathMinimum = sumAssuredOnDeath * 2;
+    guaranteedBenefits.sumAssuredOnSimultaneousDeathMinimum = firstDeathFloor * 2;
   }
 
   return {

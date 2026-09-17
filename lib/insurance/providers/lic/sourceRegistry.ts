@@ -125,6 +125,24 @@ const SUPPLEMENTAL_SOURCES: Record<string, OfficialProductSource[]> = {
       checkedAt: "2026-09-16",
     },
   ],
+  [key("890", "512N395V01")]: [
+    {
+      id: "lic-plan890-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: ENDOWMENT_CATEGORY_URL,
+      title: "LIC's New Bima Jyoti Sales Brochure",
+      checkedAt: "2026-09-17",
+    },
+  ],
+  [key("888", "512N393V01")]: [
+    {
+      id: "lic-plan888-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: ENDOWMENT_CATEGORY_URL,
+      title: "LIC's New Jeevan Sathi - Single Premium Sales Brochure",
+      checkedAt: "2026-09-17",
+    },
+  ],
 };
 
 export function getOfficialSources(planNumber: string, uin: string): OfficialProductSource[] {

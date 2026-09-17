@@ -10,6 +10,11 @@ import { PLAN_881_RULES, PLAN_881_UIN } from "@/lib/insurance/providers/lic/plan
 import { PLAN_748_RULES, PLAN_748_UIN } from "@/lib/insurance/providers/lic/plans/plan748";
 import { PLAN_770_RULES, PLAN_770_UIN } from "@/lib/insurance/providers/lic/plans/plan770";
 import { PLAN_889_RULES, PLAN_889_UIN } from "@/lib/insurance/providers/lic/plans/plan889";
+import {
+  PLAN_890_RULES,
+  PLAN_890_UIN,
+  derivedPremiumPayingTermYears as derivedPpt890,
+} from "@/lib/insurance/providers/lic/plans/plan890";
 import { StandardEndowmentConfig } from "@/components/planner/StandardEndowmentConfigurator";
 
 // UI convenience caps only (none of these plans state a maximum Basic
@@ -195,4 +200,25 @@ export const PLAN_889_CONFIG: StandardEndowmentConfig = {
     labelKey: "lic.std.deathBenefitOption",
     values: ["I", "II"],
   },
+};
+
+export const PLAN_890_CONFIG: StandardEndowmentConfig = {
+  planNumber: "890",
+  uin: PLAN_890_UIN,
+  minBasicSumAssured: PLAN_890_RULES.minBasicSumAssured,
+  sumAssuredBands: [...PLAN_890_RULES.sumAssuredBands],
+  sumAssuredSliderMax: SUM_ASSURED_SLIDER_MAX,
+  premiumMode: "yearly",
+  hasIndependentPpt: false,
+  validPolicyTerms(age) {
+    const terms: number[] = [];
+    for (let term = PLAN_890_RULES.minPolicyTermYears; term <= PLAN_890_RULES.maxPolicyTermYears; term++) {
+      const maturityAge = age + term;
+      if (maturityAge >= PLAN_890_RULES.minMaturityAge && maturityAge <= PLAN_890_RULES.maxMaturityAge) {
+        terms.push(term);
+      }
+    }
+    return terms;
+  },
+  pptForTerm: (term) => derivedPpt890(term),
 };

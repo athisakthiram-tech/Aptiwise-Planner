@@ -29,6 +29,8 @@ import * as plan881 from "@/lib/insurance/providers/lic/plans/plan881";
 import * as plan748 from "@/lib/insurance/providers/lic/plans/plan748";
 import * as plan770 from "@/lib/insurance/providers/lic/plans/plan770";
 import * as plan889 from "@/lib/insurance/providers/lic/plans/plan889";
+import * as plan890 from "@/lib/insurance/providers/lic/plans/plan890";
+import * as plan888 from "@/lib/insurance/providers/lic/plans/plan888";
 import { getLicProductByIdentity } from "@/lib/insurance/providers/lic/catalogue";
 
 const PLAN_733_PRODUCT = getLicProductByIdentity("733", plan733.PLAN_733_UIN);
@@ -426,6 +428,28 @@ const PLAN_889_ENGINE = buildStandardEngine(
   PLAN_889_SOURCE_ID
 );
 
+const PLAN_890_PRODUCT = requireProduct("890", plan890.PLAN_890_UIN);
+const PLAN_890_SOURCE_ID = "lic-plan890-sales-brochure-current";
+const PLAN_890_ENGINE = buildStandardEngine(
+  "890",
+  plan890.PLAN_890_UIN,
+  PLAN_890_PRODUCT,
+  plan890,
+  STANDARD_CAPABILITIES,
+  PLAN_890_SOURCE_ID
+);
+
+const PLAN_888_PRODUCT = requireProduct("888", plan888.PLAN_888_UIN);
+const PLAN_888_SOURCE_ID = "lic-plan888-sales-brochure-current";
+const PLAN_888_ENGINE = buildStandardEngine(
+  "888",
+  plan888.PLAN_888_UIN,
+  PLAN_888_PRODUCT,
+  plan888,
+  STANDARD_CAPABILITIES,
+  PLAN_888_SOURCE_ID
+);
+
 export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_733_ENGINE,
   PLAN_736_ENGINE,
@@ -439,6 +463,8 @@ export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_748_ENGINE,
   PLAN_770_ENGINE,
   PLAN_889_ENGINE,
+  PLAN_890_ENGINE,
+  PLAN_888_ENGINE,
 ];
 
 function key(planNumber: string, uin: string): string {
