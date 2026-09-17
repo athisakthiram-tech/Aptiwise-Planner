@@ -24,6 +24,11 @@ import * as plan714 from "@/lib/insurance/providers/lic/plans/plan714";
 import * as plan715 from "@/lib/insurance/providers/lic/plans/plan715";
 import * as plan774 from "@/lib/insurance/providers/lic/plans/plan774";
 import * as plan912 from "@/lib/insurance/providers/lic/plans/plan912";
+import * as plan734 from "@/lib/insurance/providers/lic/plans/plan734";
+import * as plan881 from "@/lib/insurance/providers/lic/plans/plan881";
+import * as plan748 from "@/lib/insurance/providers/lic/plans/plan748";
+import * as plan770 from "@/lib/insurance/providers/lic/plans/plan770";
+import * as plan889 from "@/lib/insurance/providers/lic/plans/plan889";
 import { getLicProductByIdentity } from "@/lib/insurance/providers/lic/catalogue";
 
 const PLAN_733_PRODUCT = getLicProductByIdentity("733", plan733.PLAN_733_UIN);
@@ -359,6 +364,68 @@ const PLAN_912_ENGINE = buildStandardEngine(
   PLAN_912_SOURCE_ID
 );
 
+// ---- Stage 4E: 5 more products via the same generic factory ----
+// Plan 734's Premium Paying Term/Policy Term are derived from age (not
+// chosen), Plan 748's Policy Term comes from a discrete set, Plan 889 is
+// joint-life — but all 5 still fit the same
+// age/BSA/term/PPT/productSpecificInputs shape the factory maps, so none
+// of them need a bespoke adapter here (only bespoke UI configurators —
+// see components/planner/LicProductDetailSheet.tsx).
+const PLAN_734_PRODUCT = requireProduct("734", plan734.PLAN_734_UIN);
+const PLAN_734_SOURCE_ID = "lic-plan734-sales-brochure-current";
+const PLAN_734_ENGINE = buildStandardEngine(
+  "734",
+  plan734.PLAN_734_UIN,
+  PLAN_734_PRODUCT,
+  plan734,
+  STANDARD_CAPABILITIES,
+  PLAN_734_SOURCE_ID
+);
+
+const PLAN_881_PRODUCT = requireProduct("881", plan881.PLAN_881_UIN);
+const PLAN_881_SOURCE_ID = "lic-plan881-sales-brochure-current";
+const PLAN_881_ENGINE = buildStandardEngine(
+  "881",
+  plan881.PLAN_881_UIN,
+  PLAN_881_PRODUCT,
+  plan881,
+  STANDARD_CAPABILITIES,
+  PLAN_881_SOURCE_ID
+);
+
+const PLAN_748_PRODUCT = requireProduct("748", plan748.PLAN_748_UIN);
+const PLAN_748_SOURCE_ID = "lic-plan748-sales-brochure-current";
+const PLAN_748_ENGINE = buildStandardEngine(
+  "748",
+  plan748.PLAN_748_UIN,
+  PLAN_748_PRODUCT,
+  plan748,
+  STANDARD_CAPABILITIES,
+  PLAN_748_SOURCE_ID
+);
+
+const PLAN_770_PRODUCT = requireProduct("770", plan770.PLAN_770_UIN);
+const PLAN_770_SOURCE_ID = "lic-plan770-sales-brochure-current";
+const PLAN_770_ENGINE = buildStandardEngine(
+  "770",
+  plan770.PLAN_770_UIN,
+  PLAN_770_PRODUCT,
+  plan770,
+  STANDARD_CAPABILITIES,
+  PLAN_770_SOURCE_ID
+);
+
+const PLAN_889_PRODUCT = requireProduct("889", plan889.PLAN_889_UIN);
+const PLAN_889_SOURCE_ID = "lic-plan889-sales-brochure-current";
+const PLAN_889_ENGINE = buildStandardEngine(
+  "889",
+  plan889.PLAN_889_UIN,
+  PLAN_889_PRODUCT,
+  plan889,
+  STANDARD_CAPABILITIES,
+  PLAN_889_SOURCE_ID
+);
+
 export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_733_ENGINE,
   PLAN_736_ENGINE,
@@ -367,6 +434,11 @@ export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_715_ENGINE,
   PLAN_774_ENGINE,
   PLAN_912_ENGINE,
+  PLAN_734_ENGINE,
+  PLAN_881_ENGINE,
+  PLAN_748_ENGINE,
+  PLAN_770_ENGINE,
+  PLAN_889_ENGINE,
 ];
 
 function key(planNumber: string, uin: string): string {

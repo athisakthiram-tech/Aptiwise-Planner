@@ -8,12 +8,17 @@ import { Disclosure } from "@/components/ui/Disclosure";
 import { Plan733Configurator } from "@/components/planner/Plan733Configurator";
 import { Plan736Configurator } from "@/components/planner/Plan736Configurator";
 import { Plan774Configurator } from "@/components/planner/Plan774Configurator";
+import { Plan734Configurator } from "@/components/planner/Plan734Configurator";
 import { StandardEndowmentConfigurator } from "@/components/planner/StandardEndowmentConfigurator";
 import {
   PLAN_717_CONFIG,
   PLAN_714_CONFIG,
   PLAN_715_CONFIG,
   PLAN_912_CONFIG,
+  PLAN_881_CONFIG,
+  PLAN_748_CONFIG,
+  PLAN_770_CONFIG,
+  PLAN_889_CONFIG,
 } from "@/components/planner/standardEndowmentConfigs";
 import { Locale } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
@@ -105,6 +110,16 @@ export function LicProductDetailSheet({
             <StandardEndowmentConfigurator product={product} goal={goal} locale={locale} config={PLAN_715_CONFIG} />
           ) : product.planNumber === "912" ? (
             <StandardEndowmentConfigurator product={product} goal={goal} locale={locale} config={PLAN_912_CONFIG} />
+          ) : product.planNumber === "734" ? (
+            <Plan734Configurator product={product} goal={goal} locale={locale} />
+          ) : product.planNumber === "881" ? (
+            <StandardEndowmentConfigurator product={product} goal={goal} locale={locale} config={PLAN_881_CONFIG} />
+          ) : product.planNumber === "748" ? (
+            <StandardEndowmentConfigurator product={product} goal={goal} locale={locale} config={PLAN_748_CONFIG} />
+          ) : product.planNumber === "770" ? (
+            <StandardEndowmentConfigurator product={product} goal={goal} locale={locale} config={PLAN_770_CONFIG} />
+          ) : product.planNumber === "889" ? (
+            <StandardEndowmentConfigurator product={product} goal={goal} locale={locale} config={PLAN_889_CONFIG} />
           ) : (
             <>
               <div>

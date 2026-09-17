@@ -33,7 +33,17 @@ export interface StandardEndowmentConfig {
   pptOptions?: readonly number[];
   validPolicyTerms(age: number, ppt?: number): number[];
   pptForTerm?(term: number): number | undefined;
-  deathBenefitOptions?: readonly string[];
+  // A single per-product configuration choice made once at inception,
+  // stored under context.productSpecificInputs[inputKey] — e.g. Nav
+  // Jeevan Shree/New Jeevan Sathi's Death Benefit Option (inputKey
+  // "deathBenefitOption") or Bima Lakshmi/Jeevan Tarun's Survival Benefit
+  // Option (inputKey "survivalBenefitOption"). `labelKey` picks which
+  // translated heading to show above the picker.
+  optionChoice?: {
+    inputKey: string;
+    labelKey: string;
+    values: readonly string[];
+  };
 }
 
 export function StandardEndowmentConfigurator({
@@ -50,8 +60,8 @@ export function StandardEndowmentConfigurator({
   const [sumAssured, setSumAssured] = useState<number>(config.minBasicSumAssured);
   const [selectedPpt, setSelectedPpt] = useState<number | undefined>(config.pptOptions?.[0]);
   const [policyTermYears, setPolicyTermYears] = useState<number | undefined>(undefined);
-  const [deathBenefitOption, setDeathBenefitOption] = useState<string | undefined>(
-    config.deathBenefitOptions?.[0]
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(
+    config.optionChoice?.values[0]
   );
 
   const validTerms = config.validPolicyTerms(goal.age, config.hasIndependentPpt ? selectedPpt : undefined);
@@ -79,7 +89,10 @@ export function StandardEndowmentConfigurator({
     policyTermYears: activeTerm,
     premiumPayingTermYears,
     premiumMode: config.premiumMode,
-    productSpecificInputs: deathBenefitOption ? { deathBenefitOption } : undefined,
+    productSpecificInputs:
+      config.optionChoice && selectedOption
+        ? { [config.optionChoice.inputKey]: selectedOption }
+        : undefined,
   };
   const eligibility = engine?.evaluateEligibility?.(context);
   const premium = engine?.calculatePremium?.(context);
@@ -158,17 +171,17 @@ export function StandardEndowmentConfigurator({
         )}
       </div>
 
-      {config.deathBenefitOptions && (
+      {config.optionChoice && (
         <div>
-          <p className="text-sm font-medium text-ink-700 mb-2">{t("lic.std.deathBenefitOption", locale)}</p>
+          <p className="text-sm font-medium text-ink-700 mb-2">{t(config.optionChoice.labelKey, locale)}</p>
           <div className="flex flex-wrap gap-2">
-            {config.deathBenefitOptions.map((option) => (
+            {config.optionChoice.values.map((option) => (
               <button
                 key={option}
                 type="button"
-                onClick={() => setDeathBenefitOption(option)}
+                onClick={() => setSelectedOption(option)}
                 className={`rounded-full px-3 py-1.5 text-xs font-semibold ${
-                  deathBenefitOption === option ? "bg-brand-600 text-white" : "bg-slate-100 text-ink-700"
+                  selectedOption === option ? "bg-brand-600 text-white" : "bg-slate-100 text-ink-700"
                 }`}
               >
                 {t(`lic.std.option.${option}`, locale)}
@@ -283,6 +296,45 @@ export function StandardEndowmentConfigurator({
               })}
             </p>
           ) : null}
+          {guaranteed?.sumAssuredOnSecondDeathMinimum != null && (
+            <p className="text-xs text-ink-500">
+              {t("lic.std.secondDeathNote", locale, {
+                amount: formatINRCompact(guaranteed.sumAssuredOnSecondDeathMinimum),
+              })}
+            </p>
+          )}
+          {guaranteed?.survivalBenefitPerInstallment != null && (
+            <div className="flex justify-between">
+              <span className="text-ink-500">{t("lic.std.survivalBenefitPerInstallment", locale)}</span>
+              <span className="font-medium text-ink-900">
+                {formatINRCompact(guaranteed.survivalBenefitPerInstallment)}
+              </span>
+            </div>
+          )}
+          {guaranteed?.survivalBenefitAtEndOfPpt != null && (
+            <div className="flex justify-between">
+              <span className="text-ink-500">{t("lic.std.survivalBenefitAtEndOfPpt", locale)}</span>
+              <span className="font-medium text-ink-900">
+                {formatINRCompact(guaranteed.survivalBenefitAtEndOfPpt)}
+              </span>
+            </div>
+          )}
+          {guaranteed?.regularIncomeBenefitAnnual != null && (
+            <div className="flex justify-between">
+              <span className="text-ink-500">{t("lic.std.regularIncomeBenefit", locale)}</span>
+              <span className="font-medium text-ink-900">
+                {formatINRCompact(guaranteed.regularIncomeBenefitAnnual)}
+              </span>
+            </div>
+          )}
+          {guaranteed?.boosterIncomeBenefit != null && (
+            <div className="flex justify-between">
+              <span className="text-ink-500">{t("lic.std.boosterIncomeBenefit", locale)}</span>
+              <span className="font-medium text-ink-900">
+                {formatINRCompact(guaranteed.boosterIncomeBenefit)}
+              </span>
+            </div>
+          )}
           <div className="flex justify-between">
             <span className="text-ink-500">🎁 {t("common.bonusesLabel", locale)}</span>
             <span className="font-medium text-ink-900">{t("common.notIncluded", locale)}</span>

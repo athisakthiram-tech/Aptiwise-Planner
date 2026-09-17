@@ -80,6 +80,51 @@ const SUPPLEMENTAL_SOURCES: Record<string, OfficialProductSource[]> = {
       checkedAt: "2026-09-16",
     },
   ],
+  [key("734", "512N299V03")]: [
+    {
+      id: "lic-plan734-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: ENDOWMENT_CATEGORY_URL,
+      title: "LIC's Jeevan Tarun Sales Brochure",
+      checkedAt: "2026-09-16",
+    },
+  ],
+  [key("881", "512N389V01")]: [
+    {
+      id: "lic-plan881-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: ENDOWMENT_CATEGORY_URL,
+      title: "LIC's Bima Lakshmi Sales Brochure",
+      checkedAt: "2026-09-16",
+    },
+  ],
+  [key("748", "512N316V03")]: [
+    {
+      id: "lic-plan748-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: ENDOWMENT_CATEGORY_URL,
+      title: "LIC's Bima Shree Sales Brochure",
+      checkedAt: "2026-09-16",
+    },
+  ],
+  [key("770", "512N397V01")]: [
+    {
+      id: "lic-plan770-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: ENDOWMENT_CATEGORY_URL,
+      title: "LIC's Bima Platinum Sales Brochure",
+      checkedAt: "2026-09-16",
+    },
+  ],
+  [key("889", "512N394V01")]: [
+    {
+      id: "lic-plan889-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: ENDOWMENT_CATEGORY_URL,
+      title: "LIC's New Jeevan Sathi - Limited Premium Sales Brochure",
+      checkedAt: "2026-09-16",
+    },
+  ],
 };
 
 export function getOfficialSources(planNumber: string, uin: string): OfficialProductSource[] {

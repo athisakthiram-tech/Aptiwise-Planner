@@ -6,6 +6,10 @@ import { PLAN_717_RULES, PLAN_717_UIN } from "@/lib/insurance/providers/lic/plan
 import { PLAN_714_RULES, PLAN_714_UIN } from "@/lib/insurance/providers/lic/plans/plan714";
 import { PLAN_715_RULES, PLAN_715_UIN } from "@/lib/insurance/providers/lic/plans/plan715";
 import { PLAN_912_RULES, PLAN_912_UIN } from "@/lib/insurance/providers/lic/plans/plan912";
+import { PLAN_881_RULES, PLAN_881_UIN } from "@/lib/insurance/providers/lic/plans/plan881";
+import { PLAN_748_RULES, PLAN_748_UIN } from "@/lib/insurance/providers/lic/plans/plan748";
+import { PLAN_770_RULES, PLAN_770_UIN } from "@/lib/insurance/providers/lic/plans/plan770";
+import { PLAN_889_RULES, PLAN_889_UIN } from "@/lib/insurance/providers/lic/plans/plan889";
 import { StandardEndowmentConfig } from "@/components/planner/StandardEndowmentConfigurator";
 
 // UI convenience caps only (none of these plans state a maximum Basic
@@ -96,5 +100,99 @@ export const PLAN_912_CONFIG: StandardEndowmentConfig = {
     }
     return terms;
   },
-  deathBenefitOptions: ["I", "II"],
+  optionChoice: {
+    inputKey: "deathBenefitOption",
+    labelKey: "lic.std.deathBenefitOption",
+    values: ["I", "II"],
+  },
+};
+
+export const PLAN_881_CONFIG: StandardEndowmentConfig = {
+  planNumber: "881",
+  uin: PLAN_881_UIN,
+  minBasicSumAssured: PLAN_881_RULES.minBasicSumAssured,
+  sumAssuredBands: [{ maxInclusive: null, multiple: PLAN_881_RULES.sumAssuredMultiple }],
+  sumAssuredSliderMax: SUM_ASSURED_SLIDER_MAX,
+  premiumMode: "yearly",
+  hasIndependentPpt: true,
+  pptOptions: Array.from(
+    { length: PLAN_881_RULES.maxPremiumPayingTermYears - PLAN_881_RULES.minPremiumPayingTermYears + 1 },
+    (_, i) => PLAN_881_RULES.minPremiumPayingTermYears + i
+  ),
+  validPolicyTerms(age) {
+    if (age < PLAN_881_RULES.minEntryAge || age > PLAN_881_RULES.maxEntryAge) return [];
+    return [PLAN_881_RULES.fixedPolicyTermYears];
+  },
+  optionChoice: {
+    inputKey: "survivalBenefitOption",
+    labelKey: "lic.std.survivalBenefitOption",
+    values: ["A", "B", "C"],
+  },
+};
+
+export const PLAN_748_CONFIG: StandardEndowmentConfig = {
+  planNumber: "748",
+  uin: PLAN_748_UIN,
+  minBasicSumAssured: PLAN_748_RULES.minBasicSumAssured,
+  sumAssuredBands: [{ maxInclusive: null, multiple: PLAN_748_RULES.sumAssuredMultiple }],
+  sumAssuredSliderMax: 50000000,
+  premiumMode: "yearly",
+  hasIndependentPpt: false,
+  validPolicyTerms(age) {
+    return PLAN_748_RULES.policyTermOptions.filter((term) => {
+      const maxEntryAge = PLAN_748_RULES.maxEntryAgeByPolicyTerm[term];
+      const maturityAge = age + term;
+      return age <= maxEntryAge && maturityAge <= PLAN_748_RULES.maxMaturityAge;
+    });
+  },
+  pptForTerm: (term) => term - PLAN_748_RULES.premiumPayingTermOffsetFromPolicyTerm,
+};
+
+export const PLAN_770_CONFIG: StandardEndowmentConfig = {
+  planNumber: "770",
+  uin: PLAN_770_UIN,
+  minBasicSumAssured: PLAN_770_RULES.minBasicSumAssured,
+  sumAssuredBands: [{ maxInclusive: null, multiple: PLAN_770_RULES.sumAssuredMultiple }],
+  sumAssuredSliderMax: SUM_ASSURED_SLIDER_MAX,
+  premiumMode: "yearly",
+  hasIndependentPpt: true,
+  pptOptions: PLAN_770_RULES.pptOptions,
+  validPolicyTerms(age, ppt) {
+    if (ppt == null) return [];
+    const entryAge = PLAN_770_RULES.entryAgeByPpt[ppt];
+    const termRange = PLAN_770_RULES.policyTermRangeByPpt[ppt];
+    if (entryAge == null || termRange == null || age < entryAge.min || age > entryAge.max) return [];
+    const terms: number[] = [];
+    for (let term = termRange.min; term <= termRange.max; term++) {
+      const maturityAge = age + term;
+      if (maturityAge >= PLAN_770_RULES.minMaturityAge && maturityAge <= PLAN_770_RULES.maxMaturityAge) {
+        terms.push(term);
+      }
+    }
+    return terms;
+  },
+};
+
+export const PLAN_889_CONFIG: StandardEndowmentConfig = {
+  planNumber: "889",
+  uin: PLAN_889_UIN,
+  minBasicSumAssured: PLAN_889_RULES.minBasicSumAssured,
+  sumAssuredBands: [{ maxInclusive: null, multiple: PLAN_889_RULES.sumAssuredMultiple }],
+  sumAssuredSliderMax: SUM_ASSURED_SLIDER_MAX,
+  premiumMode: "yearly",
+  hasIndependentPpt: true,
+  pptOptions: [5, 10, 15],
+  // Only structurally valid (PPT, Term) combinations are listed here; the
+  // per-Option age/maturity-age limits are enforced by the eligibility
+  // engine itself and surfaced as reason codes, since the Option is
+  // chosen after the term in this shared configurator.
+  validPolicyTerms(_age, ppt) {
+    if (ppt == null) return [];
+    return PLAN_889_RULES.validPptTermCombos.filter((c) => c.ppt === ppt).map((c) => c.term);
+  },
+  optionChoice: {
+    inputKey: "deathBenefitOption",
+    labelKey: "lic.std.deathBenefitOption",
+    values: ["I", "II"],
+  },
 };

@@ -27,3 +27,29 @@ export function findExactPremiumRow<T extends { age: number; policyTermYears: nu
 ): T | undefined {
   return rows.find((row) => row.age === age && row.policyTermYears === policyTermYears);
 }
+
+// Reused by Plan 889 (New Jeevan Sathi), Plan 770 (Bima Platinum) and
+// Plan 881 (Bima Lakshmi) — all three define their Guaranteed Addition as
+// "<rate> per thousand Total (Tabular) Annualized Premium in respect of
+// Premiums Paid", accruing at the end of every policy year for
+// `accrualYears`, where the "premium paid" figure keeps growing during the
+// Premium Paying Term and then stays flat (no further premiums are ever
+// due) for any remaining accrual years. This is the exact wording each
+// brochure uses, cross-checked against each plan's own published Benefit
+// Illustration table before being trusted — see the per-plan verification
+// docs for the reconciliation. Never used to interpolate/extrapolate a
+// rate itself; `ratePerThousand` must always come from a published table.
+export function accrueGuaranteedAdditionOnPremium(
+  annualPremium: number,
+  ratePerThousand: number,
+  accrualYears: number,
+  premiumPayingTermYears: number
+): number {
+  const rate = ratePerThousand / 1000;
+  let guaranteedAddition = 0;
+  for (let policyYear = 1; policyYear <= accrualYears; policyYear += 1) {
+    const cumulativePremiumPaid = annualPremium * Math.min(policyYear, premiumPayingTermYears);
+    guaranteedAddition += rate * cumulativePremiumPaid;
+  }
+  return Math.round(guaranteedAddition);
+}
