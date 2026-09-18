@@ -391,6 +391,33 @@ const en: TranslationDict = {
     "This cover decreases every policy year on a loan-repayment schedule, reaching about {amount} by the final policy year.",
   "lic.credit.calculationExplain":
     "Sum Assured on Death starts at your chosen Basic Sum Assured and reduces every policy year, following the same equated-yearly-repayment schedule as a bank loan at your chosen interest rate. There is no maturity benefit and no bonus.",
+  "lic.pension.marketLinkedWarning":
+    "This is a unit-linked plan. The investment risk is borne by you. Unit values may go up or down based on market performance — this planner never predicts or assumes any investment return.",
+  "lic.pension.premiumMode": "Premium payment",
+  "lic.pension.mode.single": "Single Premium",
+  "lic.pension.mode.yearly": "Yearly",
+  "lic.pension.mode.half_yearly": "Half-Yearly",
+  "lic.pension.mode.quarterly": "Quarterly",
+  "lic.pension.mode.monthly": "Monthly",
+  "lic.pension.premiumLabel": "Premium",
+  "lic.pension.premiumHint": "Minimum for this mode: {min}. You choose the amount — there is no fixed rate table.",
+  "lic.pension.policyTerm": "⏳ Policy Term",
+  "lic.pension.vestingAgeNote": "Your age at vesting (end of term) would be {age}.",
+  "lic.pension.assuredDeathBenefit": "❤️ Assured Death Benefit (at inception)",
+  "lic.pension.guaranteedAdditions": "💰 Guaranteed Additions (over the full term)",
+  "lic.pension.guaranteedAdditionsNote":
+    "Guaranteed Additions are a fixed top-up to your Unit Fund — not the total fund value. The actual maturity/vesting amount also depends on investment performance.",
+  "lic.pension.noMaturityProjection":
+    "⚠️ No maturity or vesting value is shown — it depends entirely on market performance and can never be predicted.",
+  "lic.pension.charges": "Charges",
+  "lic.pension.fundManagementCharge": "Fund Management Charge",
+  "lic.pension.mortalityCharge": "Mortality Charge",
+  "lic.pension.otherChargesNote":
+    "Premium Allocation, Policy Administration and Discontinuance Charges also apply — these vary by policy year and premium band and are not shown as a single figure here.",
+  "lic.pension.liquidityFacts":
+    "No loan is available under this plan. Units cannot be surrendered or withdrawn during the first 5 years (lock-in period). After 5 years, surrender/withdrawal is available, generally requiring you to purchase an annuity with the proceeds.",
+  "lic.pension.calculationExplain":
+    "Guaranteed Additions are a fixed percentage of your premium, added to your Unit Fund at specific policy years — this part is guaranteed regardless of markets. The Assured Death Benefit shown is 105% of premiums paid at inception. The maturity/vesting value is your Unit Fund Value, which depends on NAV performance of your chosen fund and is never projected here.",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "3 Ways To Reach Your Goal",
@@ -895,6 +922,33 @@ const ta: TranslationDict = {
     "இந்த பாதுகாப்பு ஒவ்வொரு பாலிசி ஆண்டும் கடன் திருப்பிச் செலுத்தும் அட்டவணையின் அடிப்படையில் குறைகிறது, இறுதி பாலிசி ஆண்டில் சுமார் {amount} ஐ அடைகிறது.",
   "lic.credit.calculationExplain":
     "மரணத்தின்போது காப்பீட்டுத் தொகை நீங்கள் தேர்ந்தெடுத்த அடிப்படை காப்பீட்டுத் தொகையில் தொடங்கி, உங்கள் தேர்ந்தெடுக்கப்பட்ட வட்டி விகிதத்தில் வங்கி கடன் போன்ற சம ஆண்டு திருப்பிச் செலுத்தும் அட்டவணையைப் பின்பற்றி ஒவ்வொரு பாலிசி ஆண்டும் குறைகிறது. முதிர்வு பலனோ போனஸோ இல்லை.",
+  "lic.pension.marketLinkedWarning":
+    "இது ஒரு யூனிட்-லிங்க்டு திட்டம். முதலீட்டு ஆபத்து உங்களிடம் உள்ளது. சந்தை செயல்திறனைப் பொறுத்து யூனிட் மதிப்புகள் ஏறலாம் அல்லது இறங்கலாம் — இந்த திட்டமிடுதல் கருவி எந்த முதலீட்டு வருமானத்தையும் ஒருபோதும் கணிக்காது அல்லது கருதாது.",
+  "lic.pension.premiumMode": "பிரீமியம் செலுத்துதல்",
+  "lic.pension.mode.single": "ஒற்றை பிரீமியம்",
+  "lic.pension.mode.yearly": "ஆண்டுதோறும்",
+  "lic.pension.mode.half_yearly": "அரையாண்டு",
+  "lic.pension.mode.quarterly": "காலாண்டு",
+  "lic.pension.mode.monthly": "மாதந்தோறும்",
+  "lic.pension.premiumLabel": "பிரீமியம்",
+  "lic.pension.premiumHint": "இந்த முறைக்கான குறைந்தபட்சம்: {min}. நீங்கள் தொகையைத் தேர்வு செய்கிறீர்கள் — நிலையான விகித அட்டவணை இல்லை.",
+  "lic.pension.policyTerm": "⏳ பாலிசி காலம்",
+  "lic.pension.vestingAgeNote": "காலம் முடிவில் (vesting) உங்கள் வயது {age} ஆக இருக்கும்.",
+  "lic.pension.assuredDeathBenefit": "❤️ உறுதிசெய்யப்பட்ட மரண நலன் (ஆரம்பத்தில்)",
+  "lic.pension.guaranteedAdditions": "💰 உறுதியான கூடுதல் தொகைகள் (முழு காலத்திற்கும்)",
+  "lic.pension.guaranteedAdditionsNote":
+    "உறுதியான கூடுதல் தொகைகள் உங்கள் யூனிட் ஃபண்டுக்கான நிலையான கூடுதல் — மொத்த நிதி மதிப்பு அல்ல. உண்மையான முதிர்வு/vesting தொகை முதலீட்டு செயல்திறனைப் பொறுத்தும்.",
+  "lic.pension.noMaturityProjection":
+    "⚠️ முதிர்வு அல்லது vesting மதிப்பு காட்டப்படவில்லை — இது முழுவதுமாக சந்தை செயல்திறனைப் பொறுத்தது, ஒருபோதும் கணிக்க முடியாது.",
+  "lic.pension.charges": "கட்டணங்கள்",
+  "lic.pension.fundManagementCharge": "நிதி மேலாண்மை கட்டணம்",
+  "lic.pension.mortalityCharge": "மரண கட்டணம்",
+  "lic.pension.otherChargesNote":
+    "பிரீமியம் ஒதுக்கீடு, பாலிசி நிர்வாகம் மற்றும் நிறுத்தல் கட்டணங்களும் பொருந்தும் — இவை பாலிசி ஆண்டு மற்றும் பிரீமியம் வரம்பைப் பொறுத்து மாறுபடும், இங்கே ஒரு எண்ணாக காட்டப்படவில்லை.",
+  "lic.pension.liquidityFacts":
+    "இந்த திட்டத்தின் கீழ் கடன் கிடைக்காது. முதல் 5 ஆண்டுகளில் (லாக்-இன் காலம்) யூனிட்களை surrender செய்யவோ திரும்பப் பெறவோ முடியாது. 5 ஆண்டுகளுக்குப் பிறகு, surrender/திரும்பப் பெறுதல் கிடைக்கும், பொதுவாக தொகையைக் கொண்டு annuity வாங்க வேண்டும்.",
+  "lic.pension.calculationExplain":
+    "உறுதியான கூடுதல் தொகைகள் உங்கள் பிரீமியத்தின் நிலையான சதவீதம், குறிப்பிட்ட பாலிசி ஆண்டுகளில் உங்கள் யூனிட் ஃபண்டுக்கு சேர்க்கப்படும் — இந்த பகுதி சந்தையைப் பொருட்படுத்தாமல் உறுதியானது. காட்டப்படும் உறுதிசெய்யப்பட்ட மரண நலன் ஆரம்பத்தில் செலுத்திய பிரீமியத்தின் 105% ஆகும். முதிர்வு/vesting மதிப்பு உங்கள் யூனிட் ஃபண்ட் மதிப்பு, இது உங்கள் தேர்ந்தெடுக்கப்பட்ட நிதியின் NAV செயல்திறனைப் பொறுத்தது, இங்கே ஒருபோதும் கணிக்கப்படாது.",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "உங்கள் இலக்கை அடைய 3 வழிகள்",
@@ -1381,6 +1435,33 @@ const hi: TranslationDict = {
     "यह कवर हर पॉलिसी वर्ष ऋण-चुकौती अनुसूची के अनुसार घटता है, अंतिम पॉलिसी वर्ष तक लगभग {amount} तक पहुँच जाता है।",
   "lic.credit.calculationExplain":
     "मृत्यु पर बीमा राशि आपकी चुनी हुई मूल बीमा राशि से शुरू होती है और हर पॉलिसी वर्ष घटती है, आपकी चुनी हुई ब्याज दर पर बैंक ऋण जैसी समान वार्षिक चुकौती अनुसूची का पालन करते हुए। कोई परिपक्वता लाभ या बोनस नहीं है।",
+  "lic.pension.marketLinkedWarning":
+    "यह एक यूनिट-लिंक्ड योजना है। निवेश जोखिम आप पर है। बाजार के प्रदर्शन के आधार पर यूनिट मूल्य ऊपर या नीचे जा सकते हैं — यह प्लानर कभी भी किसी निवेश रिटर्न की भविष्यवाणी या धारणा नहीं करता।",
+  "lic.pension.premiumMode": "प्रीमियम भुगतान",
+  "lic.pension.mode.single": "एकल प्रीमियम",
+  "lic.pension.mode.yearly": "वार्षिक",
+  "lic.pension.mode.half_yearly": "अर्ध-वार्षिक",
+  "lic.pension.mode.quarterly": "त्रैमासिक",
+  "lic.pension.mode.monthly": "मासिक",
+  "lic.pension.premiumLabel": "प्रीमियम",
+  "lic.pension.premiumHint": "इस मोड के लिए न्यूनतम: {min}। आप राशि चुनते हैं — कोई निश्चित दर तालिका नहीं है।",
+  "lic.pension.policyTerm": "⏳ पॉलिसी अवधि",
+  "lic.pension.vestingAgeNote": "वेस्टिंग (अवधि के अंत) में आपकी उम्र {age} होगी।",
+  "lic.pension.assuredDeathBenefit": "❤️ आश्वासित मृत्यु लाभ (आरंभ में)",
+  "lic.pension.guaranteedAdditions": "💰 गारंटीड एडिशन (पूरी अवधि में)",
+  "lic.pension.guaranteedAdditionsNote":
+    "गारंटीड एडिशन आपके यूनिट फंड में एक निश्चित अतिरिक्त राशि है — कुल फंड मूल्य नहीं। वास्तविक परिपक्वता/वेस्टिंग राशि निवेश प्रदर्शन पर भी निर्भर करती है।",
+  "lic.pension.noMaturityProjection":
+    "⚠️ कोई परिपक्वता या वेस्टिंग मूल्य नहीं दिखाया गया है — यह पूरी तरह से बाजार के प्रदर्शन पर निर्भर करता है और इसकी कभी भविष्यवाणी नहीं की जा सकती।",
+  "lic.pension.charges": "शुल्क",
+  "lic.pension.fundManagementCharge": "फंड प्रबंधन शुल्क",
+  "lic.pension.mortalityCharge": "मृत्यु शुल्क",
+  "lic.pension.otherChargesNote":
+    "प्रीमियम आवंटन, पॉलिसी प्रशासन और बंद करने के शुल्क भी लागू होते हैं — ये पॉलिसी वर्ष और प्रीमियम बैंड के अनुसार भिन्न होते हैं और यहाँ एक ही आंकड़े के रूप में नहीं दिखाए गए हैं।",
+  "lic.pension.liquidityFacts":
+    "इस योजना के तहत कोई ऋण उपलब्ध नहीं है। पहले 5 वर्षों (लॉक-इन अवधि) के दौरान यूनिट्स सरेंडर या निकाली नहीं जा सकतीं। 5 वर्षों के बाद, सरेंडर/निकासी उपलब्ध है, आमतौर पर आय से वार्षिकी खरीदने की आवश्यकता होती है।",
+  "lic.pension.calculationExplain":
+    "गारंटीड एडिशन आपके प्रीमियम का एक निश्चित प्रतिशत है, जो विशिष्ट पॉलिसी वर्षों में आपके यूनिट फंड में जोड़ा जाता है — यह हिस्सा बाजार की परवाह किए बिना गारंटीड है। दिखाया गया आश्वासित मृत्यु लाभ आरंभ में भुगतान किए गए प्रीमियम का 105% है। परिपक्वता/वेस्टिंग मूल्य आपका यूनिट फंड मूल्य है, जो आपकी चुनी हुई फंड की NAV प्रदर्शन पर निर्भर करता है और यहाँ कभी अनुमानित नहीं किया जाता।",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "आपके लक्ष्य तक पहुँचने के 3 तरीके",

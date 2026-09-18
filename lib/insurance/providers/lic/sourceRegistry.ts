@@ -25,6 +25,7 @@ const REGISTRY = new Map<string, OfficialProductSource[]>(
 // + `id` identify the specific supplied document being cited.
 const ENDOWMENT_CATEGORY_URL = "https://www.licindia.in/en/web/guest/endowment-plans";
 const TERM_CATEGORY_URL = "https://licindia.in/term-assurance-plans";
+const PENSION_CATEGORY_URL = "https://licindia.in/en/web/guest/pension-plan";
 
 const SUPPLEMENTAL_SOURCES: Record<string, OfficialProductSource[]> = {
   [key("736", "512N304V03")]: [
@@ -222,6 +223,15 @@ const SUPPLEMENTAL_SOURCES: Record<string, OfficialProductSource[]> = {
       sourceType: "sales_brochure",
       url: TERM_CATEGORY_URL,
       title: "LIC's New Jeevan Amar Sales Brochure",
+      checkedAt: "2026-09-19",
+    },
+  ],
+  [key("867", "512L347V01")]: [
+    {
+      id: "lic-plan867-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: PENSION_CATEGORY_URL,
+      title: "LIC's New Pension Plus Sales Brochure",
       checkedAt: "2026-09-19",
     },
   ],

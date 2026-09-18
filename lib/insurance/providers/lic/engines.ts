@@ -8,6 +8,7 @@
 
 import {
   BenefitCalculationResult,
+  CostStructureResult,
   EligibilityResult,
   InsuranceProduct,
   LicCalculationContext,
@@ -40,6 +41,7 @@ import * as plan887 from "@/lib/insurance/providers/lic/plans/plan887";
 import * as plan894 from "@/lib/insurance/providers/lic/plans/plan894";
 import * as plan859 from "@/lib/insurance/providers/lic/plans/plan859";
 import * as plan955 from "@/lib/insurance/providers/lic/plans/plan955";
+import * as plan867 from "@/lib/insurance/providers/lic/plans/plan867";
 import { pureRiskLiquidity } from "@/lib/insurance/providers/lic/plans/shared";
 import { getLicProductByIdentity } from "@/lib/insurance/providers/lic/catalogue";
 
@@ -528,6 +530,80 @@ const PLAN_955_ENGINE = withPureRiskLiquidity(
   "lic-plan955-sales-brochure-current"
 );
 
+// ---- Plan 867 (New Pension Plus) — bespoke adapter, like Plan 733/736 ----
+// Unlike every other plan in this file, this product has no Basic Sum
+// Assured at all (premium is a direct customer input, not derived from
+// one) and its maturity/vesting value is NAV-dependent and can never be
+// projected — buildStandardEngine's BSA-driven mapping genuinely doesn't
+// fit this product's shape, so it gets its own small adapter instead.
+const PLAN_867_SOURCE_ID = "lic-plan867-sales-brochure-current";
+
+function plan867Input(context: LicCalculationContext): plan867.Plan867Input {
+  return {
+    age: context.age ?? -1,
+    policyTermYears: context.policyTermYears,
+    premiumMode: context.premiumMode as plan867.Plan867PremiumMode | undefined,
+    annualPremium: context.annualPremium,
+  };
+}
+
+function plan867EvaluateEligibility(context: LicCalculationContext): EligibilityResult {
+  if (context.age == null) {
+    return { eligible: null, reasons: [], reasonCodes: [], missingInputs: ["age"] };
+  }
+  return plan867.evaluateEligibility(plan867Input(context));
+}
+
+function plan867CalculateBenefits(context: LicCalculationContext): BenefitCalculationResult {
+  return plan867.calculateBenefits(plan867Input(context));
+}
+
+function plan867CalculateCosts(_context: LicCalculationContext): CostStructureResult {
+  return plan867.calculateCosts(PLAN_867_SOURCE_ID);
+}
+
+function plan867EvaluateLiquidity(_context: LicCalculationContext): LiquidityResult {
+  return plan867.evaluateLiquidity(PLAN_867_SOURCE_ID);
+}
+
+requireProduct("867", plan867.PLAN_867_UIN); // validates the catalogue entry exists; throws otherwise
+
+const PLAN_867_ENGINE: LicProductEngine = {
+  provider: "LIC",
+  planNumber: "867",
+  uin: plan867.PLAN_867_UIN,
+  // Declared honestly from what plan867.ts actually verifies:
+  //  - eligibility: every documented rule is fully evaluated -> verified
+  //  - premium: there is no rate table — premium is a direct customer
+  //    input, not a calculated output -> not_applicable
+  //  - benefits: the Guaranteed Additions and Assured Death Benefit
+  //    floor are fully computable; the Unit Fund Value (maturity/
+  //    vesting benefit) is NAV-dependent and never projected -> partial
+  //  - familyProtection: surfaced via calculateBenefits().deathBenefit,
+  //    same partial availability -> partial
+  //  - tax: no rate published -> unavailable
+  //  - costs: Fund Management Charge and Mortality Charge are flat,
+  //    verified rates; Policy Administration/Discontinuance Charges are
+  //    real but conditional on policy year and premium band, and are
+  //    not represented as a single number -> partial
+  //  - liquidity: no loan is ever available (verified); surrender/
+  //    withdrawal availability depends on elapsed policy years this
+  //    engine doesn't track -> partial
+  capabilities: {
+    eligibility: "verified",
+    premium: "not_applicable",
+    benefits: "partial",
+    familyProtection: "partial",
+    tax: "unavailable",
+    costs: "partial",
+    liquidity: "partial",
+  },
+  evaluateEligibility: plan867EvaluateEligibility,
+  calculateBenefits: plan867CalculateBenefits,
+  calculateCosts: plan867CalculateCosts,
+  evaluateLiquidity: plan867EvaluateLiquidity,
+};
+
 export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_733_ENGINE,
   PLAN_736_ENGINE,
@@ -552,6 +628,7 @@ export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_894_ENGINE,
   PLAN_859_ENGINE,
   PLAN_955_ENGINE,
+  PLAN_867_ENGINE,
 ];
 
 function key(planNumber: string, uin: string): string {
