@@ -24,6 +24,7 @@ const REGISTRY = new Map<string, OfficialProductSource[]>(
 // -verified LIC page (never a fabricated link for a local PDF); `title`
 // + `id` identify the specific supplied document being cited.
 const ENDOWMENT_CATEGORY_URL = "https://www.licindia.in/en/web/guest/endowment-plans";
+const TERM_CATEGORY_URL = "https://licindia.in/term-assurance-plans";
 
 const SUPPLEMENTAL_SOURCES: Record<string, OfficialProductSource[]> = {
   [key("736", "512N304V03")]: [
@@ -141,6 +142,51 @@ const SUPPLEMENTAL_SOURCES: Record<string, OfficialProductSource[]> = {
       url: ENDOWMENT_CATEGORY_URL,
       title: "LIC's New Jeevan Sathi - Single Premium Sales Brochure",
       checkedAt: "2026-09-17",
+    },
+  ],
+  [key("876", "512N356V02")]: [
+    {
+      id: "lic-plan876-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: TERM_CATEGORY_URL,
+      title: "LIC's Digi Term Sales Brochure",
+      checkedAt: "2026-09-18",
+    },
+  ],
+  [key("875", "512N355V02")]: [
+    {
+      id: "lic-plan875-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: TERM_CATEGORY_URL,
+      title: "LIC's Yuva Term Sales Brochure",
+      checkedAt: "2026-09-18",
+    },
+  ],
+  [key("954", "512N351V02")]: [
+    {
+      id: "lic-plan954-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: TERM_CATEGORY_URL,
+      title: "LIC's New Tech-Term Sales Brochure",
+      checkedAt: "2026-09-18",
+    },
+  ],
+  [key("877", "512N357V01")]: [
+    {
+      id: "lic-plan877-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: TERM_CATEGORY_URL,
+      title: "LIC's Yuva Credit Life Sales Brochure",
+      checkedAt: "2026-09-18",
+    },
+  ],
+  [key("878", "512N358V01")]: [
+    {
+      id: "lic-plan878-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: TERM_CATEGORY_URL,
+      title: "LIC's Digi Credit Life Sales Brochure",
+      checkedAt: "2026-09-18",
     },
   ],
 };

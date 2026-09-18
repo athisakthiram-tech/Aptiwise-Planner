@@ -369,6 +369,28 @@ const en: TranslationDict = {
   "lic774.mode.single": "Single Premium",
   "lic774.nonParNote":
     "This is a Non-Par plan — its maturity and death benefits are fixed and guaranteed, with no participation in LIC's profits or bonus.",
+  "lic.term.premiumMode": "Premium payment",
+  "lic.term.mode.regular": "Regular Premium",
+  "lic.term.mode.limited": "Limited Premium",
+  "lic.term.mode.single": "Single Premium",
+  "lic.term.deathBenefitOption": "Sum Assured on Death option",
+  "lic.term.option.I": "Level Sum Assured",
+  "lic.term.option.II": "Increasing Sum Assured",
+  "lic.term.increasingNote":
+    "Under Increasing Sum Assured, the amount payable on death rises each year from the 6th policy year and reaches {amount} (2x Basic Sum Assured) by the 16th policy year, then stays level.",
+  "lic.term.noMaturityBenefit": "This is a pure risk plan — no maturity benefit is ever payable, only protection.",
+  "lic.term.liquidityFacts":
+    "No loan is available under this plan. There is no surrender value under Regular Premium; under Single or Limited Premium, Unexpired Risk Premium Value (if any) may be payable on surrender — the exact amount is not calculated here.",
+  "lic.term.calculationExplain":
+    "The Sum Assured on Death is the highest of a fixed Absolute Amount (Basic Sum Assured, or an increasing schedule under Option II), 7x your annualised premium, and 105% of premiums paid (Single Premium instead uses 125% of the Single Premium) — shown in full only when your exact premium is verified from the brochure's sample table; otherwise only the guaranteed Absolute Amount is shown. There is no maturity benefit and no bonus.",
+  "lic.credit.interestRate": "Loan interest rate",
+  "lic.credit.interestRateHint":
+    "Chosen once at inception to match your loan's own interest rate — it sets the pace at which cover reduces, and cannot be changed later.",
+  "lic.credit.sumAssuredAtInception": "❤️ Sum Assured on Death (at inception)",
+  "lic.credit.decreasingNote":
+    "This cover decreases every policy year on a loan-repayment schedule, reaching about {amount} by the final policy year.",
+  "lic.credit.calculationExplain":
+    "Sum Assured on Death starts at your chosen Basic Sum Assured and reduces every policy year, following the same equated-yearly-repayment schedule as a bank loan at your chosen interest rate. There is no maturity benefit and no bonus.",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "3 Ways To Reach Your Goal",
@@ -851,6 +873,28 @@ const ta: TranslationDict = {
   "lic774.mode.single": "ஒற்றை பிரீமியம்",
   "lic774.nonParNote":
     "இது Non-Par திட்டம் — இதன் முதிர்வு மற்றும் மரண பலன்கள் நிலையானவை மற்றும் உறுதியானவை, LIC-யின் லாபம் அல்லது போனஸில் பங்கேற்பு இல்லை.",
+  "lic.term.premiumMode": "பிரீமியம் செலுத்துதல்",
+  "lic.term.mode.regular": "வழக்கமான பிரீமியம்",
+  "lic.term.mode.limited": "வரையறுக்கப்பட்ட பிரீமியம்",
+  "lic.term.mode.single": "ஒற்றை பிரீமியம்",
+  "lic.term.deathBenefitOption": "மரணத்தின்போது காப்பீட்டுத் தொகை விருப்பம்",
+  "lic.term.option.I": "நிலையான காப்பீட்டுத் தொகை",
+  "lic.term.option.II": "அதிகரிக்கும் காப்பீட்டுத் தொகை",
+  "lic.term.increasingNote":
+    "அதிகரிக்கும் காப்பீட்டுத் தொகையின் கீழ், மரணத்தின்போது வழங்கப்படும் தொகை 6வது பாலிசி ஆண்டிலிருந்து ஒவ்வொரு ஆண்டும் அதிகரித்து, 16வது பாலிசி ஆண்டில் {amount} (2 மடங்கு அடிப்படை காப்பீட்டுத் தொகை) ஆக அடைந்து, பின்னர் நிலையாக இருக்கும்.",
+  "lic.term.noMaturityBenefit": "இது ஒரு தூய அபாய பாதுகாப்பு திட்டம் — முதிர்வு பலன் எப்போதும் வழங்கப்படாது, பாதுகாப்பு மட்டுமே.",
+  "lic.term.liquidityFacts":
+    "இந்த திட்டத்தின் கீழ் கடன் கிடைக்காது. வழக்கமான பிரீமியத்தின் கீழ் surrender மதிப்பு இல்லை; ஒற்றை அல்லது வரையறுக்கப்பட்ட பிரீமியத்தின் கீழ், காலாவதியாகாத அபாய பிரீமியம் மதிப்பு (ஏதேனும் இருந்தால்) surrender செய்யும்போது வழங்கப்படலாம் — சரியான தொகை இங்கு கணக்கிடப்படவில்லை.",
+  "lic.term.calculationExplain":
+    "மரணத்தின்போது காப்பீட்டுத் தொகை என்பது நிலையான தொகை (அடிப்படை காப்பீட்டுத் தொகை, அல்லது விருப்பம் II-ன் கீழ் அதிகரிக்கும் அட்டவணை), உங்கள் ஆண்டு பிரீமியத்தின் 7 மடங்கு, மற்றும் செலுத்தப்பட்ட பிரீமியத்தின் 105% (ஒற்றை பிரீமியத்திற்கு பதிலாக ஒற்றை பிரீமியத்தின் 125%) ஆகியவற்றில் அதிகபட்சமானது — உங்கள் சரியான பிரீமியம் விளம்பரத்தின் எடுத்துக்காட்டு அட்டவணையில் சரிபார்க்கப்பட்டால் மட்டுமே முழுமையாக காட்டப்படும்; இல்லையெனில் உறுதியான தொகை மட்டுமே காட்டப்படும். முதிர்வு பலனோ போனஸோ இல்லை.",
+  "lic.credit.interestRate": "கடன் வட்டி விகிதம்",
+  "lic.credit.interestRateHint":
+    "உங்கள் கடனின் சொந்த வட்டி விகிதத்துடன் பொருந்த ஆரம்பத்தில் ஒருமுறை தேர்ந்தெடுக்கப்படுகிறது — இது பாதுகாப்பு குறையும் வேகத்தை நிர்ணயிக்கிறது, பின்னர் மாற்ற முடியாது.",
+  "lic.credit.sumAssuredAtInception": "❤️ மரணத்தின்போது காப்பீட்டுத் தொகை (ஆரம்பத்தில்)",
+  "lic.credit.decreasingNote":
+    "இந்த பாதுகாப்பு ஒவ்வொரு பாலிசி ஆண்டும் கடன் திருப்பிச் செலுத்தும் அட்டவணையின் அடிப்படையில் குறைகிறது, இறுதி பாலிசி ஆண்டில் சுமார் {amount} ஐ அடைகிறது.",
+  "lic.credit.calculationExplain":
+    "மரணத்தின்போது காப்பீட்டுத் தொகை நீங்கள் தேர்ந்தெடுத்த அடிப்படை காப்பீட்டுத் தொகையில் தொடங்கி, உங்கள் தேர்ந்தெடுக்கப்பட்ட வட்டி விகிதத்தில் வங்கி கடன் போன்ற சம ஆண்டு திருப்பிச் செலுத்தும் அட்டவணையைப் பின்பற்றி ஒவ்வொரு பாலிசி ஆண்டும் குறைகிறது. முதிர்வு பலனோ போனஸோ இல்லை.",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "உங்கள் இலக்கை அடைய 3 வழிகள்",
@@ -1315,6 +1359,28 @@ const hi: TranslationDict = {
   "lic774.mode.single": "एकल प्रीमियम",
   "lic774.nonParNote":
     "यह एक Non-Par योजना है — इसके परिपक्वता और मृत्यु लाभ निश्चित और गारंटीड हैं, इसमें LIC के लाभ या बोनस में कोई भागीदारी नहीं है।",
+  "lic.term.premiumMode": "प्रीमियम भुगतान",
+  "lic.term.mode.regular": "नियमित प्रीमियम",
+  "lic.term.mode.limited": "सीमित प्रीमियम",
+  "lic.term.mode.single": "एकल प्रीमियम",
+  "lic.term.deathBenefitOption": "मृत्यु पर बीमा राशि विकल्प",
+  "lic.term.option.I": "स्तरीय बीमा राशि",
+  "lic.term.option.II": "बढ़ती हुई बीमा राशि",
+  "lic.term.increasingNote":
+    "बढ़ती हुई बीमा राशि के तहत, मृत्यु पर देय राशि 6वें पॉलिसी वर्ष से हर साल बढ़ती है और 16वें पॉलिसी वर्ष तक {amount} (मूल बीमा राशि का 2 गुना) तक पहुँच जाती है, फिर स्थिर रहती है।",
+  "lic.term.noMaturityBenefit": "यह एक शुद्ध जोखिम योजना है — कोई परिपक्वता लाभ कभी देय नहीं है, केवल सुरक्षा।",
+  "lic.term.liquidityFacts":
+    "इस योजना के तहत कोई ऋण उपलब्ध नहीं है। नियमित प्रीमियम के तहत कोई सरेंडर मूल्य नहीं है; एकल या सीमित प्रीमियम के तहत, सरेंडर पर अप्रचलित जोखिम प्रीमियम मूल्य (यदि कोई हो) देय हो सकता है — सटीक राशि की गणना यहाँ नहीं की गई है।",
+  "lic.term.calculationExplain":
+    "मृत्यु पर बीमा राशि एक निश्चित राशि (मूल बीमा राशि, या विकल्प II के तहत बढ़ती हुई अनुसूची), आपके वार्षिक प्रीमियम का 7 गुना, और भुगतान किए गए प्रीमियम का 105% (एकल प्रीमियम के लिए इसके बजाय एकल प्रीमियम का 125%) में से सबसे अधिक है — यह पूर्ण रूप से तभी दिखाया जाता है जब आपका सटीक प्रीमियम ब्रोशर की नमूना तालिका से सत्यापित हो; अन्यथा केवल गारंटीड राशि दिखाई जाती है। कोई परिपक्वता लाभ या बोनस नहीं है।",
+  "lic.credit.interestRate": "ऋण ब्याज दर",
+  "lic.credit.interestRateHint":
+    "आपके ऋण की अपनी ब्याज दर से मेल खाने के लिए शुरुआत में एक बार चुनी जाती है — यह उस गति को तय करती है जिस पर कवर घटता है, और बाद में इसे बदला नहीं जा सकता।",
+  "lic.credit.sumAssuredAtInception": "❤️ मृत्यु पर बीमा राशि (आरंभ में)",
+  "lic.credit.decreasingNote":
+    "यह कवर हर पॉलिसी वर्ष ऋण-चुकौती अनुसूची के अनुसार घटता है, अंतिम पॉलिसी वर्ष तक लगभग {amount} तक पहुँच जाता है।",
+  "lic.credit.calculationExplain":
+    "मृत्यु पर बीमा राशि आपकी चुनी हुई मूल बीमा राशि से शुरू होती है और हर पॉलिसी वर्ष घटती है, आपकी चुनी हुई ब्याज दर पर बैंक ऋण जैसी समान वार्षिक चुकौती अनुसूची का पालन करते हुए। कोई परिपक्वता लाभ या बोनस नहीं है।",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "आपके लक्ष्य तक पहुँचने के 3 तरीके",

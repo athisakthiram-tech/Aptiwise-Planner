@@ -196,11 +196,11 @@ describe("F. LIC verification summary", () => {
     const summary = getLicVerificationSummary();
     expect(summary.totalActiveProducts).toBe(40);
     // Plans 733, 736, 717, 714, 715, 774, 912, 734, 881, 748, 770, 889,
-    // 890 and 888 are registered as of Stage 4F.
-    expect(summary.productsWithEngines).toBe(14);
+    // 890, 888, 876, 875, 954, 877 and 878 are registered as of Stage 4G.
+    expect(summary.productsWithEngines).toBe(19);
     expect(summary.fullyVerifiedProducts).toBe(0);
-    expect(summary.partiallyVerifiedProducts).toBe(14);
-    expect(summary.catalogueOnlyProducts).toBe(26);
+    expect(summary.partiallyVerifiedProducts).toBe(19);
+    expect(summary.catalogueOnlyProducts).toBe(21);
     expect(
       summary.fullyVerifiedProducts + summary.partiallyVerifiedProducts + summary.catalogueOnlyProducts
     ).toBe(summary.totalActiveProducts);

@@ -31,6 +31,12 @@ import * as plan770 from "@/lib/insurance/providers/lic/plans/plan770";
 import * as plan889 from "@/lib/insurance/providers/lic/plans/plan889";
 import * as plan890 from "@/lib/insurance/providers/lic/plans/plan890";
 import * as plan888 from "@/lib/insurance/providers/lic/plans/plan888";
+import * as plan876 from "@/lib/insurance/providers/lic/plans/plan876";
+import * as plan875 from "@/lib/insurance/providers/lic/plans/plan875";
+import * as plan954 from "@/lib/insurance/providers/lic/plans/plan954";
+import * as plan877 from "@/lib/insurance/providers/lic/plans/plan877";
+import * as plan878 from "@/lib/insurance/providers/lic/plans/plan878";
+import { pureRiskLiquidity } from "@/lib/insurance/providers/lic/plans/shared";
 import { getLicProductByIdentity } from "@/lib/insurance/providers/lic/catalogue";
 
 const PLAN_733_PRODUCT = getLicProductByIdentity("733", plan733.PLAN_733_UIN);
@@ -450,6 +456,50 @@ const PLAN_888_ENGINE = buildStandardEngine(
   PLAN_888_SOURCE_ID
 );
 
+// ---- Stage 4G: pure risk term plans (876, 875, 954, 877, 878) ----
+// These 5 plans still fit buildStandardEngine's generic
+// age/BSA/term/PPT/productSpecificInputs mapping, but their liquidity
+// facts genuinely differ from every endowment plan above (no loan is
+// EVER available, and surrender/Unexpired Risk Premium Value depends on
+// the chosen premium mode) — see pureRiskLiquidity in shared.ts. So
+// buildStandardEngine is called without a liquiditySourceId here, and
+// evaluateLiquidity is assigned afterwards instead of using the
+// (inapplicable) "always true/true" default.
+function withPureRiskLiquidity(engine: LicProductEngine, sourceId: string): LicProductEngine {
+  engine.evaluateLiquidity = (context) => pureRiskLiquidity(context, sourceId);
+  return engine;
+}
+
+const PLAN_876_PRODUCT = requireProduct("876", plan876.PLAN_876_UIN);
+const PLAN_876_ENGINE = withPureRiskLiquidity(
+  buildStandardEngine("876", plan876.PLAN_876_UIN, PLAN_876_PRODUCT, plan876, STANDARD_CAPABILITIES),
+  "lic-plan876-sales-brochure-current"
+);
+
+const PLAN_875_PRODUCT = requireProduct("875", plan875.PLAN_875_UIN);
+const PLAN_875_ENGINE = withPureRiskLiquidity(
+  buildStandardEngine("875", plan875.PLAN_875_UIN, PLAN_875_PRODUCT, plan875, STANDARD_CAPABILITIES),
+  "lic-plan875-sales-brochure-current"
+);
+
+const PLAN_954_PRODUCT = requireProduct("954", plan954.PLAN_954_UIN);
+const PLAN_954_ENGINE = withPureRiskLiquidity(
+  buildStandardEngine("954", plan954.PLAN_954_UIN, PLAN_954_PRODUCT, plan954, STANDARD_CAPABILITIES),
+  "lic-plan954-sales-brochure-current"
+);
+
+const PLAN_877_PRODUCT = requireProduct("877", plan877.PLAN_877_UIN);
+const PLAN_877_ENGINE = withPureRiskLiquidity(
+  buildStandardEngine("877", plan877.PLAN_877_UIN, PLAN_877_PRODUCT, plan877, STANDARD_CAPABILITIES),
+  "lic-plan877-sales-brochure-current"
+);
+
+const PLAN_878_PRODUCT = requireProduct("878", plan878.PLAN_878_UIN);
+const PLAN_878_ENGINE = withPureRiskLiquidity(
+  buildStandardEngine("878", plan878.PLAN_878_UIN, PLAN_878_PRODUCT, plan878, STANDARD_CAPABILITIES),
+  "lic-plan878-sales-brochure-current"
+);
+
 export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_733_ENGINE,
   PLAN_736_ENGINE,
@@ -465,6 +515,11 @@ export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_889_ENGINE,
   PLAN_890_ENGINE,
   PLAN_888_ENGINE,
+  PLAN_876_ENGINE,
+  PLAN_875_ENGINE,
+  PLAN_954_ENGINE,
+  PLAN_877_ENGINE,
+  PLAN_878_ENGINE,
 ];
 
 function key(planNumber: string, uin: string): string {

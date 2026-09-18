@@ -11,6 +11,8 @@ import { Plan774Configurator } from "@/components/planner/Plan774Configurator";
 import { Plan734Configurator } from "@/components/planner/Plan734Configurator";
 import { Plan888Configurator } from "@/components/planner/Plan888Configurator";
 import { StandardEndowmentConfigurator } from "@/components/planner/StandardEndowmentConfigurator";
+import { PureTermConfigurator } from "@/components/planner/PureTermConfigurator";
+import { CreditLifeConfigurator } from "@/components/planner/CreditLifeConfigurator";
 import {
   PLAN_717_CONFIG,
   PLAN_714_CONFIG,
@@ -22,6 +24,8 @@ import {
   PLAN_889_CONFIG,
   PLAN_890_CONFIG,
 } from "@/components/planner/standardEndowmentConfigs";
+import { PLAN_876_CONFIG, PLAN_875_CONFIG, PLAN_954_CONFIG } from "@/components/planner/pureTermConfigs";
+import { PLAN_877_CONFIG, PLAN_878_CONFIG } from "@/components/planner/creditLifeConfigs";
 import { Locale } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
 
@@ -126,6 +130,16 @@ export function LicProductDetailSheet({
             <StandardEndowmentConfigurator product={product} goal={goal} locale={locale} config={PLAN_890_CONFIG} />
           ) : product.planNumber === "888" ? (
             <Plan888Configurator product={product} goal={goal} locale={locale} />
+          ) : product.planNumber === "876" ? (
+            <PureTermConfigurator product={product} goal={goal} locale={locale} config={PLAN_876_CONFIG} />
+          ) : product.planNumber === "875" ? (
+            <PureTermConfigurator product={product} goal={goal} locale={locale} config={PLAN_875_CONFIG} />
+          ) : product.planNumber === "954" ? (
+            <PureTermConfigurator product={product} goal={goal} locale={locale} config={PLAN_954_CONFIG} />
+          ) : product.planNumber === "877" ? (
+            <CreditLifeConfigurator product={product} goal={goal} locale={locale} config={PLAN_877_CONFIG} />
+          ) : product.planNumber === "878" ? (
+            <CreditLifeConfigurator product={product} goal={goal} locale={locale} config={PLAN_878_CONFIG} />
           ) : (
             <>
               <div>
