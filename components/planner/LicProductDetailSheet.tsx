@@ -11,9 +11,11 @@ import { Plan774Configurator } from "@/components/planner/Plan774Configurator";
 import { Plan734Configurator } from "@/components/planner/Plan734Configurator";
 import { Plan888Configurator } from "@/components/planner/Plan888Configurator";
 import { Plan867Configurator } from "@/components/planner/Plan867Configurator";
+import { Plan873Configurator } from "@/components/planner/Plan873Configurator";
 import { StandardEndowmentConfigurator } from "@/components/planner/StandardEndowmentConfigurator";
 import { PureTermConfigurator } from "@/components/planner/PureTermConfigurator";
 import { CreditLifeConfigurator } from "@/components/planner/CreditLifeConfigurator";
+import { AnnuityConfigurator } from "@/components/planner/AnnuityConfigurator";
 import {
   PLAN_717_CONFIG,
   PLAN_714_CONFIG,
@@ -35,6 +37,12 @@ import {
   PLAN_955_CONFIG,
 } from "@/components/planner/pureTermConfigs";
 import { PLAN_877_CONFIG, PLAN_878_CONFIG } from "@/components/planner/creditLifeConfigs";
+import {
+  PLAN_857_CONFIG,
+  PLAN_862_CONFIG,
+  PLAN_879_CONFIG,
+  PLAN_758_CONFIG,
+} from "@/components/planner/annuityConfigs";
 import { Locale } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
 
@@ -159,6 +167,16 @@ export function LicProductDetailSheet({
             <CreditLifeConfigurator product={product} goal={goal} locale={locale} config={PLAN_877_CONFIG} />
           ) : product.planNumber === "878" ? (
             <CreditLifeConfigurator product={product} goal={goal} locale={locale} config={PLAN_878_CONFIG} />
+          ) : product.planNumber === "857" ? (
+            <AnnuityConfigurator product={product} goal={goal} locale={locale} config={PLAN_857_CONFIG} />
+          ) : product.planNumber === "862" ? (
+            <AnnuityConfigurator product={product} goal={goal} locale={locale} config={PLAN_862_CONFIG} />
+          ) : product.planNumber === "879" ? (
+            <AnnuityConfigurator product={product} goal={goal} locale={locale} config={PLAN_879_CONFIG} />
+          ) : product.planNumber === "758" ? (
+            <AnnuityConfigurator product={product} goal={goal} locale={locale} config={PLAN_758_CONFIG} />
+          ) : product.planNumber === "873" ? (
+            <Plan873Configurator product={product} goal={goal} locale={locale} />
           ) : (
             <>
               <div>

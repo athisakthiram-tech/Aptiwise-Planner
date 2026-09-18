@@ -42,6 +42,12 @@ import * as plan894 from "@/lib/insurance/providers/lic/plans/plan894";
 import * as plan859 from "@/lib/insurance/providers/lic/plans/plan859";
 import * as plan955 from "@/lib/insurance/providers/lic/plans/plan955";
 import * as plan867 from "@/lib/insurance/providers/lic/plans/plan867";
+import * as plan857 from "@/lib/insurance/providers/lic/plans/plan857";
+import * as plan862 from "@/lib/insurance/providers/lic/plans/plan862";
+import * as plan879 from "@/lib/insurance/providers/lic/plans/plan879";
+import * as plan758 from "@/lib/insurance/providers/lic/plans/plan758";
+import * as plan873 from "@/lib/insurance/providers/lic/plans/plan873";
+import { AnnuityInput } from "@/lib/insurance/providers/lic/plans/annuityShared";
 import { pureRiskLiquidity } from "@/lib/insurance/providers/lic/plans/shared";
 import { getLicProductByIdentity } from "@/lib/insurance/providers/lic/catalogue";
 
@@ -604,6 +610,152 @@ const PLAN_867_ENGINE: LicProductEngine = {
   evaluateLiquidity: plan867EvaluateLiquidity,
 };
 
+// ---- Annuity products (857/862/879/758) — bespoke adapters over the
+// shared annuity engine (annuityShared.ts). None of these fit
+// buildStandardEngine's BSA-driven mapping: there is no Basic Sum
+// Assured, the customer instead pays a Purchase Price (mapped from the
+// existing `annualPremium`/`premiumMode` context fields, the same reuse
+// pattern as Plan 867's premium) and picks an Annuity Option (via
+// `productSpecificInputs.annuityOption`, since the generic context has no
+// dedicated field for it) ----
+function annuityInput(context: LicCalculationContext): AnnuityInput {
+  return {
+    age: context.age ?? -1,
+    secondaryAge: context.productSpecificInputs?.secondaryAge as number | undefined,
+    purchasePrice: context.annualPremium,
+    mode: context.premiumMode as AnnuityInput["mode"],
+    optionCode: context.productSpecificInputs?.annuityOption as string | undefined,
+  };
+}
+
+function annuityEvaluateEligibility(
+  context: LicCalculationContext,
+  evaluate: (input: AnnuityInput) => EligibilityResult
+): EligibilityResult {
+  if (context.age == null) {
+    return { eligible: null, reasons: [], reasonCodes: [], missingInputs: ["age"] };
+  }
+  return evaluate(annuityInput(context));
+}
+
+const ANNUITY_CAPABILITIES: ProductCapabilities = {
+  eligibility: "verified",
+  premium: "not_applicable",
+  benefits: "partial",
+  familyProtection: "partial",
+  tax: "unavailable",
+  costs: "not_applicable",
+  liquidity: "partial",
+};
+
+// Plan 857 — Jeevan Akshay-VII
+const PLAN_857_SOURCE_ID = "lic-plan857-sales-brochure-current";
+requireProduct("857", plan857.PLAN_857_UIN);
+const PLAN_857_ENGINE: LicProductEngine = {
+  provider: "LIC",
+  planNumber: "857",
+  uin: plan857.PLAN_857_UIN,
+  capabilities: ANNUITY_CAPABILITIES,
+  evaluateEligibility: (context) => annuityEvaluateEligibility(context, plan857.evaluateEligibility),
+  calculateBenefits: (context) => plan857.calculateBenefits(annuityInput(context)),
+  calculateCosts: () => plan857.calculateCosts(),
+  evaluateLiquidity: (context) => plan857.evaluateLiquidity(PLAN_857_SOURCE_ID, annuityInput(context)),
+};
+
+// Plan 862 — Saral Pension
+const PLAN_862_SOURCE_ID = "lic-plan862-sales-brochure-current";
+requireProduct("862", plan862.PLAN_862_UIN);
+const PLAN_862_ENGINE: LicProductEngine = {
+  provider: "LIC",
+  planNumber: "862",
+  uin: plan862.PLAN_862_UIN,
+  capabilities: ANNUITY_CAPABILITIES,
+  evaluateEligibility: (context) => annuityEvaluateEligibility(context, plan862.evaluateEligibility),
+  calculateBenefits: (context) => plan862.calculateBenefits(annuityInput(context)),
+  calculateCosts: () => plan862.calculateCosts(),
+  evaluateLiquidity: (context) => plan862.evaluateLiquidity(PLAN_862_SOURCE_ID, annuityInput(context)),
+};
+
+// Plan 879 — Smart Pension
+const PLAN_879_SOURCE_ID = "lic-plan879-sales-brochure-current";
+requireProduct("879", plan879.PLAN_879_UIN);
+const PLAN_879_ENGINE: LicProductEngine = {
+  provider: "LIC",
+  planNumber: "879",
+  uin: plan879.PLAN_879_UIN,
+  capabilities: ANNUITY_CAPABILITIES,
+  evaluateEligibility: (context) => annuityEvaluateEligibility(context, plan879.evaluateEligibility),
+  calculateBenefits: (context) => plan879.calculateBenefits(annuityInput(context)),
+  calculateCosts: () => plan879.calculateCosts(),
+  evaluateLiquidity: (context) => plan879.evaluateLiquidity(PLAN_879_SOURCE_ID, annuityInput(context)),
+};
+
+// Plan 758 — New Jeevan Shanti (deferred; needs the extra deferment-period
+// field the other three annuity products don't have).
+const PLAN_758_SOURCE_ID = "lic-plan758-sales-brochure-current";
+requireProduct("758", plan758.PLAN_758_UIN);
+function plan758Input(context: LicCalculationContext): plan758.Plan758Input {
+  return {
+    ...annuityInput(context),
+    defermentPeriodYears: context.productSpecificInputs?.defermentPeriodYears as number | undefined,
+  };
+}
+const PLAN_758_ENGINE: LicProductEngine = {
+  provider: "LIC",
+  planNumber: "758",
+  uin: plan758.PLAN_758_UIN,
+  capabilities: ANNUITY_CAPABILITIES,
+  evaluateEligibility: (context) => {
+    if (context.age == null) {
+      return { eligible: null, reasons: [], reasonCodes: [], missingInputs: ["age"] };
+    }
+    return plan758.evaluateEligibility(plan758Input(context));
+  },
+  calculateBenefits: (context) => plan758.calculateBenefits(plan758Input(context)),
+  calculateCosts: () => plan758.calculateCosts(),
+  evaluateLiquidity: (context) => plan758.evaluateLiquidity(PLAN_758_SOURCE_ID, plan758Input(context)),
+};
+
+// ---- Plan 873 (Index Plus) — bespoke adapter, like Plan 867 ----
+// A market-linked (ULIP) plan with a genuine Basic Sum Assured, but it's
+// a multiple (7x/10x) of Annualized Premium the customer chooses — always
+// directly computable, no rate-table lookup needed — rather than an
+// absolute figure buildStandardEngine's mapping expects.
+const PLAN_873_SOURCE_ID = "lic-plan873-sales-brochure-current";
+requireProduct("873", plan873.PLAN_873_UIN);
+function plan873Input(context: LicCalculationContext): plan873.Plan873Input {
+  return {
+    age: context.age ?? -1,
+    policyTermYears: context.policyTermYears,
+    premiumMode: context.premiumMode as plan873.Plan873PremiumMode | undefined,
+    annualPremium: context.annualPremium,
+    bsaMultiple: context.productSpecificInputs?.bsaMultiple as plan873.Plan873BsaMultiple | undefined,
+  };
+}
+const PLAN_873_ENGINE: LicProductEngine = {
+  provider: "LIC",
+  planNumber: "873",
+  uin: plan873.PLAN_873_UIN,
+  capabilities: {
+    eligibility: "verified",
+    premium: "not_applicable",
+    benefits: "partial",
+    familyProtection: "partial",
+    tax: "unavailable",
+    costs: "partial",
+    liquidity: "partial",
+  },
+  evaluateEligibility: (context) => {
+    if (context.age == null) {
+      return { eligible: null, reasons: [], reasonCodes: [], missingInputs: ["age"] };
+    }
+    return plan873.evaluateEligibility(plan873Input(context));
+  },
+  calculateBenefits: (context) => plan873.calculateBenefits(plan873Input(context)),
+  calculateCosts: (context) => plan873.calculateCosts(PLAN_873_SOURCE_ID, context.age),
+  evaluateLiquidity: () => plan873.evaluateLiquidity(PLAN_873_SOURCE_ID),
+};
+
 export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_733_ENGINE,
   PLAN_736_ENGINE,
@@ -629,6 +781,11 @@ export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_859_ENGINE,
   PLAN_955_ENGINE,
   PLAN_867_ENGINE,
+  PLAN_857_ENGINE,
+  PLAN_862_ENGINE,
+  PLAN_879_ENGINE,
+  PLAN_758_ENGINE,
+  PLAN_873_ENGINE,
 ];
 
 function key(planNumber: string, uin: string): string {

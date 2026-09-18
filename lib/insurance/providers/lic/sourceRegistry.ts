@@ -235,6 +235,51 @@ const SUPPLEMENTAL_SOURCES: Record<string, OfficialProductSource[]> = {
       checkedAt: "2026-09-19",
     },
   ],
+  [key("857", "512N337V07")]: [
+    {
+      id: "lic-plan857-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: PENSION_CATEGORY_URL,
+      title: "LIC's Jeevan Akshay-VII Sales Brochure",
+      checkedAt: "2026-09-20",
+    },
+  ],
+  [key("758", "512N338V08")]: [
+    {
+      id: "lic-plan758-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: PENSION_CATEGORY_URL,
+      title: "LIC's New Jeevan Shanti Sales Brochure",
+      checkedAt: "2026-09-20",
+    },
+  ],
+  [key("862", "512N342V05")]: [
+    {
+      id: "lic-plan862-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: PENSION_CATEGORY_URL,
+      title: "LIC's Saral Pension Sales Brochure",
+      checkedAt: "2026-09-20",
+    },
+  ],
+  [key("879", "512N386V01")]: [
+    {
+      id: "lic-plan879-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: PENSION_CATEGORY_URL,
+      title: "LIC's Smart Pension Sales Brochure",
+      checkedAt: "2026-09-20",
+    },
+  ],
+  [key("873", "512L354V01")]: [
+    {
+      id: "lic-plan873-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: "https://www.licindia.in/en/web/guest/unit-linked-plans",
+      title: "LIC's Index Plus Sales Brochure",
+      checkedAt: "2026-09-20",
+    },
+  ],
 };
 
 export function getOfficialSources(planNumber: string, uin: string): OfficialProductSource[] {

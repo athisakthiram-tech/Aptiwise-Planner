@@ -419,6 +419,53 @@ const en: TranslationDict = {
   "lic.pension.calculationExplain":
     "Guaranteed Additions are a fixed percentage of your premium, added to your Unit Fund at specific policy years — this part is guaranteed regardless of markets. The Assured Death Benefit shown is 105% of premiums paid at inception. The maturity/vesting value is your Unit Fund Value, which depends on NAV performance of your chosen fund and is never projected here.",
 
+  // ---- annuity/pension plans (857/862/879/758) ----
+  "lic.annuity.purchasePriceLabel": "Purchase Price",
+  "lic.annuity.purchasePriceHint":
+    "This is the lump sum you pay to buy the annuity. There is no fixed rate table here — the exact annuity amount is only shown when it matches this plan's one published illustration point.",
+  "lic.annuity.modeLabel": "Annuity payment mode",
+  "lic.annuity.optionLabel": "Annuity Option",
+  "lic.annuity.optionCode": "Option {code}",
+  "lic.annuity.jointLifeBadge": "Joint Life",
+  "lic.annuity.secondaryAgeLabel": "Secondary Annuitant's age",
+  "lic.annuity.secondaryAgeHint": "Required for Joint Life options.",
+  "lic.annuity.defermentPeriodLabel": "Deferment period",
+  "lic.annuity.defermentPeriodHint":
+    "Years between purchase and the first annuity payment ({min}-{max} years).",
+  "lic.annuity.annuityAmountLabel": "💰 Annuity Amount",
+  "lic.annuity.annuityAmountUnavailable":
+    "Not shown — this exact combination doesn't match the plan's one published illustration point, and rates are never interpolated or guessed.",
+  "lic.annuity.deathBenefitLabel": "❤️ Benefit on Death",
+  "lic.annuity.deathBenefit.none":
+    "Nothing is payable on death under this option — annuity payments simply cease.",
+  "lic.annuity.deathBenefit.fullPurchasePrice":
+    "{pct}% of Purchase Price ({amount}) is payable to the nominee.",
+  "lic.annuity.deathBenefit.guaranteedPeriod":
+    "The balance of the {years}-year guaranteed period is payable to the nominee (up to {amount} if death occurs right after purchase).",
+  "lic.annuity.deathBenefit.notComputed":
+    "Payable per this option's own terms (e.g. continuing to a joint-life survivor) — not reducible to a single figure here.",
+  "lic.annuity.maturityNote":
+    "There is no maturity benefit under this plan — the Purchase Price buys a lifetime annuity, not a savings maturity value.",
+  "lic.annuity.loanLabel": "Loan",
+  "lic.annuity.surrenderLabel": "Surrender",
+  "lic.annuity.status.yes": "Available",
+  "lic.annuity.status.no": "Not available",
+  "lic.annuity.status.conditional": "Conditional — see plan terms",
+  "lic.annuity.surrenderCriticalIllnessNote":
+    "Surrender is only allowed if the Annuitant, spouse or a child is diagnosed with a specified critical illness.",
+  "lic.annuity.calculationExplain":
+    "The annuity amount is looked up only for the exact Purchase Price, age, mode and Option this plan's brochure illustrates — never interpolated or estimated for any other combination. The death benefit shown is only the portion that's fully guaranteed regardless of markets or elapsed time.",
+
+  // ---- Index Plus (873) — ULIP with a Basic Sum Assured ----
+  "lic.indexplus.bsaMultipleLabel": "Basic Sum Assured multiple",
+  "lic.indexplus.bsaMultipleOption": "{multiple}× Annualized Premium",
+  "lic.indexplus.basicSumAssuredLabel": "Basic Sum Assured",
+  "lic.indexplus.maturityAgeNote": "Your age at maturity (end of term) would be {age}.",
+  "lic.indexplus.liquidityFacts":
+    "No loan is available under this plan. Units cannot be surrendered or withdrawn during the first 5 years (lock-in period).",
+  "lic.indexplus.calculationExplain":
+    "Basic Sum Assured is your chosen multiple (7x or 10x) of Annualized Premium — always known directly, no rate table needed. Guaranteed Additions are a fixed percentage of Annualized Premium, credited at specific policy years regardless of markets. The maturity value is your Unit Fund Value, which depends on NAV performance and is never projected here.",
+
   // ---- strategy (Step 5) ----
   "strategy.title": "3 Ways To Reach Your Goal",
   "strategy.subtitle":
@@ -950,6 +997,53 @@ const ta: TranslationDict = {
   "lic.pension.calculationExplain":
     "உறுதியான கூடுதல் தொகைகள் உங்கள் பிரீமியத்தின் நிலையான சதவீதம், குறிப்பிட்ட பாலிசி ஆண்டுகளில் உங்கள் யூனிட் ஃபண்டுக்கு சேர்க்கப்படும் — இந்த பகுதி சந்தையைப் பொருட்படுத்தாமல் உறுதியானது. காட்டப்படும் உறுதிசெய்யப்பட்ட மரண நலன் ஆரம்பத்தில் செலுத்திய பிரீமியத்தின் 105% ஆகும். முதிர்வு/vesting மதிப்பு உங்கள் யூனிட் ஃபண்ட் மதிப்பு, இது உங்கள் தேர்ந்தெடுக்கப்பட்ட நிதியின் NAV செயல்திறனைப் பொறுத்தது, இங்கே ஒருபோதும் கணிக்கப்படாது.",
 
+  // ---- annuity/pension plans (857/862/879/758) ----
+  "lic.annuity.purchasePriceLabel": "கொள்முதல் விலை",
+  "lic.annuity.purchasePriceHint":
+    "இது annuity வாங்க நீங்கள் செலுத்தும் மொத்தத் தொகை. இங்கே நிலையான விகித அட்டவணை இல்லை — இந்தத் திட்டத்தின் ஒரே வெளியிடப்பட்ட உதாரணப் புள்ளியுடன் பொருந்தும்போது மட்டுமே சரியான annuity தொகை காட்டப்படும்.",
+  "lic.annuity.modeLabel": "Annuity செலுத்தும் முறை",
+  "lic.annuity.optionLabel": "Annuity விருப்பம்",
+  "lic.annuity.optionCode": "விருப்பம் {code}",
+  "lic.annuity.jointLifeBadge": "கூட்டு வாழ்க்கை (Joint Life)",
+  "lic.annuity.secondaryAgeLabel": "இரண்டாம் Annuitant-இன் வயது",
+  "lic.annuity.secondaryAgeHint": "கூட்டு வாழ்க்கை விருப்பங்களுக்கு தேவை.",
+  "lic.annuity.defermentPeriodLabel": "தாமத காலம் (Deferment Period)",
+  "lic.annuity.defermentPeriodHint":
+    "கொள்முதல் மற்றும் முதல் annuity செலுத்துதலுக்கு இடையேயான ஆண்டுகள் ({min}-{max} ஆண்டுகள்).",
+  "lic.annuity.annuityAmountLabel": "💰 Annuity தொகை",
+  "lic.annuity.annuityAmountUnavailable":
+    "காட்டப்படவில்லை — இந்தச் சேர்க்கை திட்டத்தின் ஒரே வெளியிடப்பட்ட உதாரணப் புள்ளியுடன் பொருந்தவில்லை, விகிதங்கள் ஒருபோதும் interpolate செய்யப்படாது அல்லது யூகிக்கப்படாது.",
+  "lic.annuity.deathBenefitLabel": "❤️ மரணத்தின் போது நலன்",
+  "lic.annuity.deathBenefit.none":
+    "இந்த விருப்பத்தின் கீழ் மரணத்தின் போது எதுவும் செலுத்தப்படாது — annuity கொடுப்பனவுகள் நிறுத்தப்படும்.",
+  "lic.annuity.deathBenefit.fullPurchasePrice":
+    "கொள்முதல் விலையில் {pct}% ({amount}) நியமிக்கப்பட்டவருக்கு செலுத்தப்படும்.",
+  "lic.annuity.deathBenefit.guaranteedPeriod":
+    "உத்தரவாதமான {years} ஆண்டு காலத்தின் மீதி நியமிக்கப்பட்டவருக்கு செலுத்தப்படும் (கொள்முதலுக்குப் பின் உடனடியாக மரணம் நேர்ந்தால் அதிகபட்சம் {amount}).",
+  "lic.annuity.deathBenefit.notComputed":
+    "இந்த விருப்பத்தின் சொந்த விதிமுறைகளின்படி செலுத்தப்படும் (எ.கா. கூட்டு-வாழ்க்கை survivor-க்கு தொடர்தல்) — இங்கே ஒரு எண்ணாக காட்ட முடியாது.",
+  "lic.annuity.maturityNote":
+    "இந்தத் திட்டத்தின் கீழ் முதிர்வு நலன் இல்லை — கொள்முதல் விலை ஆயுள் முழுவதும் annuity வாங்குகிறது, சேமிப்பு முதிர்வு மதிப்பு அல்ல.",
+  "lic.annuity.loanLabel": "கடன்",
+  "lic.annuity.surrenderLabel": "சரண்டர்",
+  "lic.annuity.status.yes": "கிடைக்கும்",
+  "lic.annuity.status.no": "கிடைக்காது",
+  "lic.annuity.status.conditional": "நிபந்தனைக்குட்பட்டது — திட்ட விதிமுறைகளைப் பார்க்கவும்",
+  "lic.annuity.surrenderCriticalIllnessNote":
+    "Annuitant, துணைவர் அல்லது குழந்தை ஒரு குறிப்பிட்ட கடுமையான நோயால் கண்டறியப்பட்டால் மட்டுமே சரண்டர் அனுமதிக்கப்படும்.",
+  "lic.annuity.calculationExplain":
+    "Annuity தொகை இந்தத் திட்டத்தின் சிற்றேட்டில் காட்டப்பட்டுள்ள சரியான கொள்முதல் விலை, வயது, முறை மற்றும் விருப்பத்திற்கு மட்டுமே தேடப்படுகிறது — வேறு எந்த சேர்க்கைக்கும் interpolate அல்லது மதிப்பிடப்படாது. காட்டப்படும் மரண நலன் சந்தைகள் அல்லது கடந்த காலத்தைப் பொருட்படுத்தாமல் முழுமையாக உத்தரவாதம் அளிக்கப்பட்ட பகுதி மட்டுமே.",
+
+  // ---- Index Plus (873) — ULIP with a Basic Sum Assured ----
+  "lic.indexplus.bsaMultipleLabel": "அடிப்படை பாதுகாப்புத் தொகை மடங்கு",
+  "lic.indexplus.bsaMultipleOption": "வருடாந்திர பிரீமியத்தின் {multiple}× மடங்கு",
+  "lic.indexplus.basicSumAssuredLabel": "அடிப்படை பாதுகாப்புத் தொகை",
+  "lic.indexplus.maturityAgeNote": "முதிர்வில் (காலத்தின் முடிவில்) உங்கள் வயது {age} ஆக இருக்கும்.",
+  "lic.indexplus.liquidityFacts":
+    "இந்த திட்டத்தின் கீழ் கடன் கிடைக்காது. முதல் 5 ஆண்டுகளில் (லாக்-இன் காலம்) யூனிட்களை surrender செய்யவோ திரும்பப் பெறவோ முடியாது.",
+  "lic.indexplus.calculationExplain":
+    "அடிப்படை பாதுகாப்புத் தொகை என்பது நீங்கள் தேர்ந்தெடுத்த வருடாந்திர பிரீமியத்தின் மடங்கு (7x அல்லது 10x) — விகித அட்டவணை தேவையின்றி நேரடியாக அறியப்படும். உறுதியான கூடுதல் தொகைகள் வருடாந்திர பிரீமியத்தின் நிலையான சதவீதம், குறிப்பிட்ட பாலிசி ஆண்டுகளில் சந்தையைப் பொருட்படுத்தாமல் வழங்கப்படும். முதிர்வு மதிப்பு உங்கள் யூனிட் ஃபண்ட் மதிப்பு, இது NAV செயல்திறனைப் பொறுத்தது, இங்கே ஒருபோதும் கணிக்கப்படாது.",
+
   // ---- strategy (Step 5) ----
   "strategy.title": "உங்கள் இலக்கை அடைய 3 வழிகள்",
   "strategy.subtitle":
@@ -1462,6 +1556,53 @@ const hi: TranslationDict = {
     "इस योजना के तहत कोई ऋण उपलब्ध नहीं है। पहले 5 वर्षों (लॉक-इन अवधि) के दौरान यूनिट्स सरेंडर या निकाली नहीं जा सकतीं। 5 वर्षों के बाद, सरेंडर/निकासी उपलब्ध है, आमतौर पर आय से वार्षिकी खरीदने की आवश्यकता होती है।",
   "lic.pension.calculationExplain":
     "गारंटीड एडिशन आपके प्रीमियम का एक निश्चित प्रतिशत है, जो विशिष्ट पॉलिसी वर्षों में आपके यूनिट फंड में जोड़ा जाता है — यह हिस्सा बाजार की परवाह किए बिना गारंटीड है। दिखाया गया आश्वासित मृत्यु लाभ आरंभ में भुगतान किए गए प्रीमियम का 105% है। परिपक्वता/वेस्टिंग मूल्य आपका यूनिट फंड मूल्य है, जो आपकी चुनी हुई फंड की NAV प्रदर्शन पर निर्भर करता है और यहाँ कभी अनुमानित नहीं किया जाता।",
+
+  // ---- annuity/pension plans (857/862/879/758) ----
+  "lic.annuity.purchasePriceLabel": "क्रय मूल्य (Purchase Price)",
+  "lic.annuity.purchasePriceHint":
+    "यह वह एकमुश्त राशि है जो आप annuity खरीदने के लिए चुकाते हैं। यहाँ कोई निश्चित दर तालिका नहीं है — सटीक वार्षिकी राशि केवल तभी दिखाई जाती है जब यह इस योजना के एकमात्र प्रकाशित उदाहरण बिंदु से मेल खाती हो।",
+  "lic.annuity.modeLabel": "वार्षिकी भुगतान मोड",
+  "lic.annuity.optionLabel": "वार्षिकी विकल्प",
+  "lic.annuity.optionCode": "विकल्प {code}",
+  "lic.annuity.jointLifeBadge": "संयुक्त जीवन (Joint Life)",
+  "lic.annuity.secondaryAgeLabel": "द्वितीय Annuitant की आयु",
+  "lic.annuity.secondaryAgeHint": "संयुक्त जीवन विकल्पों के लिए आवश्यक।",
+  "lic.annuity.defermentPeriodLabel": "स्थगन अवधि (Deferment Period)",
+  "lic.annuity.defermentPeriodHint":
+    "क्रय और पहले वार्षिकी भुगतान के बीच के वर्ष ({min}-{max} वर्ष)।",
+  "lic.annuity.annuityAmountLabel": "💰 वार्षिकी राशि",
+  "lic.annuity.annuityAmountUnavailable":
+    "नहीं दिखाया गया — यह संयोजन योजना के एकमात्र प्रकाशित उदाहरण बिंदु से मेल नहीं खाता, और दरों का कभी अनुमान या इंटरपोलेशन नहीं किया जाता।",
+  "lic.annuity.deathBenefitLabel": "❤️ मृत्यु पर लाभ",
+  "lic.annuity.deathBenefit.none":
+    "इस विकल्प के तहत मृत्यु पर कुछ भी देय नहीं है — वार्षिकी भुगतान बंद हो जाता है।",
+  "lic.annuity.deathBenefit.fullPurchasePrice":
+    "क्रय मूल्य का {pct}% ({amount}) नामिती को देय होगा।",
+  "lic.annuity.deathBenefit.guaranteedPeriod":
+    "गारंटीड {years}-वर्ष की अवधि का शेष भाग नामिती को देय होगा (यदि क्रय के तुरंत बाद मृत्यु हो तो अधिकतम {amount})।",
+  "lic.annuity.deathBenefit.notComputed":
+    "इस विकल्प की अपनी शर्तों के अनुसार देय (जैसे संयुक्त-जीवन उत्तरजीवी को जारी रहना) — यहाँ एक अंक में नहीं दिखाया जा सकता।",
+  "lic.annuity.maturityNote":
+    "इस योजना के तहत कोई परिपक्वता लाभ नहीं है — क्रय मूल्य आजीवन वार्षिकी खरीदता है, बचत परिपक्वता मूल्य नहीं।",
+  "lic.annuity.loanLabel": "ऋण",
+  "lic.annuity.surrenderLabel": "सरेंडर",
+  "lic.annuity.status.yes": "उपलब्ध",
+  "lic.annuity.status.no": "उपलब्ध नहीं",
+  "lic.annuity.status.conditional": "सशर्त — योजना की शर्तें देखें",
+  "lic.annuity.surrenderCriticalIllnessNote":
+    "सरेंडर केवल तभी अनुमत है जब Annuitant, पति/पत्नी या बच्चे को किसी विशिष्ट गंभीर बीमारी का निदान हो।",
+  "lic.annuity.calculationExplain":
+    "वार्षिकी राशि केवल उस सटीक क्रय मूल्य, आयु, मोड और विकल्प के लिए देखी जाती है जिसे इस योजना का ब्रोशर दर्शाता है — किसी अन्य संयोजन के लिए कभी इंटरपोलेट या अनुमानित नहीं किया जाता। दिखाया गया मृत्यु लाभ केवल वह हिस्सा है जो बाजार या बीते समय की परवाह किए बिना पूरी तरह गारंटीड है।",
+
+  // ---- Index Plus (873) — ULIP with a Basic Sum Assured ----
+  "lic.indexplus.bsaMultipleLabel": "मूल बीमा राशि गुणक",
+  "lic.indexplus.bsaMultipleOption": "वार्षिकीकृत प्रीमियम का {multiple}× गुना",
+  "lic.indexplus.basicSumAssuredLabel": "मूल बीमा राशि",
+  "lic.indexplus.maturityAgeNote": "परिपक्वता (अवधि के अंत) में आपकी उम्र {age} होगी।",
+  "lic.indexplus.liquidityFacts":
+    "इस योजना के तहत कोई ऋण उपलब्ध नहीं है। पहले 5 वर्षों (लॉक-इन अवधि) के दौरान यूनिट्स सरेंडर या निकाली नहीं जा सकतीं।",
+  "lic.indexplus.calculationExplain":
+    "मूल बीमा राशि आपके चुने हुए वार्षिकीकृत प्रीमियम के गुणक (7x या 10x) के बराबर है — बिना किसी दर तालिका के सीधे ज्ञात। गारंटीड एडिशन वार्षिकीकृत प्रीमियम का एक निश्चित प्रतिशत है, जो विशिष्ट पॉलिसी वर्षों में बाजार की परवाह किए बिना जोड़ा जाता है। परिपक्वता मूल्य आपका यूनिट फंड मूल्य है, जो NAV प्रदर्शन पर निर्भर करता है और यहाँ कभी अनुमानित नहीं किया जाता।",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "आपके लक्ष्य तक पहुँचने के 3 तरीके",
