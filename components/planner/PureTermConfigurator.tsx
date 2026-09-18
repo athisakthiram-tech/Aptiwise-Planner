@@ -30,6 +30,10 @@ export interface PureTermConfig {
   minPolicyTermYears: number;
   maxPolicyTermYears: number;
   limitedPptOptionsForTerm(policyTermYears: number): number[];
+  // Jeevan Raksha (894) and Saral Jeevan Bima (859) have no Increasing
+  // Sum Assured choice at all — hide the Option picker for them and
+  // always use Option I. Defaults to true.
+  hasIncreasingOption?: boolean;
 }
 
 export function PureTermConfigurator({
@@ -154,6 +158,7 @@ export function PureTermConfigurator({
         </div>
       )}
 
+      {config.hasIncreasingOption !== false && (
       <div>
         <p className="text-sm font-medium text-ink-700 mb-2">{t("lic.term.deathBenefitOption", locale)}</p>
         <div className="flex flex-wrap gap-2">
@@ -171,6 +176,7 @@ export function PureTermConfigurator({
           ))}
         </div>
       </div>
+      )}
 
       <div>
         <p className="text-xs font-semibold text-ink-500">✓ {t("common.eligibilityLabel", locale)}</p>

@@ -58,8 +58,13 @@ export interface PureTermRules {
   levelMaxPolicyTermYears: number;
   increasingMaxTermBandsRegularLimited: TermCapBand[];
   increasingMaxTermBandsSingle: TermCapBand[];
+  // Jeevan Raksha (894) and Saral Jeevan Bima (859) have NO Increasing Sum
+  // Assured choice at all — their Absolute Amount is always flat Basic
+  // Sum Assured. Defaults to true (every other plan in this family offers
+  // both options) so existing plan files don't need updating.
+  hasIncreasingOption?: boolean;
   deathBenefit: {
-    regularLimitedAnnualizedPremiumMultiple: number; // 7
+    regularLimitedAnnualizedPremiumMultiple: number; // 7 (Saral Jeevan Bima uses 10)
     singlePremiumMultiple: number; // 1.25
   };
   sampleIllustrativePremium: {
@@ -71,7 +76,10 @@ export interface PureTermRules {
 
 type PureTermInput = LicCalculatorInput;
 
-function readOption(input: PureTermInput): TermDeathBenefitOption | undefined {
+function readOption(rules: PureTermRules, input: PureTermInput): TermDeathBenefitOption | undefined {
+  // Plans with no Increasing Sum Assured choice always behave as Option I
+  // — never let a caller-supplied Option II leak through for them.
+  if (rules.hasIncreasingOption === false) return "I";
   const option = input.productSpecificInputs?.deathBenefitOption;
   return option === "I" || option === "II" ? option : undefined;
 }
@@ -116,7 +124,7 @@ export function evaluateEligibility(rules: PureTermRules, input: PureTermInput):
   }
 
   const mode = premiumMode(input);
-  const option = readOption(input);
+  const option = readOption(rules, input);
 
   if (input.policyTermYears == null) {
     missingInputs.push("policyTermYears");
@@ -209,7 +217,7 @@ export function calculatePremium(
   const missingInputs: string[] = [];
   if (input.policyTermYears == null) missingInputs.push("policyTermYears");
   if (input.sumAssured == null) missingInputs.push("sumAssured");
-  const option = readOption(input);
+  const option = readOption(rules, input);
   if (option == null) missingInputs.push("productSpecificInputs.deathBenefitOption");
   if (missingInputs.length > 0) {
     return { available: false, missingInputs };
@@ -264,7 +272,7 @@ export function calculateBenefits(
 
   const basicSumAssured = input.sumAssured as number;
   const guaranteedBenefits: Record<string, number> = {};
-  const option = readOption(input);
+  const option = readOption(rules, input);
   const mode = premiumMode(input);
 
   if (option === "I") {

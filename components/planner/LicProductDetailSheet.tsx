@@ -24,7 +24,15 @@ import {
   PLAN_889_CONFIG,
   PLAN_890_CONFIG,
 } from "@/components/planner/standardEndowmentConfigs";
-import { PLAN_876_CONFIG, PLAN_875_CONFIG, PLAN_954_CONFIG } from "@/components/planner/pureTermConfigs";
+import {
+  PLAN_876_CONFIG,
+  PLAN_875_CONFIG,
+  PLAN_954_CONFIG,
+  PLAN_887_CONFIG,
+  PLAN_894_CONFIG,
+  PLAN_859_CONFIG,
+  PLAN_955_CONFIG,
+} from "@/components/planner/pureTermConfigs";
 import { PLAN_877_CONFIG, PLAN_878_CONFIG } from "@/components/planner/creditLifeConfigs";
 import { Locale } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
@@ -136,6 +144,14 @@ export function LicProductDetailSheet({
             <PureTermConfigurator product={product} goal={goal} locale={locale} config={PLAN_875_CONFIG} />
           ) : product.planNumber === "954" ? (
             <PureTermConfigurator product={product} goal={goal} locale={locale} config={PLAN_954_CONFIG} />
+          ) : product.planNumber === "887" ? (
+            <PureTermConfigurator product={product} goal={goal} locale={locale} config={PLAN_887_CONFIG} />
+          ) : product.planNumber === "894" ? (
+            <PureTermConfigurator product={product} goal={goal} locale={locale} config={PLAN_894_CONFIG} />
+          ) : product.planNumber === "859" ? (
+            <PureTermConfigurator product={product} goal={goal} locale={locale} config={PLAN_859_CONFIG} />
+          ) : product.planNumber === "955" ? (
+            <PureTermConfigurator product={product} goal={goal} locale={locale} config={PLAN_955_CONFIG} />
           ) : product.planNumber === "877" ? (
             <CreditLifeConfigurator product={product} goal={goal} locale={locale} config={PLAN_877_CONFIG} />
           ) : product.planNumber === "878" ? (

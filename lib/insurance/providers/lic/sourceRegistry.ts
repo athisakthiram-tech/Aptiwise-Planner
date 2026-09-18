@@ -189,6 +189,42 @@ const SUPPLEMENTAL_SOURCES: Record<string, OfficialProductSource[]> = {
       checkedAt: "2026-09-18",
     },
   ],
+  [key("887", "512N360V01")]: [
+    {
+      id: "lic-plan887-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: TERM_CATEGORY_URL,
+      title: "LIC's Bima Kavach Sales Brochure",
+      checkedAt: "2026-09-19",
+    },
+  ],
+  [key("894", "512N368V01")]: [
+    {
+      id: "lic-plan894-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: TERM_CATEGORY_URL,
+      title: "LIC's Jeevan Raksha Sales Brochure",
+      checkedAt: "2026-09-19",
+    },
+  ],
+  [key("859", "512N341V01")]: [
+    {
+      id: "lic-plan859-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: TERM_CATEGORY_URL,
+      title: "LIC's Saral Jeevan Bima Sales Brochure",
+      checkedAt: "2026-09-19",
+    },
+  ],
+  [key("955", "512N350V02")]: [
+    {
+      id: "lic-plan955-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: TERM_CATEGORY_URL,
+      title: "LIC's New Jeevan Amar Sales Brochure",
+      checkedAt: "2026-09-19",
+    },
+  ],
 };
 
 export function getOfficialSources(planNumber: string, uin: string): OfficialProductSource[] {

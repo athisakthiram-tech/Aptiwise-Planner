@@ -36,6 +36,10 @@ import * as plan875 from "@/lib/insurance/providers/lic/plans/plan875";
 import * as plan954 from "@/lib/insurance/providers/lic/plans/plan954";
 import * as plan877 from "@/lib/insurance/providers/lic/plans/plan877";
 import * as plan878 from "@/lib/insurance/providers/lic/plans/plan878";
+import * as plan887 from "@/lib/insurance/providers/lic/plans/plan887";
+import * as plan894 from "@/lib/insurance/providers/lic/plans/plan894";
+import * as plan859 from "@/lib/insurance/providers/lic/plans/plan859";
+import * as plan955 from "@/lib/insurance/providers/lic/plans/plan955";
 import { pureRiskLiquidity } from "@/lib/insurance/providers/lic/plans/shared";
 import { getLicProductByIdentity } from "@/lib/insurance/providers/lic/catalogue";
 
@@ -500,6 +504,30 @@ const PLAN_878_ENGINE = withPureRiskLiquidity(
   "lic-plan878-sales-brochure-current"
 );
 
+const PLAN_887_PRODUCT = requireProduct("887", plan887.PLAN_887_UIN);
+const PLAN_887_ENGINE = withPureRiskLiquidity(
+  buildStandardEngine("887", plan887.PLAN_887_UIN, PLAN_887_PRODUCT, plan887, STANDARD_CAPABILITIES),
+  "lic-plan887-sales-brochure-current"
+);
+
+const PLAN_894_PRODUCT = requireProduct("894", plan894.PLAN_894_UIN);
+const PLAN_894_ENGINE = withPureRiskLiquidity(
+  buildStandardEngine("894", plan894.PLAN_894_UIN, PLAN_894_PRODUCT, plan894, STANDARD_CAPABILITIES),
+  "lic-plan894-sales-brochure-current"
+);
+
+const PLAN_859_PRODUCT = requireProduct("859", plan859.PLAN_859_UIN);
+const PLAN_859_ENGINE = withPureRiskLiquidity(
+  buildStandardEngine("859", plan859.PLAN_859_UIN, PLAN_859_PRODUCT, plan859, STANDARD_CAPABILITIES),
+  "lic-plan859-sales-brochure-current"
+);
+
+const PLAN_955_PRODUCT = requireProduct("955", plan955.PLAN_955_UIN);
+const PLAN_955_ENGINE = withPureRiskLiquidity(
+  buildStandardEngine("955", plan955.PLAN_955_UIN, PLAN_955_PRODUCT, plan955, STANDARD_CAPABILITIES),
+  "lic-plan955-sales-brochure-current"
+);
+
 export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_733_ENGINE,
   PLAN_736_ENGINE,
@@ -520,6 +548,10 @@ export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_954_ENGINE,
   PLAN_877_ENGINE,
   PLAN_878_ENGINE,
+  PLAN_887_ENGINE,
+  PLAN_894_ENGINE,
+  PLAN_859_ENGINE,
+  PLAN_955_ENGINE,
 ];
 
 function key(planNumber: string, uin: string): string {
