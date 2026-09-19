@@ -15,6 +15,13 @@ import { StrategyReasons } from "@/components/planner/results/StrategyReasons";
 import { Locale } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
 
+// Task 6 (integration audit): a legitimate "Not applicable" (this
+// dimension genuinely doesn't exist for this structure type, e.g.
+// liquidity for a pure term plan) is never hidden — but visually
+// receding it keeps the compact card from reading as a wall of
+// identical status pills when several dimensions are simply irrelevant.
+// "Unavailable" (a real dimension that's simply not yet known) stays at
+// full weight — it's actionable, "Not applicable" isn't.
 function MiniStat({
   labelKey,
   value,
@@ -27,7 +34,7 @@ function MiniStat({
   locale: Locale;
 }) {
   return (
-    <div className="flex flex-col gap-0.5">
+    <div className={`flex flex-col gap-0.5 ${status === "not_applicable" ? "opacity-50" : ""}`}>
       <span className="text-[11px] text-ink-500">{t(labelKey, locale)}</span>
       <span className="text-sm font-semibold text-ink-900">{value}</span>
       <StatusBadge status={status} locale={locale} />

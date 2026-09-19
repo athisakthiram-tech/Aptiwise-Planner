@@ -625,6 +625,16 @@ const en: TranslationDict = {
   "results.warning.market_linked_maturity_value_never_projected_nav_dependent":
     "The market-linked maturity value depends on fund performance and is never projected here.",
 
+  "results.configure.toggle": "🔧 Configure structure",
+  "results.configure.explain":
+    "Enter this product's own real Basic Sum Assured / Policy Term / Premium Paying Term to check for a genuinely verified premium.",
+  "results.configure.basicSumAssured": "Basic Sum Assured",
+  "results.configure.policyTerm": "Policy Term (years)",
+  "results.configure.premiumPayingTerm": "Premium Paying Term (years)",
+  "results.configure.apply": "Apply",
+  "results.configure.reset": "Reset",
+  "results.configure.configuredNote": "Showing values for the configuration entered above.",
+
   "results.category.term_protection": "Term Protection",
   "results.category.savings_endowment": "Savings / Endowment",
   "results.category.whole_life": "Whole Life",
@@ -781,19 +791,6 @@ const en: TranslationDict = {
     "Insurance protection depends on the selected policy's contractual benefits, terms, exclusions and claim conditions. Not every insurance product guarantees returns or guarantees completion of a financial goal.",
 
   // ---- final plan (Step 10) ----
-  "finalPlan.title": "✨ Your Financial Plan",
-  "finalPlan.duration": "⏳ Duration",
-  "finalPlan.investmentAllocation": "📈 Investment Allocation",
-  "finalPlan.selectedStrategy": "⚖️ Selected Strategy",
-  "finalPlan.share": "📱 Share",
-  "finalPlan.download": "📄 Download",
-  "finalPlan.save": "❤️ Save",
-  "finalPlan.sharePlan": "📱 Share Plan",
-  "finalPlan.downloadPlan": "📄 Download Plan",
-  "finalPlan.savePlan": "❤️ Save Plan",
-  "finalPlan.comingNext": "{feature} is coming next — not available in this preview.",
-  "finalPlan.disclaimer":
-    "This plan is for educational discussion purposes only. Guaranteed values, non-guaranteed illustrations and market-linked returns are distinct — final terms depend on the actual product selected.",
 };
 
 const ta: TranslationDict = {
@@ -1481,6 +1478,16 @@ const ta: TranslationDict = {
   "customerPlan.export.whatsappSummary": "WhatsApp சுருக்கம்",
   "customerPlan.export.copiedFallback": "சுருக்கம் நகலெடுக்கப்பட்டது — WhatsApp-இல் ஒட்டவும்.",
 
+  "results.configure.toggle": "🔧 கட்டமைப்பை உள்ளமைக்க",
+  "results.configure.explain":
+    "உண்மையிலேயே சரிபார்க்கப்பட்ட பிரீமியத்தைச் சரிபார்க்க, இந்த தயாரிப்பின் சொந்த அடிப்படை காப்பீட்டுத் தொகை / பாலிசி காலம் / பிரீமியம் செலுத்தும் காலத்தை உள்ளிடவும்.",
+  "results.configure.basicSumAssured": "அடிப்படை காப்பீட்டுத் தொகை",
+  "results.configure.policyTerm": "பாலிசி காலம் (ஆண்டுகள்)",
+  "results.configure.premiumPayingTerm": "பிரீமியம் செலுத்தும் காலம் (ஆண்டுகள்)",
+  "results.configure.apply": "பயன்படுத்து",
+  "results.configure.reset": "மீட்டமை",
+  "results.configure.configuredNote": "மேலே உள்ளிட்ட உள்ளமைவுக்கான மதிப்புகளைக் காட்டுகிறது.",
+
   "results.category.term_protection": "டெர்ம் பாதுகாப்பு",
   "results.category.savings_endowment": "சேமிப்பு / எண்டோமெண்ட்",
   "results.category.whole_life": "முழு வாழ்நாள்",
@@ -1581,19 +1588,6 @@ const ta: TranslationDict = {
     "காப்பீட்டு பாதுகாப்பு தேர்ந்தெடுக்கப்பட்ட பாலிசியின் ஒப்பந்த பலன்கள், நிபந்தனைகள், விலக்குகள் மற்றும் உரிமைகோரல் நிபந்தனைகளைப் பொறுத்தது. ஒவ்வொரு காப்பீட்டு தயாரிப்பும் வருமானத்திற்கு உத்தரவாதம் அளிக்காது அல்லது நிதி இலக்கை நிறைவேற்றுவதற்கு உத்தரவாதம் அளிக்காது.",
 
   // ---- final plan (Step 10) ----
-  "finalPlan.title": "✨ உங்கள் நிதித் திட்டம்",
-  "finalPlan.duration": "⏳ காலம்",
-  "finalPlan.investmentAllocation": "📈 முதலீட்டு ஒதுக்கீடு",
-  "finalPlan.selectedStrategy": "⚖️ தேர்ந்தெடுக்கப்பட்ட உத்தி",
-  "finalPlan.share": "📱 பகிர்",
-  "finalPlan.download": "📄 பதிவிறக்கு",
-  "finalPlan.save": "❤️ சேமி",
-  "finalPlan.sharePlan": "📱 திட்டத்தைப் பகிர்",
-  "finalPlan.downloadPlan": "📄 திட்டத்தைப் பதிவிறக்கு",
-  "finalPlan.savePlan": "❤️ திட்டத்தைச் சேமி",
-  "finalPlan.comingNext": "{feature} விரைவில் வரும் — இந்த முன்னோட்டத்தில் இது இன்னும் இல்லை.",
-  "finalPlan.disclaimer":
-    "இந்த திட்டம் விவாதத்திற்கான கல்வி நோக்கத்திற்காக மட்டுமே. உத்தரவாத மதிப்புகள், உத்தரவாதமற்ற எடுத்துக்காட்டுகள் மற்றும் சந்தை-இணைந்த வருமானம் வேறுபட்டவை — இறுதி நிபந்தனைகள் தேர்ந்தெடுக்கப்பட்ட தயாரிப்பைப் பொறுத்தது.",
 };
 
 const hi: TranslationDict = {
@@ -2263,6 +2257,16 @@ const hi: TranslationDict = {
   "customerPlan.export.whatsappSummary": "WhatsApp सारांश",
   "customerPlan.export.copiedFallback": "सारांश कॉपी किया गया — WhatsApp में पेस्ट करें।",
 
+  "results.configure.toggle": "🔧 संरचना कॉन्फ़िगर करें",
+  "results.configure.explain":
+    "वास्तव में सत्यापित प्रीमियम जाँचने के लिए इस उत्पाद की स्वयं की वास्तविक मूल बीमा राशि / पॉलिसी अवधि / प्रीमियम भुगतान अवधि दर्ज करें।",
+  "results.configure.basicSumAssured": "मूल बीमा राशि",
+  "results.configure.policyTerm": "पॉलिसी अवधि (वर्ष)",
+  "results.configure.premiumPayingTerm": "प्रीमियम भुगतान अवधि (वर्ष)",
+  "results.configure.apply": "लागू करें",
+  "results.configure.reset": "रीसेट करें",
+  "results.configure.configuredNote": "ऊपर दर्ज कॉन्फ़िगरेशन के लिए मान दिखाए जा रहे हैं।",
+
   "results.category.term_protection": "टर्म सुरक्षा",
   "results.category.savings_endowment": "बचत / एंडोमेंट",
   "results.category.whole_life": "संपूर्ण जीवन",
@@ -2360,19 +2364,6 @@ const hi: TranslationDict = {
     "बीमा सुरक्षा चुनी गई पॉलिसी के अनुबंधित लाभों, शर्तों, अपवादों और दावा शर्तों पर निर्भर करती है। हर बीमा उत्पाद रिटर्न की गारंटी नहीं देता या वित्तीय लक्ष्य पूरा होने की गारंटी नहीं देता।",
 
   // ---- final plan (Step 10) ----
-  "finalPlan.title": "✨ आपकी वित्तीय योजना",
-  "finalPlan.duration": "⏳ अवधि",
-  "finalPlan.investmentAllocation": "📈 निवेश आवंटन",
-  "finalPlan.selectedStrategy": "⚖️ चुनी गई रणनीति",
-  "finalPlan.share": "📱 शेयर करें",
-  "finalPlan.download": "📄 डाउनलोड करें",
-  "finalPlan.save": "❤️ सहेजें",
-  "finalPlan.sharePlan": "📱 योजना शेयर करें",
-  "finalPlan.downloadPlan": "📄 योजना डाउनलोड करें",
-  "finalPlan.savePlan": "❤️ योजना सहेजें",
-  "finalPlan.comingNext": "{feature} जल्द आ रहा है — यह अभी इस प्रीव्यू में उपलब्ध नहीं है।",
-  "finalPlan.disclaimer":
-    "यह योजना केवल चर्चा और जानकारी के लिए है। गारंटीशुदा मूल्य, गैर-गारंटीशुदा उदाहरण और बाज़ार-आधारित रिटर्न अलग-अलग हैं — अंतिम शर्तें चुने गए वास्तविक उत्पाद पर निर्भर करती हैं।",
 };
 
 export const TRANSLATIONS: Record<Locale, TranslationDict> = { en, ta, hi };

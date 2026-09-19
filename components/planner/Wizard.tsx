@@ -14,7 +14,6 @@ import { Step4Compare } from "@/components/planner/Step4Compare";
 import { Step5Investment } from "@/components/planner/Step5Investment";
 import { Step6Risk } from "@/components/planner/Step6Risk";
 import { Step7Family } from "@/components/planner/Step7Family";
-import { Step8Final } from "@/components/planner/Step8Final";
 import { PlannerResults } from "@/components/planner/results/PlannerResults";
 import { Button } from "@/components/ui/Button";
 import { Locale, LOCALES, DEFAULT_LOCALE } from "@/lib/i18n/types";
@@ -22,7 +21,23 @@ import { t } from "@/lib/i18n/translations";
 import { ILLUSTRATION_RATES_PCT } from "@/lib/calculations/sip";
 import { DEFAULT_PROTECTION_ALLOCATION_PERCENT } from "@/lib/planner/planBuilder";
 
-export const TOTAL_STEPS = 13;
+// Section audit (integration fix): this wizard previously had a 13th
+// step, Step8Final ("Your Financial Plan"), that duplicated — and got
+// wrong — what PlannerResults (the real, engine-backed results journey)
+// already does correctly: it showed `goal.existingLifeCover` mislabeled
+// as "Protection" (a raw customer input, never the calculated Protection
+// Need/Gap) and `getStrategyById(strategyId).growthAllocationPct` as an
+// "Investment Allocation %" (a hardcoded illustrative split from the old
+// 3-item STRATEGIES catalog in lib/recommendations/strategies.ts,
+// entirely unrelated to goal coverage or the Strategy Generator), plus
+// three Share/Download/Save buttons that only ever showed "coming next —
+// not available in this preview." Removed outright rather than patched:
+// PlannerResults already renders the real Financial Picture, the real
+// Strategy Generator's families/structures, and the fully wired
+// CustomerPlan → Proposal → Download/Share/Save path, so keeping a
+// second, incorrect "final plan" screen in front of it was a duplicated
+// (and factually wrong) result flow, not a second legitimate feature.
+export const TOTAL_STEPS = 12;
 
 const DEFAULT_GOAL: GoalInput = {
   age: 35,
@@ -103,8 +118,7 @@ export function Wizard() {
         {step === 9 && <Step5Investment goal={goal} locale={locale} />}
         {step === 10 && <Step6Risk locale={locale} />}
         {step === 11 && <Step7Family locale={locale} />}
-        {step === 12 && <Step8Final goal={goal} strategyId={strategyId} locale={locale} />}
-        {step === 13 && <PlannerResults goal={goal} locale={locale} />}
+        {step === 12 && <PlannerResults goal={goal} locale={locale} />}
       </div>
 
       <div className="flex items-center justify-between gap-3 pb-2">

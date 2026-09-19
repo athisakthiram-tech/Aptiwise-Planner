@@ -290,6 +290,72 @@ describe("Strategy generator — Plan Number/UIN identity safety", () => {
   });
 });
 
+describe("Strategy generator — term configuration override (Task 5 integration audit)", () => {
+  // Plan 894 (Jeevan Raksha)'s own published Sample Illustrative Premium
+  // (BSA 5,00,000; age 30; policy term 20 years -> Rs.2,730 regular
+  // annual premium) — the exact real-world configuration case Task 5
+  // describes: an eligible product that starts out "Requires
+  // verification" because the auto-derived protection gap doesn't match
+  // any published rate row, but becomes genuinely engine-verified once
+  // an advisor supplies the product's own real published configuration.
+  function plan894Strategy(strategies: StrategyResult[]) {
+    return strategies.find(
+      (s) => s.family === "protection_investment" && s.components[0].product?.planNumber === "894"
+    )!;
+  }
+
+  it("leaves the term premium unavailable when no override is given and the auto-derived gap doesn't match a published rate row", () => {
+    const p = profile({ age: 30, monthlyBudget: 15000, yearsToGoal: 20, existingLifeCover: 0, outstandingLiabilities: 1000000 });
+    const strategies = generateStrategies({
+      profile: p,
+      protectionNeed: calculateProtectionNeed({ profile: p }),
+      goalNeed: calculateGoalNeed({ targetGoal: null, currentResources: null }),
+    });
+    const strategy = plan894Strategy(strategies);
+    expect(strategy.components[0].monthlyPremium.status).toBe("unavailable");
+  });
+
+  it("turns the term premium genuinely verified once the advisor supplies the product's own published Basic Sum Assured/Policy Term", () => {
+    const p = profile({ age: 30, monthlyBudget: 15000, yearsToGoal: 20, existingLifeCover: 0, outstandingLiabilities: 1000000 });
+    const strategies = generateStrategies({
+      profile: p,
+      protectionNeed: calculateProtectionNeed({ profile: p }),
+      goalNeed: calculateGoalNeed({ targetGoal: null, currentResources: null }),
+      termConfiguration: { basicSumAssured: 500000, policyTermYears: 20 },
+    });
+    const strategy = plan894Strategy(strategies);
+    expect(strategy.components[0].monthlyPremium.status).toBe("verified");
+    // Rs.2,730 annual / 12, rounded — the SAME engine's own published row,
+    // never a value invented by this configuration seam.
+    expect(strategy.components[0].monthlyPremium.value).toBe(Math.round(2730 / 12));
+  });
+
+  it("never fabricates a verified value for a Basic Sum Assured that still doesn't match any published row", () => {
+    const p = profile({ age: 30, monthlyBudget: 15000, yearsToGoal: 20, existingLifeCover: 0, outstandingLiabilities: 1000000 });
+    const strategies = generateStrategies({
+      profile: p,
+      protectionNeed: calculateProtectionNeed({ profile: p }),
+      goalNeed: calculateGoalNeed({ targetGoal: null, currentResources: null }),
+      // An arbitrary BSA the advisor might try — genuinely not in Plan
+      // 894's published sample table, so it must stay unavailable.
+      termConfiguration: { basicSumAssured: 4000000, policyTermYears: 20 },
+    });
+    const strategy = plan894Strategy(strategies);
+    expect(strategy.components[0].monthlyPremium.status).toBe("unavailable");
+    expect(strategy.components[0].monthlyPremium.value).toBeNull();
+  });
+
+  it("is fully backward compatible — omitting termConfiguration produces identical output to before", () => {
+    const p = profile({ age: 32, monthlyBudget: 12000, yearsToGoal: 18, goalType: "wealth", targetGoalAmount: 4000000, existingInvestments: 500000 });
+    const input = {
+      profile: p,
+      protectionNeed: calculateProtectionNeed({ profile: p }),
+      goalNeed: calculateGoalNeed({ targetGoal: p.targetGoalAmount, currentResources: p.existingInvestments }),
+    };
+    expect(generateStrategies(input)).toEqual(generateStrategies({ ...input, termConfiguration: undefined }));
+  });
+});
+
 describe("Strategy generator — no ranking/winner fields anywhere", () => {
   it("never includes a score, rank, best, recommended or winner field on any generated strategy", () => {
     const p = profile({

@@ -44,6 +44,35 @@ const TRADITIONAL_CATEGORIES: InsuranceCategory[] = ["savings_endowment", "whole
 const MARKET_LINKED_CATEGORIES: InsuranceCategory[] = ["market_linked_ulip"];
 const RETIREMENT_CATEGORIES: InsuranceCategory[] = ["pension"];
 
+// Task 5 (integration audit) — an advisor-entered exact configuration
+// for the PRIMARY term-protection component only. This never invents a
+// premium/benefit: it is passed to the exact same registered engine
+// buildComponent() already calls for every other component, which still
+// honestly reports "unavailable" unless the value (and the customer's
+// age/policy term) matches that product's own published rate data.
+// Scoped to the term component — the single most common source of a
+// generated strategy's "Requires verification" fields across families
+// A/B/C — rather than threading a generic override through every
+// family's every context, which would risk re-deriving/duplicating
+// each family's own combination logic outside this module.
+export interface TermConfigurationOverride {
+  basicSumAssured?: number;
+  policyTermYears?: number;
+  premiumPayingTermYears?: number;
+}
+
+function applyTermOverride(
+  autoBasicSumAssured: number | undefined,
+  override: TermConfigurationOverride | undefined
+): Partial<LicCalculationContext> {
+  const result: Partial<LicCalculationContext> = {
+    basicSumAssured: override?.basicSumAssured ?? autoBasicSumAssured,
+  };
+  if (override?.policyTermYears != null) result.policyTermYears = override.policyTermYears;
+  if (override?.premiumPayingTermYears != null) result.premiumPayingTermYears = override.premiumPayingTermYears;
+  return result;
+}
+
 function buildBaseContext(
   profile: CustomerFinancialProfile,
   overrides: Partial<LicCalculationContext>
@@ -322,12 +351,16 @@ function assembleStrategy(params: {
 function generateProtectionInvestmentStrategies(
   profile: CustomerFinancialProfile,
   protectionNeed: ProtectionNeedResult,
-  ratePct: number
+  ratePct: number,
+  termOverride?: TermConfigurationOverride
 ): StrategyResult[] {
   const { monthlyBudget, yearsToGoal } = profile;
   if (monthlyBudget == null || yearsToGoal == null) return [];
 
-  const context = buildBaseContext(profile, { basicSumAssured: positiveGapOrUndefined(protectionNeed.protectionGap) });
+  const context = buildBaseContext(
+    profile,
+    applyTermOverride(positiveGapOrUndefined(protectionNeed.protectionGap), termOverride)
+  );
   const termProducts = listEligibleProducts(context, { categories: TERM_CATEGORIES });
 
   return termProducts.map((assessment) => {
@@ -377,7 +410,8 @@ function generateProtectionInvestmentStrategies(
 function generateTraditionalProtectionStrategies(
   profile: CustomerFinancialProfile,
   protectionNeed: ProtectionNeedResult,
-  goalNeed: GoalNeedResult
+  goalNeed: GoalNeedResult,
+  termOverride?: TermConfigurationOverride
 ): StrategyResult[] {
   const goalType = profile.goalType;
   if (goalType == null || profile.targetGoalAmount == null) return [];
@@ -389,7 +423,10 @@ function generateTraditionalProtectionStrategies(
     (a) => a.product.goalTags.includes(goalType as GoalType)
   );
 
-  const termContext = buildBaseContext(profile, { basicSumAssured: positiveGapOrUndefined(protectionNeed.protectionGap) });
+  const termContext = buildBaseContext(
+    profile,
+    applyTermOverride(positiveGapOrUndefined(protectionNeed.protectionGap), termOverride)
+  );
   const termCandidate = pickFirstEligible(listEligibleProducts(termContext, { categories: TERM_CATEGORIES }));
 
   return traditionalProducts.map((assessment) => {
@@ -445,12 +482,16 @@ function generateTraditionalProtectionStrategies(
 // ---- Family C: Market-Linked Insurance ----
 function generateMarketLinkedStrategies(
   profile: CustomerFinancialProfile,
-  protectionNeed: ProtectionNeedResult
+  protectionNeed: ProtectionNeedResult,
+  termOverride?: TermConfigurationOverride
 ): StrategyResult[] {
   const context = buildBaseContext(profile, {});
   const ulipProducts = listEligibleProducts(context, { categories: MARKET_LINKED_CATEGORIES });
 
-  const termContext = buildBaseContext(profile, { basicSumAssured: positiveGapOrUndefined(protectionNeed.protectionGap) });
+  const termContext = buildBaseContext(
+    profile,
+    applyTermOverride(positiveGapOrUndefined(protectionNeed.protectionGap), termOverride)
+  );
   const termCandidate = pickFirstEligible(listEligibleProducts(termContext, { categories: TERM_CATEGORIES }));
 
   return ulipProducts.map((assessment) => {
@@ -586,20 +627,24 @@ export interface StrategyGenerationInput {
   protectionNeed: ProtectionNeedResult;
   goalNeed: GoalNeedResult;
   illustrativeRatesPct?: readonly number[];
+  // Task 5 (integration audit) — see TermConfigurationOverride's own
+  // comment. Omitted entirely by default, so every existing caller's
+  // behavior is unchanged.
+  termConfiguration?: TermConfigurationOverride;
 }
 
 // The single entry point: generates every feasible structure this stage
 // supports. Order is stable (family A through E) but carries no ranking
 // meaning whatsoever — see this file's header comment.
 export function generateStrategies(input: StrategyGenerationInput): StrategyResult[] {
-  const { profile, protectionNeed, goalNeed } = input;
+  const { profile, protectionNeed, goalNeed, termConfiguration } = input;
   const rates = input.illustrativeRatesPct ?? ILLUSTRATION_RATES_PCT;
   const representativeRatePct = rates[Math.min(1, rates.length - 1)];
 
   return [
-    ...generateProtectionInvestmentStrategies(profile, protectionNeed, representativeRatePct),
-    ...generateTraditionalProtectionStrategies(profile, protectionNeed, goalNeed),
-    ...generateMarketLinkedStrategies(profile, protectionNeed),
+    ...generateProtectionInvestmentStrategies(profile, protectionNeed, representativeRatePct, termConfiguration),
+    ...generateTraditionalProtectionStrategies(profile, protectionNeed, goalNeed, termConfiguration),
+    ...generateMarketLinkedStrategies(profile, protectionNeed, termConfiguration),
     ...generateTraditionalStructureStrategies(profile, goalNeed),
     ...generateRetirementStrategies(profile),
   ];
