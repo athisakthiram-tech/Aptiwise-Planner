@@ -289,6 +289,15 @@ const SUPPLEMENTAL_SOURCES: Record<string, OfficialProductSource[]> = {
       checkedAt: "2026-09-21",
     },
   ],
+  [key("886", "512L361V01")]: [
+    {
+      id: "lic-plan886-sales-brochure-current",
+      sourceType: "sales_brochure",
+      url: "https://www.licindia.in/en/web/guest/unit-linked-plans",
+      title: "LIC's Protection Plus Sales Brochure",
+      checkedAt: "2026-09-22",
+    },
+  ],
 };
 
 export function getOfficialSources(planNumber: string, uin: string): OfficialProductSource[] {

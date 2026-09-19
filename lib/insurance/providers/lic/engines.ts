@@ -48,6 +48,7 @@ import * as plan879 from "@/lib/insurance/providers/lic/plans/plan879";
 import * as plan758 from "@/lib/insurance/providers/lic/plans/plan758";
 import * as plan873 from "@/lib/insurance/providers/lic/plans/plan873";
 import * as plan749 from "@/lib/insurance/providers/lic/plans/plan749";
+import * as plan886 from "@/lib/insurance/providers/lic/plans/plan886";
 import { AnnuityInput } from "@/lib/insurance/providers/lic/plans/annuityShared";
 import { pureRiskLiquidity } from "@/lib/insurance/providers/lic/plans/shared";
 import { getLicProductByIdentity } from "@/lib/insurance/providers/lic/catalogue";
@@ -797,6 +798,50 @@ const PLAN_749_ENGINE: LicProductEngine = {
   evaluateLiquidity: () => plan749.evaluateLiquidity(PLAN_749_SOURCE_ID),
 };
 
+// ---- Plan 886 (Protection Plus) — bespoke adapter, like Plan 873 ----
+// A market-linked (ULIP) plan with a genuine Basic Sum Assured chosen as
+// a multiple of Annualized Premium within a published [min, max] band
+// that itself depends on age/PPT/premium — a continuous customer choice
+// rather than a discrete option, but still always directly computable
+// from the premium and multiple the customer already entered, no
+// rate-table lookup needed. Has NO Guaranteed Additions feature at all
+// (a structural absence, not a gap).
+const PLAN_886_SOURCE_ID = "lic-plan886-sales-brochure-current";
+requireProduct("886", plan886.PLAN_886_UIN);
+function plan886Input(context: LicCalculationContext): plan886.Plan886Input {
+  return {
+    age: context.age ?? -1,
+    policyTermYears: context.policyTermYears,
+    premiumPayingTermYears: context.premiumPayingTermYears as plan886.Plan886Ppt | undefined,
+    premiumMode: context.premiumMode as plan886.Plan886PremiumMode | undefined,
+    annualPremium: context.annualPremium,
+    bsaMultiple: context.productSpecificInputs?.bsaMultiple as number | undefined,
+  };
+}
+const PLAN_886_ENGINE: LicProductEngine = {
+  provider: "LIC",
+  planNumber: "886",
+  uin: plan886.PLAN_886_UIN,
+  capabilities: {
+    eligibility: "verified",
+    premium: "not_applicable",
+    benefits: "partial",
+    familyProtection: "partial",
+    tax: "unavailable",
+    costs: "partial",
+    liquidity: "partial",
+  },
+  evaluateEligibility: (context) => {
+    if (context.age == null) {
+      return { eligible: null, reasons: [], reasonCodes: [], missingInputs: ["age"] };
+    }
+    return plan886.evaluateEligibility(plan886Input(context));
+  },
+  calculateBenefits: (context) => plan886.calculateBenefits(plan886Input(context)),
+  calculateCosts: (context) => plan886.calculateCosts(PLAN_886_SOURCE_ID, context.age),
+  evaluateLiquidity: () => plan886.evaluateLiquidity(PLAN_886_SOURCE_ID),
+};
+
 export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_733_ENGINE,
   PLAN_736_ENGINE,
@@ -828,6 +873,7 @@ export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_758_ENGINE,
   PLAN_873_ENGINE,
   PLAN_749_ENGINE,
+  PLAN_886_ENGINE,
 ];
 
 function key(planNumber: string, uin: string): string {
