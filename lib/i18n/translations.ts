@@ -660,6 +660,7 @@ const en: TranslationDict = {
   "customerPlan.delete": "Delete",
   "customerPlan.deleteConfirm": "Delete this draft plan from this device?",
   "customerPlan.createdOn": "Created {date}",
+  "customerPlan.created": "Created",
   "customerPlan.snapshotNote":
     "This plan is a snapshot from when it was created. It will not change even if product details are updated later. Return to the Planner to create a fresh plan with updated numbers.",
   "customerPlan.backToStructure": "← Back",
@@ -677,6 +678,16 @@ const en: TranslationDict = {
     "This plan includes market-linked values that can rise or fall with fund performance.",
   "customerPlan.disclosure.eligibility_not_underwriting_approval":
     "Meeting eligibility conditions does not guarantee LIC's underwriting approval.",
+
+  "customerPlan.proposalSectionTitle": "📄 Professional Proposal",
+  "customerPlan.export.downloadPdf": "Download PDF",
+  "customerPlan.export.preparing": "Preparing…",
+  "customerPlan.export.downloadFailed": "Couldn't prepare the download. Please try again.",
+  "customerPlan.export.sharePlan": "Share Plan",
+  "customerPlan.export.shareFailed": "Couldn't share the plan. Please try again.",
+  "customerPlan.export.shareSuccess": "Shared.",
+  "customerPlan.export.whatsappSummary": "WhatsApp Summary",
+  "customerPlan.export.copiedFallback": "Summary copied — paste it into WhatsApp.",
 
   // ---- strategy (Step 5) ----
   "strategy.title": "3 Ways To Reach Your Goal",
@@ -1441,6 +1452,7 @@ const ta: TranslationDict = {
   "customerPlan.delete": "நீக்கு",
   "customerPlan.deleteConfirm": "இந்த வரைவுத் திட்டத்தை இச்சாதனத்திலிருந்து நீக்கவா?",
   "customerPlan.createdOn": "உருவாக்கப்பட்டது {date}",
+  "customerPlan.created": "உருவாக்கப்பட்ட தேதி",
   "customerPlan.snapshotNote":
     "இந்தத் திட்டம் அது உருவாக்கப்பட்ட நேரத்தின் ஒரு நிலைப்படம். பின்னர் தயாரிப்பு விவரங்கள் புதுப்பிக்கப்பட்டாலும் இது மாறாது. புதுப்பிக்கப்பட்ட எண்களுடன் புதிய திட்டத்தை உருவாக்க திட்டமிடலுக்குத் திரும்பவும்.",
   "customerPlan.backToStructure": "← பின்செல்",
@@ -1458,6 +1470,16 @@ const ta: TranslationDict = {
     "இந்தத் திட்டத்தில் நிதி செயல்திறனுக்கு ஏற்ப ஏறக்கூடிய அல்லது இறங்கக்கூடிய சந்தை-இணைந்த மதிப்புகள் உள்ளன.",
   "customerPlan.disclosure.eligibility_not_underwriting_approval":
     "தகுதி நிபந்தனைகளைப் பூர்த்தி செய்வது LIC-யின் அண்டர்ரைட்டிங் ஒப்புதலை உறுதி செய்யாது.",
+
+  "customerPlan.proposalSectionTitle": "📄 தொழில்முறை திட்ட அறிக்கை",
+  "customerPlan.export.downloadPdf": "PDF பதிவிறக்கு",
+  "customerPlan.export.preparing": "தயார் செய்கிறது…",
+  "customerPlan.export.downloadFailed": "பதிவிறக்கத்தைத் தயார் செய்ய முடியவில்லை. மீண்டும் முயற்சிக்கவும்.",
+  "customerPlan.export.sharePlan": "திட்டத்தைப் பகிர்",
+  "customerPlan.export.shareFailed": "திட்டத்தைப் பகிர முடியவில்லை. மீண்டும் முயற்சிக்கவும்.",
+  "customerPlan.export.shareSuccess": "பகிரப்பட்டது.",
+  "customerPlan.export.whatsappSummary": "WhatsApp சுருக்கம்",
+  "customerPlan.export.copiedFallback": "சுருக்கம் நகலெடுக்கப்பட்டது — WhatsApp-இல் ஒட்டவும்.",
 
   "results.category.term_protection": "டெர்ம் பாதுகாப்பு",
   "results.category.savings_endowment": "சேமிப்பு / எண்டோமெண்ட்",
@@ -2212,6 +2234,7 @@ const hi: TranslationDict = {
   "customerPlan.delete": "हटाएँ",
   "customerPlan.deleteConfirm": "इस ड्राफ्ट योजना को इस डिवाइस से हटाएँ?",
   "customerPlan.createdOn": "बनाई गई {date}",
+  "customerPlan.created": "बनाई गई तारीख",
   "customerPlan.snapshotNote":
     "यह योजना बनाए जाने के समय की एक स्नैपशॉट है। बाद में उत्पाद विवरण अपडेट होने पर भी यह नहीं बदलेगी। अद्यतन आँकड़ों के साथ नई योजना बनाने के लिए प्लानर पर वापस जाएँ।",
   "customerPlan.backToStructure": "← वापस",
@@ -2229,6 +2252,16 @@ const hi: TranslationDict = {
     "इस योजना में बाज़ार से जुड़े मूल्य शामिल हैं जो फंड के प्रदर्शन के साथ बढ़ या घट सकते हैं।",
   "customerPlan.disclosure.eligibility_not_underwriting_approval":
     "पात्रता शर्तों को पूरा करना LIC की अंडरराइटिंग स्वीकृति की गारंटी नहीं देता।",
+
+  "customerPlan.proposalSectionTitle": "📄 व्यावसायिक प्रस्ताव",
+  "customerPlan.export.downloadPdf": "PDF डाउनलोड करें",
+  "customerPlan.export.preparing": "तैयार हो रहा है…",
+  "customerPlan.export.downloadFailed": "डाउनलोड तैयार नहीं हो सका। कृपया फिर से प्रयास करें।",
+  "customerPlan.export.sharePlan": "योजना साझा करें",
+  "customerPlan.export.shareFailed": "योजना साझा नहीं की जा सकी। कृपया फिर से प्रयास करें।",
+  "customerPlan.export.shareSuccess": "साझा किया गया।",
+  "customerPlan.export.whatsappSummary": "WhatsApp सारांश",
+  "customerPlan.export.copiedFallback": "सारांश कॉपी किया गया — WhatsApp में पेस्ट करें।",
 
   "results.category.term_protection": "टर्म सुरक्षा",
   "results.category.savings_endowment": "बचत / एंडोमेंट",

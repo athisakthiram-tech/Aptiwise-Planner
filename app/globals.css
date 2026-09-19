@@ -9,3 +9,188 @@ html {
 body {
   background-color: #f8fafc;
 }
+
+/* Section 11 — printable proposal view. The proposal document is always
+   present in the DOM (so "Download PDF" can call window.print() without
+   navigating away) but hidden on screen; printing hides everything else
+   on the page and shows only the proposal, with sensible page breaks. */
+.proposal-print-root {
+  display: none;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .proposal-print-root,
+  .proposal-print-root * {
+    visibility: visible;
+  }
+  .proposal-print-root {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+  }
+  .no-print {
+    display: none !important;
+  }
+  @page {
+    size: A4;
+    margin: 16mm;
+  }
+}
+
+.proposal-doc {
+  color: #0f172a;
+  font-size: 12pt;
+  line-height: 1.5;
+}
+
+.proposal-doc h1 {
+  font-size: 20pt;
+  font-weight: 800;
+  margin: 0;
+}
+
+.proposal-doc h2 {
+  font-size: 14pt;
+  font-weight: 700;
+  margin: 0 0 8pt;
+}
+
+.proposal-doc h3 {
+  font-size: 12pt;
+  font-weight: 700;
+  margin: 0 0 4pt;
+}
+
+.proposal-doc .proposal-page {
+  page-break-after: always;
+}
+
+.proposal-doc .proposal-page:last-child {
+  page-break-after: auto;
+}
+
+/* Section 11 — never split a product identity block, or a whole
+   financial-picture block, across a page boundary where avoidable. */
+.proposal-doc .proposal-avoid-break {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.proposal-doc .proposal-brand {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 10pt;
+  margin: 0 0 2pt;
+}
+
+.proposal-doc .proposal-header {
+  margin-bottom: 12pt;
+}
+
+.proposal-doc .proposal-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8pt;
+  margin-bottom: 14pt;
+}
+
+.proposal-doc .proposal-block {
+  margin-bottom: 14pt;
+}
+
+.proposal-doc .proposal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6pt 16pt;
+  margin: 0;
+}
+
+.proposal-doc .proposal-grid dt {
+  font-size: 9pt;
+  color: #475569;
+}
+
+.proposal-doc .proposal-grid dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.proposal-doc .proposal-label {
+  font-size: 9pt;
+  color: #475569;
+  margin: 0;
+}
+
+.proposal-doc .proposal-value-lg {
+  font-size: 13pt;
+  font-weight: 700;
+  margin: 0;
+}
+
+.proposal-doc .proposal-subtle {
+  font-size: 9pt;
+  color: #475569;
+  margin: 0 0 4pt;
+}
+
+.proposal-doc .proposal-identity {
+  font-size: 10pt;
+  margin: 0 0 2pt;
+}
+
+.proposal-doc .proposal-status {
+  font-size: 9pt;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.proposal-doc .proposal-lines {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4pt;
+}
+
+.proposal-doc .proposal-warning {
+  font-weight: 600;
+}
+
+.proposal-doc .proposal-positive {
+  font-weight: 600;
+}
+
+.proposal-doc .proposal-illustration {
+  margin-top: 6pt;
+  padding: 8pt;
+  border: 1px solid #cbd5e1;
+}
+
+.proposal-doc .proposal-disclaimer {
+  font-size: 9pt;
+  font-style: italic;
+  margin: 4pt 0 0;
+}
+
+.proposal-doc .proposal-dimensions {
+  display: flex;
+  flex-direction: column;
+  gap: 4pt;
+  margin-top: 10pt;
+}
+
+.proposal-doc .proposal-dimension-row {
+  display: grid;
+  grid-template-columns: 16pt 1fr auto auto;
+  gap: 6pt;
+  align-items: baseline;
+  font-size: 10pt;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 3pt;
+}

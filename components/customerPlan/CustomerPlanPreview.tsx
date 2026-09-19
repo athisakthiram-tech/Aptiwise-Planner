@@ -19,6 +19,7 @@ import { PlanStructure } from "@/components/customerPlan/PlanStructure";
 import { PlanReasons } from "@/components/customerPlan/PlanReasons";
 import { PlanDisclosures } from "@/components/customerPlan/PlanDisclosures";
 import { SaveDraftAction } from "@/components/customerPlan/SaveDraftAction";
+import { ProposalActions } from "@/components/customerPlan/export/ProposalActions";
 import { Card } from "@/components/ui/Card";
 import { Locale } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
@@ -182,6 +183,11 @@ export function CustomerPlanPreview({
           {t("customerPlan.viewDraftPlans", locale)}
         </button>
       </div>
+
+      <Card className="flex flex-col gap-3">
+        <p className="text-sm font-bold text-ink-900">{t("customerPlan.proposalSectionTitle", locale)}</p>
+        <ProposalActions plan={plan} />
+      </Card>
     </div>
   );
 }
