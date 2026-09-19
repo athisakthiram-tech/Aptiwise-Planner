@@ -15,13 +15,14 @@ import { Step5Investment } from "@/components/planner/Step5Investment";
 import { Step6Risk } from "@/components/planner/Step6Risk";
 import { Step7Family } from "@/components/planner/Step7Family";
 import { Step8Final } from "@/components/planner/Step8Final";
+import { PlannerResults } from "@/components/planner/results/PlannerResults";
 import { Button } from "@/components/ui/Button";
 import { Locale, LOCALES, DEFAULT_LOCALE } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
 import { ILLUSTRATION_RATES_PCT } from "@/lib/calculations/sip";
 import { DEFAULT_PROTECTION_ALLOCATION_PERCENT } from "@/lib/planner/planBuilder";
 
-export const TOTAL_STEPS = 12;
+export const TOTAL_STEPS = 13;
 
 const DEFAULT_GOAL: GoalInput = {
   age: 35,
@@ -103,6 +104,7 @@ export function Wizard() {
         {step === 10 && <Step6Risk locale={locale} />}
         {step === 11 && <Step7Family locale={locale} />}
         {step === 12 && <Step8Final goal={goal} strategyId={strategyId} locale={locale} />}
+        {step === 13 && <PlannerResults goal={goal} locale={locale} />}
       </div>
 
       <div className="flex items-center justify-between gap-3 pb-2">
