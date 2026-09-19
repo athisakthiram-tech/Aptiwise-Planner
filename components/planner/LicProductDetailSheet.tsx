@@ -12,6 +12,7 @@ import { Plan734Configurator } from "@/components/planner/Plan734Configurator";
 import { Plan888Configurator } from "@/components/planner/Plan888Configurator";
 import { Plan867Configurator } from "@/components/planner/Plan867Configurator";
 import { Plan873Configurator } from "@/components/planner/Plan873Configurator";
+import { Plan749Configurator } from "@/components/planner/Plan749Configurator";
 import { StandardEndowmentConfigurator } from "@/components/planner/StandardEndowmentConfigurator";
 import { PureTermConfigurator } from "@/components/planner/PureTermConfigurator";
 import { CreditLifeConfigurator } from "@/components/planner/CreditLifeConfigurator";
@@ -177,6 +178,8 @@ export function LicProductDetailSheet({
             <AnnuityConfigurator product={product} goal={goal} locale={locale} config={PLAN_758_CONFIG} />
           ) : product.planNumber === "873" ? (
             <Plan873Configurator product={product} goal={goal} locale={locale} />
+          ) : product.planNumber === "749" ? (
+            <Plan749Configurator product={product} goal={goal} locale={locale} />
           ) : (
             <>
               <div>

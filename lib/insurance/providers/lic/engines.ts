@@ -47,6 +47,7 @@ import * as plan862 from "@/lib/insurance/providers/lic/plans/plan862";
 import * as plan879 from "@/lib/insurance/providers/lic/plans/plan879";
 import * as plan758 from "@/lib/insurance/providers/lic/plans/plan758";
 import * as plan873 from "@/lib/insurance/providers/lic/plans/plan873";
+import * as plan749 from "@/lib/insurance/providers/lic/plans/plan749";
 import { AnnuityInput } from "@/lib/insurance/providers/lic/plans/annuityShared";
 import { pureRiskLiquidity } from "@/lib/insurance/providers/lic/plans/shared";
 import { getLicProductByIdentity } from "@/lib/insurance/providers/lic/catalogue";
@@ -756,6 +757,46 @@ const PLAN_873_ENGINE: LicProductEngine = {
   evaluateLiquidity: () => plan873.evaluateLiquidity(PLAN_873_SOURCE_ID),
 };
 
+// ---- Plan 749 (Nivesh Plus) — bespoke adapter, like Plan 873 ----
+// A Single-Premium-only market-linked (ULIP) plan with a genuine Basic
+// Sum Assured that's a multiple (1.25x/10x) of the Single Premium the
+// customer chooses — always directly computable, no rate-table lookup
+// needed — rather than an absolute figure buildStandardEngine's mapping
+// expects.
+const PLAN_749_SOURCE_ID = "lic-plan749-sales-brochure-current";
+requireProduct("749", plan749.PLAN_749_UIN);
+function plan749Input(context: LicCalculationContext): plan749.Plan749Input {
+  return {
+    age: context.age ?? -1,
+    policyTermYears: context.policyTermYears,
+    singlePremium: context.annualPremium,
+    bsaOption: context.productSpecificInputs?.bsaOption as plan749.Plan749BsaOption | undefined,
+  };
+}
+const PLAN_749_ENGINE: LicProductEngine = {
+  provider: "LIC",
+  planNumber: "749",
+  uin: plan749.PLAN_749_UIN,
+  capabilities: {
+    eligibility: "verified",
+    premium: "not_applicable",
+    benefits: "partial",
+    familyProtection: "partial",
+    tax: "unavailable",
+    costs: "partial",
+    liquidity: "partial",
+  },
+  evaluateEligibility: (context) => {
+    if (context.age == null) {
+      return { eligible: null, reasons: [], reasonCodes: [], missingInputs: ["age"] };
+    }
+    return plan749.evaluateEligibility(plan749Input(context));
+  },
+  calculateBenefits: (context) => plan749.calculateBenefits(plan749Input(context)),
+  calculateCosts: (context) => plan749.calculateCosts(PLAN_749_SOURCE_ID, context.age),
+  evaluateLiquidity: () => plan749.evaluateLiquidity(PLAN_749_SOURCE_ID),
+};
+
 export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_733_ENGINE,
   PLAN_736_ENGINE,
@@ -786,6 +827,7 @@ export const LIC_PRODUCT_ENGINES: LicProductEngine[] = [
   PLAN_879_ENGINE,
   PLAN_758_ENGINE,
   PLAN_873_ENGINE,
+  PLAN_749_ENGINE,
 ];
 
 function key(planNumber: string, uin: string): string {
