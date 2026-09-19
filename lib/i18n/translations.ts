@@ -633,6 +633,51 @@ const en: TranslationDict = {
   "results.category.market_linked_ulip": "Unit-Linked (ULIP)",
   "results.category.micro_insurance": "Micro Insurance",
 
+  // ---- customer plan (proposal foundation) ----
+  "customerPlan.create": "📋 Create Customer Plan",
+  "customerPlan.title": "Customer Plan",
+  "customerPlan.summary": "Summary",
+  "customerPlan.selectedStructure": "Selected structure",
+  "customerPlan.customer": "Customer",
+  "customerPlan.unnamedCustomer": "Unnamed customer",
+  "customerPlan.editCustomer": "Edit customer details",
+  "customerPlan.name": "Name (optional)",
+  "customerPlan.phone": "Phone (optional)",
+  "customerPlan.save": "Save",
+  "customerPlan.cancel": "Cancel",
+  "customerPlan.planStructure": "📋 Plan Structure",
+  "customerPlan.importantInformation": "Important Information",
+  "customerPlan.assumptionsDisclosures": "Assumptions & Disclosures",
+  "customerPlan.details": "Details",
+  "customerPlan.saveDraft": "💾 Save Draft Locally",
+  "customerPlan.draftSavedOnDevice": "Draft saved on this device.",
+  "customerPlan.draftSavedNote": "This draft is stored only in this browser, not in secure cloud storage.",
+  "customerPlan.saveFailed": "This device could not save the draft. Storage may be unavailable or full.",
+  "customerPlan.draftPlans": "Draft Plans",
+  "customerPlan.viewDraftPlans": "View Draft Plans",
+  "customerPlan.draftPlansEmpty": "No draft plans saved on this device yet.",
+  "customerPlan.open": "Open",
+  "customerPlan.delete": "Delete",
+  "customerPlan.deleteConfirm": "Delete this draft plan from this device?",
+  "customerPlan.createdOn": "Created {date}",
+  "customerPlan.snapshotNote":
+    "This plan is a snapshot from when it was created. It will not change even if product details are updated later. Return to the Planner to create a fresh plan with updated numbers.",
+  "customerPlan.backToStructure": "← Back",
+  "customerPlan.createFailed": "This plan could not be created. Please try again from the structure details.",
+  "customerPlan.disclosure.illustrative_investment_values":
+    "Investment values shown in this plan are illustrations only, not guaranteed returns.",
+  "customerPlan.disclosure.non_guaranteed_benefits":
+    "Some benefit values in this plan are non-guaranteed and depend on future performance.",
+  "customerPlan.disclosure.premium_requires_verification":
+    "One or more premiums in this plan are not yet verified. This plan cannot yet be confirmed as within budget.",
+  "customerPlan.disclosure.tax_treatment_conditional": "Tax treatment for this plan is conditional or not yet confirmed.",
+  "customerPlan.disclosure.costs_unavailable": "Cost details for this plan are not yet available.",
+  "customerPlan.disclosure.liquidity_conditional": "Access to funds under this plan is conditional on plan terms.",
+  "customerPlan.disclosure.market_linked_values":
+    "This plan includes market-linked values that can rise or fall with fund performance.",
+  "customerPlan.disclosure.eligibility_not_underwriting_approval":
+    "Meeting eligibility conditions does not guarantee LIC's underwriting approval.",
+
   // ---- strategy (Step 5) ----
   "strategy.title": "3 Ways To Reach Your Goal",
   "strategy.subtitle":
@@ -1370,6 +1415,50 @@ const ta: TranslationDict = {
   "results.warning.market_linked_maturity_value_never_projected_nav_dependent":
     "சந்தை-இணைந்த முதிர்வு மதிப்பு நிதியின் செயல்திறனைப் பொறுத்தது, இது இங்கே ஒருபோதும் கணிக்கப்படாது.",
 
+  "customerPlan.create": "📋 வாடிக்கையாளர் திட்டத்தை உருவாக்கு",
+  "customerPlan.title": "வாடிக்கையாளர் திட்டம்",
+  "customerPlan.summary": "சுருக்கம்",
+  "customerPlan.selectedStructure": "தேர்ந்தெடுக்கப்பட்ட கட்டமைப்பு",
+  "customerPlan.customer": "வாடிக்கையாளர்",
+  "customerPlan.unnamedCustomer": "பெயரிடப்படாத வாடிக்கையாளர்",
+  "customerPlan.editCustomer": "வாடிக்கையாளர் விவரங்களைத் திருத்து",
+  "customerPlan.name": "பெயர் (விருப்பத்தேர்வு)",
+  "customerPlan.phone": "தொலைபேசி (விருப்பத்தேர்வு)",
+  "customerPlan.save": "சேமி",
+  "customerPlan.cancel": "ரத்துசெய்",
+  "customerPlan.planStructure": "📋 திட்டக் கட்டமைப்பு",
+  "customerPlan.importantInformation": "முக்கியத் தகவல்",
+  "customerPlan.assumptionsDisclosures": "அனுமானங்கள் & வெளிப்படுத்தல்கள்",
+  "customerPlan.details": "விவரங்கள்",
+  "customerPlan.saveDraft": "💾 வரைவை இச்சாதனத்தில் சேமி",
+  "customerPlan.draftSavedOnDevice": "வரைவு இச்சாதனத்தில் சேமிக்கப்பட்டது.",
+  "customerPlan.draftSavedNote": "இந்த வரைவு இந்த உலாவியில் மட்டுமே சேமிக்கப்படுகிறது, பாதுகாப்பான கிளவுட் சேமிப்பில் அல்ல.",
+  "customerPlan.saveFailed": "இந்தச் சாதனத்தால் வரைவைச் சேமிக்க முடியவில்லை. சேமிப்பகம் கிடைக்காமல் அல்லது நிரம்பியிருக்கலாம்.",
+  "customerPlan.draftPlans": "வரைவுத் திட்டங்கள்",
+  "customerPlan.viewDraftPlans": "வரைவுத் திட்டங்களைக் காண்க",
+  "customerPlan.draftPlansEmpty": "இச்சாதனத்தில் இதுவரை வரைவுத் திட்டங்கள் சேமிக்கப்படவில்லை.",
+  "customerPlan.open": "திற",
+  "customerPlan.delete": "நீக்கு",
+  "customerPlan.deleteConfirm": "இந்த வரைவுத் திட்டத்தை இச்சாதனத்திலிருந்து நீக்கவா?",
+  "customerPlan.createdOn": "உருவாக்கப்பட்டது {date}",
+  "customerPlan.snapshotNote":
+    "இந்தத் திட்டம் அது உருவாக்கப்பட்ட நேரத்தின் ஒரு நிலைப்படம். பின்னர் தயாரிப்பு விவரங்கள் புதுப்பிக்கப்பட்டாலும் இது மாறாது. புதுப்பிக்கப்பட்ட எண்களுடன் புதிய திட்டத்தை உருவாக்க திட்டமிடலுக்குத் திரும்பவும்.",
+  "customerPlan.backToStructure": "← பின்செல்",
+  "customerPlan.createFailed": "இந்தத் திட்டத்தை உருவாக்க முடியவில்லை. கட்டமைப்பு விவரங்களிலிருந்து மீண்டும் முயற்சிக்கவும்.",
+  "customerPlan.disclosure.illustrative_investment_values":
+    "இந்தத் திட்டத்தில் காட்டப்படும் முதலீட்டு மதிப்புகள் உதாரணங்கள் மட்டுமே, உத்தரவாதமான வருமானம் அல்ல.",
+  "customerPlan.disclosure.non_guaranteed_benefits":
+    "இந்தத் திட்டத்தில் சில பலன் மதிப்புகள் உத்தரவாதமற்றவை மற்றும் எதிர்கால செயல்திறனைச் சார்ந்துள்ளன.",
+  "customerPlan.disclosure.premium_requires_verification":
+    "இந்தத் திட்டத்தில் ஒன்று அல்லது அதற்கு மேற்பட்ட பிரீமியங்கள் இன்னும் சரிபார்க்கப்படவில்லை. இந்தத் திட்டம் பட்ஜெட்டிற்குள் உள்ளது என்று இன்னும் உறுதிப்படுத்த முடியாது.",
+  "customerPlan.disclosure.tax_treatment_conditional": "இந்தத் திட்டத்திற்கான வரி நடைமுறை நிபந்தனைக்குட்பட்டது அல்லது இன்னும் உறுதிசெய்யப்படவில்லை.",
+  "customerPlan.disclosure.costs_unavailable": "இந்தத் திட்டத்திற்கான செலவு விவரங்கள் இன்னும் கிடைக்கவில்லை.",
+  "customerPlan.disclosure.liquidity_conditional": "இந்தத் திட்டத்தின் கீழ் பணத்தை அணுகுவது திட்ட நிபந்தனைகளைப் பொறுத்தது.",
+  "customerPlan.disclosure.market_linked_values":
+    "இந்தத் திட்டத்தில் நிதி செயல்திறனுக்கு ஏற்ப ஏறக்கூடிய அல்லது இறங்கக்கூடிய சந்தை-இணைந்த மதிப்புகள் உள்ளன.",
+  "customerPlan.disclosure.eligibility_not_underwriting_approval":
+    "தகுதி நிபந்தனைகளைப் பூர்த்தி செய்வது LIC-யின் அண்டர்ரைட்டிங் ஒப்புதலை உறுதி செய்யாது.",
+
   "results.category.term_protection": "டெர்ம் பாதுகாப்பு",
   "results.category.savings_endowment": "சேமிப்பு / எண்டோமெண்ட்",
   "results.category.whole_life": "முழு வாழ்நாள்",
@@ -2096,6 +2185,50 @@ const hi: TranslationDict = {
   "results.warning.illustration_only_not_guaranteed_returns": "केवल उदाहरण — गारंटीशुदा रिटर्न नहीं।",
   "results.warning.market_linked_maturity_value_never_projected_nav_dependent":
     "बाज़ार-आधारित परिपक्वता मूल्य फंड के प्रदर्शन पर निर्भर करता है और यहाँ कभी अनुमानित नहीं किया जाता।",
+
+  "customerPlan.create": "📋 ग्राहक योजना बनाएँ",
+  "customerPlan.title": "ग्राहक योजना",
+  "customerPlan.summary": "सारांश",
+  "customerPlan.selectedStructure": "चयनित संरचना",
+  "customerPlan.customer": "ग्राहक",
+  "customerPlan.unnamedCustomer": "अनाम ग्राहक",
+  "customerPlan.editCustomer": "ग्राहक विवरण संपादित करें",
+  "customerPlan.name": "नाम (वैकल्पिक)",
+  "customerPlan.phone": "फ़ोन (वैकल्पिक)",
+  "customerPlan.save": "सहेजें",
+  "customerPlan.cancel": "रद्द करें",
+  "customerPlan.planStructure": "📋 योजना संरचना",
+  "customerPlan.importantInformation": "महत्वपूर्ण जानकारी",
+  "customerPlan.assumptionsDisclosures": "मान्यताएँ और प्रकटीकरण",
+  "customerPlan.details": "विवरण",
+  "customerPlan.saveDraft": "💾 ड्राफ्ट इस डिवाइस पर सहेजें",
+  "customerPlan.draftSavedOnDevice": "ड्राफ्ट इस डिवाइस पर सहेजा गया।",
+  "customerPlan.draftSavedNote": "यह ड्राफ्ट केवल इस ब्राउज़र में सहेजा गया है, किसी सुरक्षित क्लाउड स्टोरेज में नहीं।",
+  "customerPlan.saveFailed": "यह डिवाइस ड्राफ्ट सहेज नहीं सका। स्टोरेज उपलब्ध नहीं है या भर चुका है।",
+  "customerPlan.draftPlans": "ड्राफ्ट योजनाएँ",
+  "customerPlan.viewDraftPlans": "ड्राफ्ट योजनाएँ देखें",
+  "customerPlan.draftPlansEmpty": "इस डिवाइस पर अभी तक कोई ड्राफ्ट योजना सहेजी नहीं गई है।",
+  "customerPlan.open": "खोलें",
+  "customerPlan.delete": "हटाएँ",
+  "customerPlan.deleteConfirm": "इस ड्राफ्ट योजना को इस डिवाइस से हटाएँ?",
+  "customerPlan.createdOn": "बनाई गई {date}",
+  "customerPlan.snapshotNote":
+    "यह योजना बनाए जाने के समय की एक स्नैपशॉट है। बाद में उत्पाद विवरण अपडेट होने पर भी यह नहीं बदलेगी। अद्यतन आँकड़ों के साथ नई योजना बनाने के लिए प्लानर पर वापस जाएँ।",
+  "customerPlan.backToStructure": "← वापस",
+  "customerPlan.createFailed": "यह योजना नहीं बनाई जा सकी। कृपया संरचना विवरण से फिर से प्रयास करें।",
+  "customerPlan.disclosure.illustrative_investment_values":
+    "इस योजना में दिखाए गए निवेश मूल्य केवल उदाहरण हैं, गारंटीकृत रिटर्न नहीं।",
+  "customerPlan.disclosure.non_guaranteed_benefits":
+    "इस योजना में कुछ लाभ मूल्य गैर-गारंटीकृत हैं और भविष्य के प्रदर्शन पर निर्भर करते हैं।",
+  "customerPlan.disclosure.premium_requires_verification":
+    "इस योजना में एक या अधिक प्रीमियम अभी सत्यापित नहीं हैं। इस योजना को अभी बजट के भीतर होने की पुष्टि नहीं की जा सकती।",
+  "customerPlan.disclosure.tax_treatment_conditional": "इस योजना के लिए कर व्यवहार सशर्त है या अभी पुष्टि नहीं हुई है।",
+  "customerPlan.disclosure.costs_unavailable": "इस योजना के लिए लागत विवरण अभी उपलब्ध नहीं हैं।",
+  "customerPlan.disclosure.liquidity_conditional": "इस योजना के तहत धनराशि तक पहुँच योजना की शर्तों पर निर्भर है।",
+  "customerPlan.disclosure.market_linked_values":
+    "इस योजना में बाज़ार से जुड़े मूल्य शामिल हैं जो फंड के प्रदर्शन के साथ बढ़ या घट सकते हैं।",
+  "customerPlan.disclosure.eligibility_not_underwriting_approval":
+    "पात्रता शर्तों को पूरा करना LIC की अंडरराइटिंग स्वीकृति की गारंटी नहीं देता।",
 
   "results.category.term_protection": "टर्म सुरक्षा",
   "results.category.savings_endowment": "बचत / एंडोमेंट",

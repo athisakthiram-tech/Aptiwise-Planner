@@ -7,6 +7,7 @@
 
 import { StrategyResult } from "@/lib/planning/strategyTypes";
 import { ProtectionNeedResult } from "@/lib/planning/protectionNeeds";
+import { GoalNeedResult } from "@/lib/planning/goalNeeds";
 import { CustomerFinancialProfile } from "@/lib/planning/customerProfile";
 import {
   getGoalVisualData,
@@ -22,6 +23,8 @@ import { ProtectionVisual } from "@/components/planner/results/ProtectionVisual"
 import { GoalCoverageVisual } from "@/components/planner/results/GoalCoverageVisual";
 import { StructureJourney } from "@/components/planner/results/StructureJourney";
 import { StrategyReasons } from "@/components/planner/results/StrategyReasons";
+import { CreatePlanAction } from "@/components/customerPlan/CreatePlanAction";
+import { CustomerPlan } from "@/lib/customerPlan/types";
 import { Locale } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
 
@@ -72,15 +75,19 @@ function ValueRow({
 export function StrategyDetails({
   strategy,
   protectionNeed,
+  goalNeed,
   profile,
   locale,
   onBack,
+  onCreatePlan,
 }: {
   strategy: StrategyResult;
   protectionNeed: ProtectionNeedResult;
+  goalNeed: GoalNeedResult;
   profile: CustomerFinancialProfile;
   locale: Locale;
   onBack: () => void;
+  onCreatePlan: (plan: CustomerPlan) => void;
 }) {
   const protectionVisual = getProtectionVisualData(strategy, protectionNeed);
   const goalVisual = getGoalVisualData(strategy, profile);
@@ -92,6 +99,15 @@ export function StrategyDetails({
       </button>
 
       <p className="text-base font-bold text-ink-900">{t("results.detail.title", locale)}</p>
+
+      <CreatePlanAction
+        strategy={strategy}
+        protectionNeed={protectionNeed}
+        goalNeed={goalNeed}
+        profile={profile}
+        locale={locale}
+        onCreated={onCreatePlan}
+      />
 
       <Card className="flex flex-col gap-3">
         <p className="text-xs font-semibold text-ink-500">{t("results.protection.title", locale)}</p>

@@ -18,13 +18,18 @@ import { StrategyFamilyCard } from "@/components/planner/results/StrategyFamilyC
 import { StrategyCard } from "@/components/planner/results/StrategyCard";
 import { StrategyDetails } from "@/components/planner/results/StrategyDetails";
 import { StrategyComparison } from "@/components/planner/results/StrategyComparison";
+import { CustomerPlanPreview } from "@/components/customerPlan/CustomerPlanPreview";
+import { DraftPlans } from "@/components/customerPlan/DraftPlans";
+import { CustomerPlan } from "@/lib/customerPlan/types";
 import { Locale } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
 
 type ResultsView =
   | { kind: "overview" }
   | { kind: "family"; family: StrategyFamily }
-  | { kind: "detail"; strategyId: string };
+  | { kind: "detail"; strategyId: string }
+  | { kind: "planPreview"; plan: CustomerPlan }
+  | { kind: "draftPlans" };
 
 export function PlannerResults({ goal, locale }: { goal: GoalInput; locale: Locale }) {
   const [existingInvestments, setExistingInvestments] = useState<number | null>(null);
@@ -61,6 +66,28 @@ export function PlannerResults({ goal, locale }: { goal: GoalInput; locale: Loca
     setCompareIds((current) => toggleCompareSelection(current, id));
   }
 
+  if (view.kind === "planPreview") {
+    return (
+      <CustomerPlanPreview
+        plan={view.plan}
+        locale={locale}
+        onBack={() => setView({ kind: "overview" })}
+        onPlanChange={(updated) => setView({ kind: "planPreview", plan: updated })}
+        onViewDrafts={() => setView({ kind: "draftPlans" })}
+      />
+    );
+  }
+
+  if (view.kind === "draftPlans") {
+    return (
+      <DraftPlans
+        locale={locale}
+        onBack={() => setView({ kind: "overview" })}
+        onOpen={(plan) => setView({ kind: "planPreview", plan })}
+      />
+    );
+  }
+
   if (view.kind === "detail") {
     const strategy = allStrategiesById.get(view.strategyId);
     if (strategy) {
@@ -68,9 +95,11 @@ export function PlannerResults({ goal, locale }: { goal: GoalInput; locale: Loca
         <StrategyDetails
           strategy={strategy}
           protectionNeed={pipeline.protectionNeed}
+          goalNeed={pipeline.goalNeed}
           profile={profile}
           locale={locale}
           onBack={() => setView({ kind: "family", family: strategy.family })}
+          onCreatePlan={(plan) => setView({ kind: "planPreview", plan })}
         />
       );
     }
@@ -115,6 +144,14 @@ export function PlannerResults({ goal, locale }: { goal: GoalInput; locale: Loca
         onChangeExistingInvestments={setExistingInvestments}
         onChangeOutstandingLiabilities={setOutstandingLiabilities}
       />
+
+      <button
+        type="button"
+        onClick={() => setView({ kind: "draftPlans" })}
+        className="self-start text-xs font-semibold text-brand-700"
+      >
+        {t("customerPlan.viewDraftPlans", locale)}
+      </button>
 
       <div>
         <p className="mb-1 text-sm font-bold text-ink-900">{t("results.explore.title", locale)}</p>

@@ -58,6 +58,11 @@ export interface StrategyComponent {
   deathBenefit: ComparisonValue<number>;
   maturityBenefit: ComparisonValue<number>;
   reasonCodes: StrategyReasonCode[];
+  // Set only for the illustrative-investment role — the rate/duration
+  // used to compute `maturityBenefit`, so a later snapshot (e.g.
+  // lib/customerPlan) can honestly record what illustration was shown
+  // without having to invert sipFutureValue to guess at it.
+  illustration?: { ratePct: number; years: number };
 }
 
 export interface StrategyResult {

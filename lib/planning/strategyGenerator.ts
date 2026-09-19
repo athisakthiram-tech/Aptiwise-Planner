@@ -184,6 +184,7 @@ function buildIllustrativeInvestmentComponent(
       noteCode: "illustration_only_not_guaranteed_returns",
     },
     reasonCodes,
+    illustration: { ratePct, years },
   };
 }
 
