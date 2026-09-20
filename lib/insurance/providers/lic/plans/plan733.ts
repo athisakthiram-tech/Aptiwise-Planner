@@ -246,12 +246,31 @@ export function evaluateEligibility(input: Plan733Input): EligibilityResult {
 // PLAN_733_RULES.sampleIllustrativePremium). Only an exact match against
 // one of those published points is ever returned; nothing is estimated,
 // interpolated, or generalised.
+//
+// Premium & Product Calculation Foundation V2: Premium Paying Term is
+// entirely DERIVED from Policy Term (PPT = Term - 3, see
+// premiumPayingTermOffsetYears above and evaluateEligibility's own
+// check). A caller-supplied PPT that contradicts that relationship is an
+// internally inconsistent request — the sample table's own recorded PPT
+// per row already reflects the correct one, but this lookup used to key
+// only on (age, policyTermYears), silently ignoring premiumPaymentTermYears
+// entirely. That let an invalid PPT slip through and get back a premium
+// as if it had been validated. If a PPT is explicitly supplied, it must
+// match the term-derived value or the result is honestly unavailable.
 export function calculatePremium(input: Plan733Input): PremiumCalculationResult {
   const missingInputs: string[] = [];
   if (input.policyTermYears == null) missingInputs.push("policyTermYears");
   if (input.sumAssured == null) missingInputs.push("sumAssured");
   if (missingInputs.length > 0) {
     return { available: false, missingInputs };
+  }
+
+  if (
+    input.premiumPaymentTermYears != null &&
+    input.premiumPaymentTermYears !==
+      input.policyTermYears! - PLAN_733_RULES.premiumPayingTermOffsetYears
+  ) {
+    return { available: false, missingInputs: [PREMIUM_UNAVAILABLE_REASON] };
   }
 
   const sample = PLAN_733_RULES.sampleIllustrativePremium;

@@ -236,12 +236,27 @@ export function evaluateEligibility(input: Plan736Input): EligibilityResult {
 // interpolated, scaled or generalised — including the documented mode
 // and High Sum Assured rebates, which would require a complete base-rate
 // table this brochure doesn't publish (see docs/lic-plan736-verification.md).
+//
+// Premium & Product Calculation Foundation V2: Jeevan Labh only offers
+// ONE valid Premium Paying Term per Policy Term (TERM_PPT_PAIRS above,
+// enforced by evaluateEligibility). This lookup used to key only on
+// (age, policyTermYears), silently ignoring premiumPaymentTermYears —
+// so a caller requesting an internally-inconsistent PPT for the chosen
+// term (one evaluateEligibility would reject) still got back a premium
+// as if that combination were valid. If a PPT is explicitly supplied, it
+// must match the term's own required PPT or the result is honestly
+// unavailable.
 export function calculatePremium(input: Plan736Input): PremiumCalculationResult {
   const missingInputs: string[] = [];
   if (input.policyTermYears == null) missingInputs.push("policyTermYears");
   if (input.sumAssured == null) missingInputs.push("sumAssured");
   if (missingInputs.length > 0) {
     return { available: false, missingInputs };
+  }
+
+  const requiredPpt = PLAN_736_RULES.termPptPairs[input.policyTermYears!];
+  if (input.premiumPaymentTermYears != null && input.premiumPaymentTermYears !== requiredPpt) {
+    return { available: false, missingInputs: [PREMIUM_UNAVAILABLE_REASON] };
   }
 
   const sample = PLAN_736_RULES.sampleIllustrativePremium;

@@ -200,12 +200,27 @@ export function evaluateEligibility(input: Plan748Input): EligibilityResult {
 // ---- Phase 4: premium engine safety ----
 // The brochure publishes exact premiums for 4 ages x up to 6 terms (BSA
 // Rs.10,00,000). Only an exact match is ever returned.
+//
+// Premium & Product Calculation Foundation V2: Premium Paying Term is
+// always Policy Term - 4 (derived, never an independent customer
+// choice — see premiumPayingTermOffsetFromPolicyTerm above). If a caller
+// nonetheless supplies a premiumPaymentTermYears that contradicts that
+// relationship for the chosen term, the request is internally
+// inconsistent and must not silently resolve to that term's premium.
 export function calculatePremium(input: Plan748Input): PremiumCalculationResult {
   const missingInputs: string[] = [];
   if (input.policyTermYears == null) missingInputs.push("policyTermYears");
   if (input.sumAssured == null) missingInputs.push("sumAssured");
   if (missingInputs.length > 0) {
     return { available: false, missingInputs };
+  }
+
+  if (
+    input.premiumPaymentTermYears != null &&
+    input.premiumPaymentTermYears !==
+      input.policyTermYears! - PLAN_748_RULES.premiumPayingTermOffsetFromPolicyTerm
+  ) {
+    return { available: false, missingInputs: [PREMIUM_UNAVAILABLE_REASON] };
   }
 
   const sample = PLAN_748_RULES.sampleIllustrativePremium;

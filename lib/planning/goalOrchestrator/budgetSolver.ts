@@ -21,6 +21,7 @@ import { LicCalculationContext } from "@/types/insurance";
 import { ProductEligibilityAssessment } from "@/lib/planning/productEligibility";
 import { buildComponent } from "@/lib/planning/strategyGenerator";
 import { StrategyComponent, StrategyComponentRole, StrategyReasonCode } from "@/lib/planning/strategyTypes";
+import { getPremiumCalculationDomain } from "@/lib/insurance/premiumCalculationCapability";
 
 export interface BudgetSolverInput {
   assessment: ProductEligibilityAssessment;
@@ -53,10 +54,32 @@ export interface BudgetSolverResult {
 // own target, then progressively more conservative round amounts).
 // LIC's own published sample tables overwhelmingly use round-lakh
 // amounts, which is why these particular steps were chosen — not
-// because they are guaranteed to work for any given product.
+// because they are guaranteed to work for any given product. Used only
+// as a fallback for a product with no registered
+// PremiumCalculationDomain (see below) — every classified product
+// searches its OWN actually-supported Basic Sum Assured values instead.
 const CANDIDATE_STEPS = [5_000_000, 2_500_000, 2_000_000, 1_500_000, 1_000_000, 750_000, 500_000, 300_000, 200_000, 100_000, 50_000];
 
-function buildCandidateList(initial: number): number[] {
+// Foundation V2: most registered engines can only ever resolve a premium
+// at ONE exact published Basic Sum Assured (a brochure sample table is
+// not a rate table — see premiumCalculationCapability.ts's header
+// comment). Probing the generic CANDIDATE_STEPS against such a product
+// wastes calls on amounts that can never match. When the product's own
+// supported values are known, search ONLY those — still smallest-
+// effort-first (the caller's target first, if it happens to already be
+// supported, then the product's own values in descending order).
+function buildCandidateList(initial: number, planNumber: string, uin: string): number[] {
+  const domain = getPremiumCalculationDomain(planNumber, uin);
+  const supported = domain?.supportedBasicSumAssuredValues;
+  if (supported && supported.length > 0) {
+    const descending = [...supported].sort((a, b) => b - a);
+    // The caller's own target is tried first (it may already be one of
+    // the supported values); every genuinely supported value is tried
+    // after it, largest first — nothing outside this product's own
+    // published set is ever probed.
+    return Array.from(new Set([initial, ...descending]));
+  }
+
   const candidates = [initial];
   for (const step of CANDIDATE_STEPS) {
     if (step < initial) candidates.push(step);
@@ -75,7 +98,7 @@ function buildContext(input: BudgetSolverInput, basicSumAssured: number): LicCal
 }
 
 export function solveBudgetFit(input: BudgetSolverInput): BudgetSolverResult {
-  const candidates = buildCandidateList(input.initialBsaCandidate);
+  const candidates = buildCandidateList(input.initialBsaCandidate, input.assessment.product.planNumber, input.assessment.product.uin);
 
   for (const bsa of candidates) {
     const context = buildContext(input, bsa);

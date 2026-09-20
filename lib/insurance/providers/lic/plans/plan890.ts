@@ -204,12 +204,27 @@ export function evaluateEligibility(input: Plan890Input): EligibilityResult {
 // ---- Phase 4: premium engine safety ----
 // The brochure publishes exact premiums for BSA Rs.10,00,000, 4 ages x 3
 // policy terms. Only an exact match is ever returned.
+//
+// Premium & Product Calculation Foundation V2: Premium Paying Term is
+// always Policy Term - 5 (derived, never an independent customer
+// choice — see premiumPayingTermOffsetFromPolicyTerm above and
+// derivedPremiumPayingTermYears()). If a caller nonetheless supplies a
+// premiumPaymentTermYears that contradicts that relationship for the
+// chosen term, the request is internally inconsistent and must not
+// silently resolve to that term's premium.
 export function calculatePremium(input: Plan890Input): PremiumCalculationResult {
   const missingInputs: string[] = [];
   if (input.policyTermYears == null) missingInputs.push("policyTermYears");
   if (input.sumAssured == null) missingInputs.push("sumAssured");
   if (missingInputs.length > 0) {
     return { available: false, missingInputs };
+  }
+
+  if (
+    input.premiumPaymentTermYears != null &&
+    input.premiumPaymentTermYears !== derivedPremiumPayingTermYears(input.policyTermYears!)
+  ) {
+    return { available: false, missingInputs: [PREMIUM_UNAVAILABLE_REASON] };
   }
 
   const sample = PLAN_890_RULES.sampleIllustrativePremium;

@@ -180,12 +180,24 @@ export function evaluateEligibility(input: Plan715Input): EligibilityResult {
   return { eligible, reasons, reasonCodes, missingInputs, sourceVersion: SOURCE_VERSION };
 }
 
+// Premium & Product Calculation Foundation V2: this plan is Regular Pay
+// only — evaluateEligibility already rejects a premiumPaymentTermYears
+// that doesn't equal the chosen policyTermYears. This lookup used to key
+// only on (age, policyTermYears), silently ignoring
+// premiumPaymentTermYears — so a caller requesting a mismatched PPT
+// (one evaluateEligibility would reject) still got back a premium as if
+// that combination were valid. If a PPT is explicitly supplied, it must
+// equal the policy term or the result is honestly unavailable.
 export function calculatePremium(input: Plan715Input): PremiumCalculationResult {
   const missingInputs: string[] = [];
   if (input.policyTermYears == null) missingInputs.push("policyTermYears");
   if (input.sumAssured == null) missingInputs.push("sumAssured");
   if (missingInputs.length > 0) {
     return { available: false, missingInputs };
+  }
+
+  if (input.premiumPaymentTermYears != null && input.premiumPaymentTermYears !== input.policyTermYears) {
+    return { available: false, missingInputs: [PREMIUM_UNAVAILABLE_REASON] };
   }
 
   const sample = PLAN_715_RULES.sampleIllustrativePremium;

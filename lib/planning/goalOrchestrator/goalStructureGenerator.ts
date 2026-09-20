@@ -34,6 +34,7 @@ import { deriveProductRoles, isGoalFundingRole, ProductRole } from "@/lib/planni
 import { buildCashFlowTimeline, CashFlowPhase } from "@/lib/planning/goalOrchestrator/cashFlowTimeline";
 import { solveBudgetFit } from "@/lib/planning/goalOrchestrator/budgetSolver";
 import { FundingContext, GoalOrchestratorInput, GoalOrchestratorReasonCode, GoalStructure, UNKNOWN_FUNDING_CONTEXT } from "@/lib/planning/goalOrchestrator/types";
+import { getPremiumCalculationDomain } from "@/lib/insurance/premiumCalculationCapability";
 
 const GOAL_FUNDING_CATEGORIES: InsuranceCategory[] = ["savings_endowment", "whole_life", "money_back_child", "market_linked_ulip"];
 
@@ -45,7 +46,27 @@ const GOAL_FUNDING_CATEGORIES: InsuranceCategory[] = ["savings_endowment", "whol
 const LIMITED_PAY_CANDIDATES_YEARS = [15, 10, 7, 5];
 const MIN_POST_PPT_YEARS = 3;
 
-function pickLimitedPayTermYears(horizonYears: number): number | null {
+// Premium & Product Calculation Foundation V2: several registered
+// engines have a Premium Paying Term that is FIXED — fully derived from
+// Policy Term (e.g. Jeevan Labh's Term->PPT pairing, Bima Shree/New Bima
+// Jyoti's Term-4/Term-5 offset) rather than a free customer choice. For
+// those, guessing from LIMITED_PAY_CANDIDATES_YEARS risks requesting a
+// PPT the product's own rules (and, since this pass, its premium engine
+// — see plan736/748/890.ts's calculatePremium guards) will reject as
+// internally inconsistent. When the primary product's domain declares a
+// FIXED relationship, use its own derived PPT directly; otherwise fall
+// back to the existing bounded guess-list for a genuinely independent-
+// PPT product (e.g. Bima Platinum) or an unclassified one.
+function pickLimitedPayTermYears(horizonYears: number, planNumber: string, uin: string): number | null {
+  const domain = getPremiumCalculationDomain(planNumber, uin);
+  if (domain?.dimensions.premiumPayingTerm === "FIXED" && domain.derivePremiumPayingTermYears) {
+    const derived = domain.derivePremiumPayingTermYears(horizonYears);
+    if (derived == null || derived <= 0 || derived >= horizonYears || horizonYears - derived < MIN_POST_PPT_YEARS) {
+      return null;
+    }
+    return derived;
+  }
+
   const valid = LIMITED_PAY_CANDIDATES_YEARS.filter(
     (ppt) => ppt < horizonYears && horizonYears - ppt >= MIN_POST_PPT_YEARS
   );
@@ -320,7 +341,7 @@ export function generateGoalStructures(input: GoalOrchestratorInput): GoalStruct
   );
 
   // ---- Structure B: limited-pay primary + post-PPT second component ----
-  const limitedPayYears = pickLimitedPayTermYears(yearsToGoal);
+  const limitedPayYears = pickLimitedPayTermYears(yearsToGoal, primary.product.planNumber, primary.product.uin);
   if (limitedPayYears != null) {
     const primaryLimited = buildProductComponent({
       assessment: primary,

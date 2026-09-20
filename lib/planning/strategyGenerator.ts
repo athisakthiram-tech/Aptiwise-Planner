@@ -151,7 +151,20 @@ export function buildComponent(
     const monthly = annualToMonthly(premiumResult.premium, premiumResult.premiumFrequency);
     monthlyPremium =
       monthly != null
-        ? { value: monthly, status: "verified", source: assessment.product.id }
+        ? {
+            value: monthly,
+            status: "verified",
+            source: assessment.product.id,
+            // Section 7/8: this figure is LIC's own verified premium
+            // exactly as published ONLY when premiumFrequency is already
+            // "monthly". Every other frequency (yearly/half_yearly/
+            // quarterly) is divided here purely for budget-comparison
+            // purposes — a derived "Planning Monthly Equivalent", never
+            // to be presented as LIC's own monthly-mode premium (which
+            // this codebase has no verified rate data for on any of
+            // these products).
+            noteCode: premiumResult.premiumFrequency === "monthly" ? undefined : "planning_monthly_equivalent_derived_from_verified_premium",
+          }
         : { value: null, status: "verified", source: assessment.product.id, noteCode: "single_premium_lump_sum_not_monthly" };
   } else {
     monthlyPremium = { value: null, status: "unavailable", noteCode: "premium_requires_exact_published_rate_match" };
