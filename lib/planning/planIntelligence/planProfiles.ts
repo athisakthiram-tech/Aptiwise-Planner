@@ -938,8 +938,19 @@ const PLAN_734 = buildProfile({
     notes: ["Sample premiums are published for exactly 4 entry ages (0, 4, 8, 12) across 4 survival-benefit options — the registered engine never reads a customer-supplied term/PPT since neither is an independent choice for this plan."],
   },
   benefitModel: [
-    guaranteedSurvival("Scheduled survival benefit payments at intervals from age 20 onward (exact schedule depends on the chosen option 1-4), each a percentage of Basic Sum Assured."),
-    guaranteedMaturity("A final maturity payment, together with vested bonuses, at the end of the (age-derived) policy term."),
+    // Phase 3B: quantified the 4 selectable options (cross-corroborated
+    // this session, primary brochure not directly fetchable in this
+    // sandbox). NOT wired into benefitProjection.ts's quantified
+    // cash-flow projector — the payment ages (20-24) are CHILD ages, and
+    // this repository's PlanningRequest/BenefitProjectionInput only
+    // carries one "age" field (the proposer/parent who is actually
+    // underwritten as Phase 2's customer for premium-capacity purposes),
+    // so a correct year-from-policy-start conversion needs a distinct
+    // child-age input this architecture does not yet collect — modeling
+    // it against the wrong age would silently produce wrong cash-flow
+    // years, which is worse than staying qualitative here.
+    guaranteedSurvival("Scheduled survival benefit payments from child age 20 to 24 (5 annual payments), under one of 4 selectable options: Option 1 (none — full benefit at maturity instead), Option 2 (5% of Basic Sum Assured/year), Option 3 (10%/year), or Option 4 (15%/year). Not quantified in benefitProjection.ts — see that module's own comment for why (requires a distinct child-age input this architecture does not yet collect)."),
+    guaranteedMaturity("A final maturity payment (the percentage of Basic Sum Assured determined by the chosen option), together with vested Simple Reversionary Bonus and Final Additional Bonus, at the end of the (age-derived) policy term."),
     guaranteedProtection("Guaranteed death benefit, at least the Basic Sum Assured, payable if the child life assured dies during the term."),
     nonGuaranteedReversionaryBonus("Simple Reversionary Bonus — not guaranteed."),
   ],
@@ -988,8 +999,13 @@ const PLAN_720 = buildProfile({
     notes: ["Level premiums for the full 20-year term."],
   },
   benefitModel: [
-    guaranteedSurvival("Scheduled survival benefit payments (a percentage of Basic Sum Assured) at fixed intervals during the 20-year term — LIC's well-documented money-back cash-flow design."),
-    guaranteedMaturity("A final maturity payment (the remaining percentage of Basic Sum Assured) plus vested bonuses at the end of the term."),
+    // Phase 3B: quantified via lib/planning/planIntelligence/benefitProjection.ts's
+    // MONEY_BACK_SCHEDULES — 20% of BSA at the end of policy years 5, 10
+    // and 15 (cross-corroborated this session across multiple independent
+    // secondary sources describing identical figures; the primary
+    // brochure could not be directly fetched in this sandbox).
+    guaranteedSurvival("Scheduled survival benefit payments of 20% of Basic Sum Assured each, at the end of policy years 5, 10 and 15 (60% of BSA in total) — see benefitProjection.ts for the quantified cash-flow projection."),
+    guaranteedMaturity("A final maturity payment of the remaining 40% of Basic Sum Assured, plus vested bonuses, at the end of the 20-year term."),
     guaranteedProtection("Guaranteed death benefit — the full Basic Sum Assured, regardless of survival benefits already paid."),
     nonGuaranteedReversionaryBonus("Simple Reversionary Bonus — not guaranteed."),
   ],
@@ -1038,8 +1054,10 @@ const PLAN_721 = buildProfile({
     notes: ["Level premiums for the full 25-year term."],
   },
   benefitModel: [
-    guaranteedSurvival("A greater number of scheduled survival benefit payments than the 20-year variant, spread across the longer 25-year term."),
-    guaranteedMaturity("A final maturity payment plus vested bonuses at the end of the term."),
+    // Phase 3B: quantified via benefitProjection.ts's MONEY_BACK_SCHEDULES
+    // — 15% of BSA at the end of policy years 5, 10, 15 and 20.
+    guaranteedSurvival("Scheduled survival benefit payments of 15% of Basic Sum Assured each, at the end of policy years 5, 10, 15 and 20 (60% of BSA in total) — see benefitProjection.ts for the quantified cash-flow projection."),
+    guaranteedMaturity("A final maturity payment of the remaining 40% of Basic Sum Assured, plus vested bonuses, at the end of the 25-year term."),
     guaranteedProtection("Guaranteed full-BSA death benefit throughout the term, unaffected by survival benefits already paid."),
     nonGuaranteedReversionaryBonus("Simple Reversionary Bonus — not guaranteed."),
   ],
@@ -1088,8 +1106,14 @@ const PLAN_732 = buildProfile({
     notes: ["Funded by the parent/guardian on behalf of the child."],
   },
   benefitModel: [
-    guaranteedSurvival("Scheduled survival benefit payments at intervals tied to the child's growing-up milestones (exact schedule not verified in this repository)."),
-    guaranteedMaturity("A final maturity payment plus vested bonuses at the end of the term."),
+    // Phase 3B: cross-corroborated this session (primary brochure not
+    // directly fetchable). NOT wired into benefitProjection.ts's
+    // quantified projector for the same reason as Plan 734 — ages 18/20/22
+    // are CHILD ages, and this architecture's PlanningRequest carries only
+    // the proposer/parent's own age, with no distinct child-age input to
+    // correctly convert "child age 18/20/22/25" into years-from-policy-start.
+    guaranteedSurvival("Scheduled survival benefit payments of 20% of Basic Sum Assured each at child ages 18, 20 and 22 (60% of BSA in total). Not quantified in benefitProjection.ts — see that module's own comment for why (requires a distinct child-age input this architecture does not yet collect)."),
+    guaranteedMaturity("A final maturity payment of the remaining 40% of Basic Sum Assured plus vested bonuses at child age 25."),
     guaranteedProtection("Guaranteed death benefit on the child; commonly available alongside a Premium Waiver Benefit rider that continues the policy's benefits if the proposer/parent dies during the term."),
     nonGuaranteedReversionaryBonus("Simple Reversionary Bonus — not guaranteed."),
   ],
@@ -1372,7 +1396,10 @@ const PLAN_873 = buildProfile({
     validTermOptions: null,
     minPremiumOrBsa: { minBasicSumAssured: null, minPremium: null },
     premiumModes: ["yearly", "half_yearly", "quarterly", "monthly"],
-    notes: ["No fixed Basic Sum Assured — BSA is a chosen multiple (7x or 10x) of the customer's own Annualized Premium; maximum entry age and maximum maturity age both depend on which multiple is chosen (60/50 and 85/75 respectively)."],
+    notes: [
+      "No fixed Basic Sum Assured — BSA is a chosen multiple (7x or 10x) of the customer's own Annualized Premium; maximum entry age and maximum maturity age both depend on which multiple is chosen (60/50 and 85/75 respectively).",
+      "IDENTITY/VERSION FLAG (Phase 3B, not silently resolved): a secondary source found this session states Index Plus was launched on 2024-02-06 and withdrawn on 2024-10-01 — NOT independently confirmed against a directly-fetched primary document (licindia.in egress is blocked in this sandbox), and NOT acted on (this profile's active status is left unchanged) per 'report the conflict, do not silently overwrite'. See docs/lic-financial-knowledge-v2.md.",
+    ],
   },
   premiumModel: {
     // CUSTOMER_CHOSEN, not REGULAR: this plan's own notes/minimumContribution
@@ -1395,7 +1422,14 @@ const PLAN_873 = buildProfile({
   returnNotes: ["The Fund Value leg is inherently market-dependent; any IRR would be, at best, ILLUSTRATIVE (a what-if scenario), never VERIFIED."],
   liquidity: { surrenderAvailable: "ESTIMATED", loanAvailable: "NOT_APPLICABLE", lockInYears: 5, notes: ["A standard 5-year lock-in is typical for LIC ULIPs sold under current IRDAI regulations; loan is never available on a market-linked product."] },
   ulip: buildUlipIntelligence({
-    funds: [ulipFund("Available Fund(s)", "OTHER", ["Exact fund names/asset-allocation bands are not itemized in this repository's verified data."])],
+    // Phase 3B: real fund identities found this session (secondary
+    // sources, primary brochure not directly fetchable) — 2 index-linked
+    // funds, distinguishing this product from the other 3 ULIPs' broader
+    // fund shelves.
+    funds: [
+      ulipFund("Flexi Growth Fund", "INDEX", ["Tracks the Nifty 100 index — not independently confirmed against a directly-fetched primary document this session."]),
+      ulipFund("Flexi Smart Growth Fund", "INDEX", ["Tracks the Nifty 50 index — not independently confirmed against a directly-fetched primary document this session."]),
+    ],
     historicalPerformance: [],
     officialIllustration: officialIllustration(
       [4, 8],
@@ -1433,7 +1467,14 @@ const PLAN_749 = buildProfile({
     validTermOptions: null,
     minPremiumOrBsa: { minBasicSumAssured: null, minPremium: null },
     premiumModes: ["single"],
-    notes: ["Single-premium-only ULIP — BSA is a chosen multiple (1.25x or 10x) of the Single Premium; maximum entry age depends on the option chosen (70 or 35)."],
+    notes: [
+      "Single-premium-only ULIP — BSA is a chosen multiple (1.25x or 10x) of the Single Premium; maximum entry age depends on the option chosen (70 or 35).",
+      // Phase 3B IDENTITY/VERSION FLAG — see docs/lic-financial-knowledge-v2.md
+      // "IDENTITY/VERSION ISSUES" for the full writeup. Kept as an actual
+      // data string (not just a code comment) so this conflict stays
+      // discoverable/testable rather than living only in source history.
+      "IDENTITY/VERSION FLAG (Phase 3B, not silently resolved): multiple independent official licindia.in page titles found this session read 'LIC's Nivesh Plus (Plan No. 849, UIN No. 512L317V01)', with UIN 512L317V02 for the current/latest revision — NOT 'Plan No. 749' as this repository's catalogue has it. A secondary training document titled 'INTRODUCTION OF LIC's Nivesh Plus (Plan No. 749)' was also found, plausibly the origin of '749' in this repository. This looks like a PLAN-NUMBER transcription error (not a version change) — the UIN (512L317V02) is independently corroborated as this product either way. NOT changed this phase: the planNumber field is read by pre-existing UI-owning files (components/planner/Plan749Configurator.tsx, tests/lic-plan749.test.ts) this phase is not authorized to touch (no UI work). A secondary source also states this UIN was formally withdrawn by LIC on 2024-10-14 — NOT independently confirmed, and NOT acted on (this profile's active status is left unchanged) per 'report the conflict, do not silently overwrite'.",
+    ],
   },
   premiumModel: {
     structure: "SINGLE",
@@ -1512,7 +1553,17 @@ const PLAN_886 = buildProfile({
   returnNotes: ["The Fund Value leg is inherently market-dependent; any IRR would be at best ILLUSTRATIVE. No Guaranteed Additions exist on this product to offset that (unlike some traditional plans' guaranteed accrual)."],
   liquidity: { surrenderAvailable: "ESTIMATED", loanAvailable: "NOT_APPLICABLE", lockInYears: 5, notes: ["A standard 5-year lock-in is typical for LIC ULIPs; loan is never available on a market-linked product."] },
   ulip: buildUlipIntelligence({
-    funds: [ulipFund("Available Fund(s)", "OTHER", ["Exact fund names/asset-allocation bands are not itemized in this repository's verified data."])],
+    // Phase 3B: real fund identities found this session (secondary
+    // sources, primary brochure not directly fetchable) — the broadest
+    // fund shelf of this catalogue's 4 ULIPs (6 options).
+    funds: [
+      ulipFund("Bond Fund", "DEBT", []),
+      ulipFund("Secured Fund", "DEBT", []),
+      ulipFund("Balanced Fund", "BALANCED", []),
+      ulipFund("Growth Fund", "EQUITY", []),
+      ulipFund("Flexi Growth Fund", "INDEX", ["Index-linked (per Index Plus/873's own Nifty 100 fund of the same name) — not independently re-confirmed for this specific product this session."]),
+      ulipFund("Flexi Smart Growth Fund", "INDEX", ["Index-linked (per Index Plus/873's own Nifty 50 fund of the same name) — not independently re-confirmed for this specific product this session."]),
+    ],
     historicalPerformance: [],
     officialIllustration: officialIllustration(
       [4, 8],
@@ -1569,7 +1620,17 @@ const PLAN_752 = buildProfile({
   returnNotes: ["No registered engine exists yet for this product; charges/fund mechanics are not verified in this repository."],
   liquidity: { surrenderAvailable: "ESTIMATED", loanAvailable: "NOT_APPLICABLE", lockInYears: 5, notes: ["A standard 5-year lock-in is typical for LIC ULIPs sold under current IRDAI regulations."] },
   ulip: buildUlipIntelligence({
-    funds: [ulipFund("Available Fund(s)", "OTHER", ["Exact fund names/asset-allocation bands are not itemized in this repository's verified data."])],
+    // Phase 3B: real fund identities found this session, directly named
+    // for SIIP (secondary sources; primary brochure not directly
+    // fetchable). Also found this session: "LIC SIIP Plan 852 has been
+    // repackaged under Plan 752" — CONSISTENT with (not a conflict
+    // against) this repository's own Plan 752 identity for SIIP.
+    funds: [
+      ulipFund("Bond Fund", "DEBT", []),
+      ulipFund("Secured Fund", "DEBT", []),
+      ulipFund("Balanced Fund", "BALANCED", []),
+      ulipFund("Growth Fund", "EQUITY", ["One secondary source reported this fund's NAV as Rs.21.7091 as of 2026-04-27 — a single data point, insufficient to compute any 1Y/3Y/5Y/10Y return (a genuine multi-dated NAV series was not found this session); not stored as historicalPerformance data per this phase's own 'no thousands of hand-typed NAV records, and no CAGR from a single point' guidance."]),
+    ],
     historicalPerformance: [],
     officialIllustration: officialIllustration(
       [4, 8],

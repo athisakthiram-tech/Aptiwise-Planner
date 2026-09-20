@@ -87,3 +87,45 @@ suite.
   above) — a documented, not hidden, simplification.
 - The Nivesh Plus (749) vs. "Plan 849" identity discrepancy (see
   `docs/lic-financial-knowledge-v2.md`) was not resolved.
+
+## Addendum — Phase 3B
+
+### Real fund identities (Section 10)
+
+Found via `WebSearch` this session (secondary sources; every direct
+`WebFetch` attempt, including to non-`licindia.in` domains such as
+`bharatsaver.com`, `licplancalculator.com` and `asymmetrica.in`, was
+blocked by this sandbox's network egress policy — only `WebSearch`'s own
+server-side summarization succeeded):
+
+| Product | Funds found | Asset class assigned | Confidence |
+|---|---|---|---|
+| SIIP (752) | Bond Fund, Secured Fund, Balanced Fund, Growth Fund | DEBT, DEBT, BALANCED, EQUITY | SECONDARY_CORROBORATED |
+| Index Plus (873) | Flexi Growth Fund (Nifty 100), Flexi Smart Growth Fund (Nifty 50) | INDEX, INDEX | SECONDARY_CORROBORATED |
+| Protection Plus (886) | Bond, Secured, Balanced, Growth, Flexi Growth, Flexi Smart Growth (6 funds — the broadest shelf of the 4) | DEBT/DEBT/BALANCED/EQUITY/INDEX/INDEX | SECONDARY_CORROBORATED |
+| Nivesh Plus (749) | Not found this session | — | still the generic "Available Fund(s)" placeholder |
+
+These replace the generic "Available Fund(s)" placeholder each profile
+carried since Phase 1 — a real, named fund now appears in
+`ulip.funds` wherever found, never a fabricated generic "Growth Fund" of
+this repository's own invention.
+
+### NAV history (Sections 11/12)
+
+Exactly ONE dated NAV point was found this session: SIIP's Growth Fund
+at Rs.21.7091 as of 2026-04-27 (secondary source). A single point cannot
+produce any 1Y/3Y/5Y/10Y return or CAGR — this is stored only as a note
+on the fund entry, never as a fabricated `historicalPerformance` record.
+`historicalPerformance` stays an empty array for all 4 ULIPs.
+
+Per Section 11's own "do not manually type thousands of NAV records"
+instruction, this phase instead built the CAPABILITY —
+`lib/planning/planIntelligence/ulipModel.ts`'s `calculateSimpleReturnFromNav`,
+`calculateCagrFromNav`, and `buildHistoricalPerformancePoint` (a
+NavSnapshot-pair-to-HistoricalPerformancePoint builder) — with full
+mathematical test coverage (`tests/phase3bDataFoundation.test.ts`'s "ULIP
+NAV return/CAGR calculation" suite), verified against known cases (e.g.
+100→200 over 5 years = 14.87% CAGR). When a genuine multi-dated NAV
+series is found in a future session, populating real
+`historicalPerformance` data becomes a call to an already-tested
+function, not a new implementation.

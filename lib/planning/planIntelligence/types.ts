@@ -33,11 +33,25 @@ export type DataConfidence =
   | "HISTORICAL" // an actually-occurred past figure (e.g. ULIP NAV performance)
   | "ILLUSTRATIVE"; // a future scenario assumption, never a promise
 
+// Phase 3B (Section: SOURCE QUALITY) — how the FACT was obtained, kept
+// deliberately separate from DataConfidence (which says what KIND of
+// value this is — guaranteed/estimated/historical/etc). A HISTORICAL
+// bonus rate can be PRIMARY_OFFICIAL (read directly off LIC's own
+// circular) or SECONDARY_SINGLE_SOURCE (one aggregator's transcription
+// of it) — the DataConfidence tag alone can't distinguish those, and a
+// caller reasoning about how much to trust a figure needs both axes.
+export type SourceQuality =
+  | "PRIMARY_OFFICIAL" // read directly from an LIC brochure/policy document/product page/NAV disclosure
+  | "SECONDARY_CORROBORATED" // not LIC's own document, but 2+ independent secondary sources agree
+  | "SECONDARY_SINGLE_SOURCE" // exactly one secondary source, uncorroborated
+  | "INTERNAL_DERIVATION"; // computed by this repository's own formula from other already-sourced values
+
 export interface Provenance {
   status: DataConfidence;
   method?: string; // required whenever status is DERIVED or ESTIMATED
   sourceReferences: string[]; // e.g. ["lic-736-sales-brochure-current"], catalogue source ids
   asOf?: string; // ISO date, when meaningful (e.g. HISTORICAL NAV data)
+  sourceQuality?: SourceQuality;
   // Phase 3 (Section: ESTIMATION CONFIDENCE) — an internal planning-engine
   // signal, separate from DataConfidence, for HOW GOOD a given ESTIMATED/
   // DERIVED/HISTORICAL value's own method is (an exact official table

@@ -19,6 +19,7 @@ import { simulateStructure } from "@/lib/planning/combinationEngine/structureSim
 import { analyzeStructureGoal } from "@/lib/planning/combinationEngine/structureAnalysis";
 import { selectDiverseStructures } from "@/lib/planning/combinationEngine/diversitySelector";
 import { generateExplanationParts, generateReasonCodes } from "@/lib/planning/combinationEngine/reasonGenerator";
+import { checkGoalAnalysis, checkStructureBudget } from "@/lib/planning/combinationEngine/sanityChecks";
 import { combineProvenance } from "@/lib/planning/planIntelligence/confidence";
 import { AnalyzedStructure, CandidateAnalysis, PlanningRequest, PlanningResult } from "@/lib/planning/combinationEngine/types";
 
@@ -58,7 +59,15 @@ export function planCombinations(request: PlanningRequest): PlanningResult {
     return { structure: simulated, goalAnalysis, dataConfidence, reasonCodes, explanationParts, monthlyBudgetUsed };
   });
 
-  const finalStructures = selectDiverseStructures(analyzed, request.monthlyCapacity, 3);
+  // Defensive last line (Section 23 — sanity checks): a structure that
+  // is over budget or whose goal-year math produced a non-finite value
+  // is a bug, not a result to report. This never fires in the normal
+  // path (every stage above already prevents both), but a result this
+  // engine returns must never be allowed to carry a NaN/Infinity or a
+  // budget violation regardless of how it got there.
+  const sane = analyzed.filter((item) => checkStructureBudget(item.structure, request.monthlyCapacity).length === 0 && checkGoalAnalysis(item.goalAnalysis).length === 0);
+
+  const finalStructures = selectDiverseStructures(sane, request.monthlyCapacity, 3);
 
   return {
     finalStructures,

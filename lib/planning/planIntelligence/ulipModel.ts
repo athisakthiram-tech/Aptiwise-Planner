@@ -22,6 +22,62 @@ export function officialIllustration(ratesPct: readonly number[], source: string
   return { ratesPct, source, status: "ILLUSTRATIVE" };
 }
 
+// Phase 3B (Sections 11/12) — NAV-based return/CAGR calculation. Never
+// invoked with fabricated NAV data: this repository found no
+// independently-verifiable, multi-dated official NAV series for any of
+// its 4 ULIPs this session (a single NAV point, with no earlier dated
+// point to compare against, cannot produce any return figure) — see
+// docs/lic-ulip-performance-audit.md. These functions exist so that
+// WHEN a defensible NAV snapshot pair is found, the return/CAGR
+// calculation is already correct and tested, rather than being
+// hand-computed and hand-typed at that point.
+export interface NavSnapshot {
+  fundName: string;
+  date: string; // ISO date
+  nav: number;
+}
+
+export function calculateSimpleReturnFromNav(startNav: number, endNav: number): number {
+  if (startNav <= 0) throw new Error("calculateSimpleReturnFromNav requires a positive starting NAV");
+  return Math.round(((endNav - startNav) / startNav) * 10000) / 100;
+}
+
+export function calculateCagrFromNav(startNav: number, endNav: number, years: number): number {
+  if (startNav <= 0) throw new Error("calculateCagrFromNav requires a positive starting NAV");
+  if (years <= 0) throw new Error("calculateCagrFromNav requires a positive year interval");
+  return Math.round((Math.pow(endNav / startNav, 1 / years) - 1) * 10000) / 100;
+}
+
+function yearsBetween(startDate: string, endDate: string): number {
+  const MS_PER_YEAR = 365.25 * 24 * 60 * 60 * 1000;
+  return (new Date(endDate).getTime() - new Date(startDate).getTime()) / MS_PER_YEAR;
+}
+
+// Builds a HISTORICAL performance point from two dated NAV snapshots —
+// "1Y" uses simple return (LIC's own convention for sub-1-year/1-year
+// periods), every longer period label uses CAGR. Always status
+// HISTORICAL — never presented as ILLUSTRATIVE or a future forecast.
+export function buildHistoricalPerformancePoint(params: {
+  fundName: string;
+  periodLabel: UlipHistoricalPerformancePoint["periodLabel"];
+  start: NavSnapshot;
+  end: NavSnapshot;
+  source: string;
+}): UlipHistoricalPerformancePoint {
+  const years = yearsBetween(params.start.date, params.end.date);
+  const returnPercent = params.periodLabel === "1Y" ? calculateSimpleReturnFromNav(params.start.nav, params.end.nav) : calculateCagrFromNav(params.start.nav, params.end.nav, years);
+  return {
+    fundName: params.fundName,
+    periodLabel: params.periodLabel,
+    startDate: params.start.date,
+    endDate: params.end.date,
+    returnPercent,
+    source: params.source,
+    asOf: params.end.date,
+    status: "HISTORICAL",
+  };
+}
+
 export function buildUlipIntelligence(params: {
   funds: UlipFundCharacteristics[];
   historicalPerformance?: UlipHistoricalPerformancePoint[];

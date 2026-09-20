@@ -22,15 +22,28 @@ describe("Traditional products model more than premium -> Basic Sum Assured", ()
     expect(projection.totalParticipatingEstimate.value).toBe(0);
   });
 
-  it("New Endowment (714)/New Jeevan Anand (715)/Jeevan Lakshya (733) fall back to guaranteed-only when no historical record exists — never invented", () => {
+  it("New Endowment (714)/New Jeevan Anand (715)/Jeevan Lakshya (733) now have Phase 3B historical bonus records for a Sum Assured >= Rs.5L", () => {
     for (const [planNumber, uin] of [
       ["714", "512N277V03"],
       ["715", "512N279V03"],
       ["733", "512N297V03"],
     ]) {
       const projection = projectBenefits({ planNumber, uin, age: 30, policyTermYears: 20, premiumPayingTermYears: 20, basicSumAssured: 500000 });
-      expect(projection.totalParticipatingEstimate.value).toBe(0);
+      expect(projection.totalParticipatingEstimate.value).toBeGreaterThan(0);
       expect(projection.totalGuaranteed.value).toBe(500000);
+      expect(projection.totalParticipatingEstimate.provenance.status).toBe("HISTORICAL");
+    }
+  });
+
+  it("still falls back to guaranteed-only, never fabricated, BELOW every plan's verified Sum Assured band", () => {
+    for (const [planNumber, uin] of [
+      ["714", "512N277V03"],
+      ["715", "512N279V03"],
+      ["733", "512N297V03"],
+    ]) {
+      const projection = projectBenefits({ planNumber, uin, age: 30, policyTermYears: 20, premiumPayingTermYears: 20, basicSumAssured: 100000 });
+      expect(projection.totalParticipatingEstimate.value).toBe(0);
+      expect(projection.totalGuaranteed.value).toBe(100000);
     }
   });
 });
@@ -55,8 +68,11 @@ describe("Participating (non-guaranteed) benefits are never conflated with guara
 describe("Historical bonus data", () => {
   it("every historical bonus record is tagged HISTORICAL, never VERIFIED or GUARANTEED-implying", () => {
     for (const record of HISTORICAL_BONUS_RECORDS) {
-      const estimate = getHistoricalBonusEstimate(record.planNumber, record.uin, record.applicableSumAssuredBand.min, record.applicableTermYears![0]);
+      const termYears = record.applicableTermYears?.[0] ?? 20;
+      const maturityAge = record.applicableMaturityAgeMax ?? undefined;
+      const estimate = getHistoricalBonusEstimate(record.planNumber, record.uin, record.applicableSumAssuredBand.min, termYears, maturityAge);
       expect(estimate!.provenance.status).toBe("HISTORICAL");
+      expect(estimate!.provenance.sourceQuality).toBe("SECONDARY_CORROBORATED");
     }
   });
 
@@ -110,10 +126,26 @@ describe("Jeevan Umang (745) is understood as a recurring-income product, not a 
       30
     );
     const survivalEvents = events.filter((e) => e.kind === "SURVIVAL_BENEFIT");
-    expect(survivalEvents.length).toBe(25 - 20 + 1); // one event per year from PPT end through policy term
+    // Income runs to the plan's real whole-life end (age 100), never
+    // truncated at the 25-year search horizon passed in above — for a
+    // 30-year-old, that's age 100 - 30 = 70 years from policy start.
+    expect(survivalEvents.length).toBe(70 - 20 + 1);
     expect(survivalEvents.every((e) => e.amount.value === 80000)).toBe(true);
   });
+
+  it("goal-year value only counts what's received BY the goal year; the terminal benefit and later income are reported separately as post-goal benefits", () => {
+    const projection = projectJeevanUmangForTest();
+    const maturityComponent = projection.components.find((c) => c.type === "MATURITY")!;
+    expect(maturityComponent.yearFromStart).toBe(70); // age 100, not the 25-year goal horizon
+    const survivalComponent = projection.components.find((c) => c.type === "SURVIVAL")!;
+    expect(survivalComponent.recurring!.untilYear).toBe(70);
+    expect(survivalComponent.recurring!.untilYear).toBeGreaterThan(25); // extends well past the goal year
+  });
 });
+
+function projectJeevanUmangForTest() {
+  return projectBenefits({ planNumber: "745", uin: "512N312V03", age: 30, policyTermYears: 25, premiumPayingTermYears: 20, basicSumAssured: 1000000 });
+}
 
 // ---- Jeevan Utsav income mechanics ----
 describe("Jeevan Utsav (771) Regular Income option is modeled as a benefit formula, never as an interest rate", () => {
@@ -136,6 +168,74 @@ describe("Jeevan Utsav (771) Regular Income option is modeled as a benefit formu
 
   it("Jeevan Utsav is non-participating — its participating-estimate layer is always exactly zero, never fabricated", () => {
     expect(projection.totalParticipatingEstimate.value).toBe(0);
+  });
+
+  it("Regular Income starts 2 years after PPT ends, never immediately (Phase 3B's corrected waiting-period timing)", () => {
+    const income = projection.components.find((c) => c.type === "INCOME")!;
+    expect(income.yearFromStart).toBe(10 + 2); // PPT 10 + 2-year waiting period
+  });
+
+  it("Regular Income and the whole-life terminal window run to age 100, not truncated at the search horizon", () => {
+    const income = projection.components.find((c) => c.type === "INCOME")!;
+    expect(income.recurring!.untilYear).toBe(100 - 30); // age 100 for a 30-year-old
+  });
+
+  it("Flexi Income is modeled as a genuinely different, deferred lump-sum cash flow — never the same cash flow as Regular Income under a different name", () => {
+    const flexi = projectBenefits({ planNumber: "771", uin: "512N363V02", age: 30, policyTermYears: 25, premiumPayingTermYears: 10, basicSumAssured: 1000000 }, "FLEXI_INCOME");
+    const flexiComponent = flexi.components.find((c) => c.label.includes("Flexi Income"))!;
+    const regularIncomeComponent = projection.components.find((c) => c.type === "INCOME")!;
+    expect(flexiComponent.recurring).toBeUndefined(); // a single deferred lump sum, not a recurring payment
+    expect(flexiComponent.amount.value).not.toBe(regularIncomeComponent.amount.value);
+    expect(flexiComponent.amount.provenance.estimationConfidence).toBe("LOW"); // more assumption-laden than Regular Income's MEDIUM
+  });
+});
+
+// ---- Money-back survival-benefit schedules ----
+describe("Money-back products (720/721) model real, timed survival-benefit schedules", () => {
+  it("Plan 720 (20-year) pays 20% of BSA at years 5/10/15, then 40% at maturity — never double-counting the BSA", () => {
+    const projection = projectBenefits({ planNumber: "720", uin: "512N280V03", age: 35, policyTermYears: 20, premiumPayingTermYears: 20, basicSumAssured: 1000000 });
+    const survivals = projection.components.filter((c) => c.type === "SURVIVAL");
+    expect(survivals.map((c) => c.yearFromStart).sort((a, b) => a - b)).toEqual([5, 10, 15]);
+    expect(survivals.every((c) => c.amount.value === 200000)).toBe(true);
+    const maturity = projection.components.find((c) => c.type === "MATURITY")!;
+    expect(maturity.amount.value).toBe(400000);
+    const totalPaidOut = survivals.reduce((s, c) => s + (c.amount.value as number), 0) + (maturity.amount.value as number);
+    expect(totalPaidOut).toBe(1000000); // exactly 100% of BSA, never more
+  });
+
+  it("Plan 721 (25-year) pays 15% of BSA at years 5/10/15/20, then 40% at maturity", () => {
+    const projection = projectBenefits({ planNumber: "721", uin: "512N278V03", age: 35, policyTermYears: 25, premiumPayingTermYears: 25, basicSumAssured: 1000000 });
+    const survivals = projection.components.filter((c) => c.type === "SURVIVAL");
+    expect(survivals.map((c) => c.yearFromStart).sort((a, b) => a - b)).toEqual([5, 10, 15, 20]);
+    expect(survivals.every((c) => c.amount.value === 150000)).toBe(true);
+    const maturity = projection.components.find((c) => c.type === "MATURITY")!;
+    expect(maturity.amount.value).toBe(400000);
+    const totalPaidOut = survivals.reduce((s, c) => s + (c.amount.value as number), 0) + (maturity.amount.value as number);
+    expect(totalPaidOut).toBe(1000000);
+  });
+
+  it("componentCashFlowEvents never emits a duplicate (kind, year) pair for a money-back component", () => {
+    const events = componentCashFlowEvents(
+      {
+        planNumber: "720",
+        uin: "512N280V03",
+        productName: "LIC's New Money Back Plan - 20 Years",
+        role: "SCHEDULED_LIQUIDITY",
+        monthlyAllocation: { value: 3000, provenance: { status: "ESTIMATED", sourceReferences: [] } },
+        policyTermYears: 20,
+        premiumPayingTermYears: 20,
+        basicSumAssured: 1000000,
+        benefitModel: getPlanIntelligenceProfile("720", "512N280V03")!.benefitModel,
+        cashFlowPattern: "LEVEL_OUTFLOW_THEN_SCHEDULED_SURVIVAL_PAYMENTS",
+        marketLinked: false,
+        ulipOfficialIllustrationRatesPct: null,
+      },
+      20,
+      35
+    );
+    const benefitEvents = events.filter((e) => e.kind !== "PREMIUM_OUTFLOW");
+    const keys = benefitEvents.map((e) => `${e.kind}@${e.yearFromStart}`);
+    expect(new Set(keys).size).toBe(keys.length);
   });
 });
 
@@ -245,8 +345,9 @@ describe("Estimation provenance and confidence", () => {
   });
 
   it("unknown stays unknown when no defensible historical bonus basis exists — never a fabricated number", () => {
-    expect(getHistoricalBonusEstimate("714", "512N277V03", 1000000, 20)).toBeNull();
-    const projection = projectBenefits({ planNumber: "714", uin: "512N277V03", age: 30, policyTermYears: 20, premiumPayingTermYears: 20, basicSumAssured: 1000000 });
+    // Below 714's own verified Sum Assured band (>= Rs.5L) — no record applies.
+    expect(getHistoricalBonusEstimate("714", "512N277V03", 100000, 20)).toBeNull();
+    const projection = projectBenefits({ planNumber: "714", uin: "512N277V03", age: 30, policyTermYears: 20, premiumPayingTermYears: 20, basicSumAssured: 100000 });
     expect(projection.totalParticipatingEstimate.value).toBe(0);
   });
 });
