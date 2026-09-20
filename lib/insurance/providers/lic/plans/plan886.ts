@@ -1,6 +1,6 @@
 // Verified rule implementation for LIC's Protection Plus (Plan 886, UIN
 // 512L361V01). A Non-Par, UNIT-LINKED (market-linked), Life, Individual
-// Savings plan — same paramount guardrail as Plans 867/873/749: the
+// Savings plan — same paramount guardrail as Plans 867/873/849: the
 // maturity/vesting benefit is the Unit Fund Value, which depends entirely
 // on NAV performance and is NEVER projected here (`calculateBenefits`
 // never sets `maturityBenefit`).
@@ -11,7 +11,7 @@
 // between; this is a structural absence, not a documentation gap, so no
 // `guaranteedAdditionsCumulative` field is ever populated.
 //
-// Also unlike 873/749 (a discrete choice between 2 named multiples), the
+// Also unlike 873/849 (a discrete choice between 2 named multiples), the
 // Basic Sum Assured Multiple here is a customer-chosen value within a
 // published [minimum, maximum] band that itself depends on age, Premium
 // Paying Term and an Annualized-Premium threshold — closer in shape to a
@@ -107,7 +107,7 @@ export const PLAN_886_RULES = {
   fundManagementChargePercent: 1.35, // §9.D, p.19
   // §9.B, p.17-18: rate of Mortality Charge per annum per ₹1000 Sum at
   // Risk, for a healthy life — an exact-lookup-only table (this
-  // product's own published rates, distinct from Plans 873/749's tables).
+  // product's own published rates, distinct from Plans 873/849's tables).
   mortalityChargePerThousandByAge: { 25: 1.17, 35: 1.5, 45: 3.22, 50: 5.55, 60: 13.95 } as Record<number, number>,
 };
 
@@ -286,7 +286,7 @@ export function calculateCosts(sourceId: string, age?: number): CostStructureRes
 // No loan is ever available (verified, unconditional — §17, p.29). The
 // Unit Fund is locked for the first 5 policy years and only available
 // after — this engine has no "years elapsed" input, so "conditional" is
-// the accurate status, same as Plans 867/873/749.
+// the accurate status, same as Plans 867/873/849.
 export function evaluateLiquidity(sourceId: string): LiquidityResult {
   return {
     surrenderAvailable: { status: "conditional", value: null, sourceIds: [sourceId] },

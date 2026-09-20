@@ -152,18 +152,23 @@ describe("Source quality is tracked separately from DataConfidence", () => {
   });
 });
 
-// ---- Nivesh Plus identity/version flag persists (canary test) ----
-describe("Nivesh Plus (749) identity/version discrepancy is documented, not silently resolved", () => {
-  it("the profile still uses this repository's original planNumber (749) — no silent rename happened", () => {
-    const profile = getPlanIntelligenceProfile("749", "512L317V02");
+// ---- Nivesh Plus identity/version — RESOLVED in Phase 4 ----
+// (Phase 3B left this open with a "canary" test asserting no rename had
+// happened; Phase 4 judged the evidence sufficient and performed the
+// rename, so this test now asserts the CORRECTED state instead.)
+describe("Nivesh Plus (849, formerly documented as 749) identity is now corrected, not silently", () => {
+  it("the profile now uses the corrected planNumber (849), matching the catalogue/engine registration", () => {
+    const profile = getPlanIntelligenceProfile("849", "512L317V02");
     expect(profile).toBeDefined();
-    expect(profile!.identity.planNumber).toBe("749");
+    expect(profile!.identity.planNumber).toBe("849");
+    expect(getPlanIntelligenceProfile("749", "512L317V02")).toBeUndefined(); // the old identifier no longer resolves
   });
 
-  it("the identity/version conflict is recorded in the profile's own eligibility notes, not lost", () => {
-    const profile = getPlanIntelligenceProfile("749", "512L317V02")!;
+  it("the identity resolution is recorded in the profile's own eligibility notes, not silently dropped", () => {
+    const profile = getPlanIntelligenceProfile("849", "512L317V02")!;
     const combinedNotes = profile.eligibility.notes.join(" ");
     expect(combinedNotes).toContain("Plan No. 849");
+    expect(combinedNotes).toContain("RESOLVED");
   });
 });
 
@@ -180,7 +185,7 @@ describe("debugPlanForCustomer (development-only diagnostic)", () => {
   });
 
   it("reports a full trace for a plan eliminated at Stage 3, with the real elimination reason", () => {
-    const report = debugPlanForCustomer("749", "512L317V02", regressionRequest); // single-premium ULIP
+    const report = debugPlanForCustomer("849", "512L317V02", regressionRequest); // single-premium ULIP (Nivesh Plus, corrected from "749")
     expect(report.eliminated).toBe(true);
     expect(report.eliminationReasons).toContain("single_premium_structure_impossible_from_monthly_capacity");
     expect(report.reasonSummary).toContain("Eliminated at Stage 3");

@@ -280,7 +280,7 @@ const SUPPLEMENTAL_SOURCES: Record<string, OfficialProductSource[]> = {
       checkedAt: "2026-09-20",
     },
   ],
-  [key("749", "512L317V02")]: [
+  [key("849", "512L317V02")]: [
     {
       id: "lic-plan749-sales-brochure-current",
       sourceType: "sales_brochure",

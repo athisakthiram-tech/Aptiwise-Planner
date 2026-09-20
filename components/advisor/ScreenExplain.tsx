@@ -2,26 +2,23 @@
 
 // Screen 4 of 4 — What Advisor Says. The final useful output: a
 // deterministic, template-based explanation (never free-text
-// generation) plus the EXISTING WhatsApp/PDF/Save-draft actions via
-// CustomerPlanPreview — reused unchanged, never a second proposal
-// system.
+// generation, see lib/advisor/advisorScript.ts) plus the EXISTING
+// WhatsApp/PDF/Save-draft actions via CustomerPlanPreview — reused
+// unchanged, never a second proposal system. "Create Plan" adapts the
+// SAME selected AnalyzedStructure (via combinationPlanModel.ts's
+// buildStrategyResultForSnapshot) into the pre-existing StrategyResult
+// shape so every downstream number (CustomerPlan snapshot, WhatsApp,
+// PDF) traces back to this one calculation, never recomputed.
+//
+// Customer-facing language avoids "death"/"mortality" — a policy's life
+// cover is always "Family Protection".
 
 import { useMemo, useState } from "react";
-import { StrategyComponent } from "@/lib/planning/strategyTypes";
-import { GoalStructure } from "@/lib/planning/goalOrchestrator/types";
 import { CustomerFinancialProfile } from "@/lib/planning/customerProfile";
 import { ProtectionNeedResult } from "@/lib/planning/protectionNeeds";
 import { GoalNeedResult } from "@/lib/planning/goalNeeds";
-import { rebuildStrategyResultWithComponents } from "@/lib/advisor/advisorPlanRebuild";
-import {
-  ADVISOR_ILLUSTRATION_RATES_PCT,
-  advisorRoleLabelKind,
-  combinedIllustratedValue,
-  illustratedGoalCoverage,
-  roleLabelI18nKey,
-} from "@/lib/advisor/advisorViewModel";
-import { buildAdvisorExplanationParts } from "@/lib/advisor/advisorExplanation";
-import { getProtectionVisualData } from "@/lib/planning/resultsViewModel";
+import { AdvisorGoalOption, AdvisorStructureView, buildStrategyResultForSnapshot, goalOptionI18nKey, roleLabelI18nKey } from "@/lib/advisor/combinationPlanModel";
+import { buildAdvisorScript } from "@/lib/advisor/advisorScript";
 import { createCustomerPlan } from "@/lib/customerPlan/createCustomerPlan";
 import { CustomerPlan } from "@/lib/customerPlan/types";
 import { CustomerPlanPreview } from "@/components/customerPlan/CustomerPlanPreview";
@@ -30,14 +27,9 @@ import { Card } from "@/components/ui/Card";
 import { Locale } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
 
-function componentLabel(component: StrategyComponent): string {
-  return component.product ? component.product.productName.replace(/^LIC's /, "") : "—";
-}
-
 export function ScreenExplain({
   structure,
-  effectiveComponents,
-  selectedRatePct,
+  goalOption,
   profile,
   protectionNeed,
   goalNeed,
@@ -45,9 +37,8 @@ export function ScreenExplain({
   locale,
   onBack,
 }: {
-  structure: GoalStructure;
-  effectiveComponents: StrategyComponent[];
-  selectedRatePct: number;
+  structure: AdvisorStructureView;
+  goalOption: AdvisorGoalOption;
   profile: CustomerFinancialProfile;
   protectionNeed: ProtectionNeedResult;
   goalNeed: GoalNeedResult;
@@ -58,30 +49,27 @@ export function ScreenExplain({
   const [plan, setPlan] = useState<CustomerPlan | null>(null);
 
   const rebuiltStrategy = useMemo(
-    () => rebuildStrategyResultWithComponents(structure, effectiveComponents, profile, protectionNeed),
-    [structure, effectiveComponents, profile, protectionNeed]
+    () => buildStrategyResultForSnapshot(structure.raw, profile.monthlyBudget ?? structure.monthlyTotal),
+    [structure, profile.monthlyBudget]
   );
 
-  const protectionVisual = getProtectionVisualData(rebuiltStrategy, protectionNeed);
-  const yearsToGoal = profile.yearsToGoal ?? 0;
+  const ga = structure.goalAnalysis;
+  const protectiveComponents = structure.components.filter((c) => c.hasLifeProtection);
 
-  const explanationParts = useMemo(() => {
-    const goalLabel = t(`goals.type.${profile.goalType ?? "wealth"}`, locale);
-    const illustratedCoverage = illustratedGoalCoverage(
-      profile.targetGoalAmount,
-      combinedIllustratedValue(effectiveComponents, yearsToGoal, selectedRatePct)
-    );
-    return buildAdvisorExplanationParts({
-      goalLabel,
-      monthlyBudgetFormatted: profile.monthlyBudget != null ? formatINRCompact(profile.monthlyBudget) : "—",
-      yearsToGoal,
-      components: effectiveComponents
-        .filter((c) => c.monthlyPremium.value != null)
-        .map((c) => ({ productLabel: componentLabel(c), amountFormatted: formatINRCompact(c.monthlyPremium.value as number), component: c })),
-      protectionAmountFormatted: protectionVisual.providedByStructure != null ? formatINRCompact(protectionVisual.providedByStructure) : null,
-      illustratedCoverage,
-    });
-  }, [profile, effectiveComponents, yearsToGoal, selectedRatePct, protectionVisual.providedByStructure, locale]);
+  const scriptLines = useMemo(
+    () =>
+      buildAdvisorScript({
+        customerName,
+        goalOption,
+        goalAmount: ga.goalAmount,
+        yearsToGoal: structure.yearsToGoal,
+        monthlyTotal: structure.monthlyTotal,
+        components: structure.components,
+        goalAnalysis: ga,
+        locale,
+      }),
+    [customerName, goalOption, ga, structure, locale]
+  );
 
   function handleCreatePlan() {
     try {
@@ -111,6 +99,14 @@ export function ScreenExplain({
     );
   }
 
+  const gapKey = ga.totalAtGoalFullyGuaranteed
+    ? ga.gapOrSurplus.kind === "SURPLUS"
+      ? "advisor.screen3.surplus"
+      : "advisor.screen3.gap"
+    : ga.gapOrSurplus.kind === "SURPLUS"
+      ? "advisor.screen3.estimatedSurplus"
+      : "advisor.screen3.estimatedGap";
+
   return (
     <div className="flex flex-col gap-4">
       <button type="button" onClick={onBack} className="self-start text-xs font-semibold text-brand-700">
@@ -120,55 +116,91 @@ export function ScreenExplain({
       <p className="text-base font-bold text-ink-900">{t("advisor.screen4.title", locale)}</p>
 
       <Card className="flex flex-col gap-1">
-        <p className="text-sm font-bold text-ink-900">{t(`goals.type.${profile.goalType ?? "wealth"}`, locale)}</p>
+        <p className="text-xs font-semibold text-ink-500">{t("advisor.screen4.customerGoal", locale)}</p>
+        <p className="text-sm font-bold text-ink-900">{t(goalOptionI18nKey(goalOption), locale)}</p>
         <div className="flex justify-between text-xs text-ink-500">
-          <span>{profile.targetGoalAmount != null ? formatINRCompact(profile.targetGoalAmount) : "—"}</span>
-          <span>{yearsToGoal}y</span>
-          <span>{profile.monthlyBudget != null ? `${formatINRCompact(profile.monthlyBudget)}/mo` : "—"}</span>
+          <span>{formatINRCompact(ga.goalAmount)}</span>
+          <span>{structure.yearsToGoal}y</span>
+        </div>
+        <div className="mt-1 flex items-center justify-between border-t border-slate-100 pt-1 text-xs">
+          <span className="font-semibold text-ink-700">{t("advisor.screen4.monthlyPlan", locale)}</span>
+          <span className="font-bold text-ink-900">{formatINRCompact(structure.monthlyTotal)}/mo</span>
         </div>
       </Card>
 
       <Card className="flex flex-col gap-2">
-        <p className="text-xs font-semibold text-ink-500">{t("advisor.screen4.selectedProducts", locale)}</p>
-        {effectiveComponents.map((component, i) => (
-          <div key={i} className="flex items-center justify-between text-xs">
+        <p className="text-xs font-semibold text-ink-500">{t("advisor.screen4.products", locale)}</p>
+        {structure.components.map((component) => (
+          <div key={`${component.planNumber}-${component.uin}`} className="flex items-center justify-between text-xs">
             <span className="text-ink-900">
-              {componentLabel(component)} <span className="text-ink-500">({t(roleLabelI18nKey(advisorRoleLabelKind(component)), locale)})</span>
+              {component.productName} <span className="text-ink-500">({t(roleLabelI18nKey(component.roleLabel), locale)})</span>
             </span>
+            <span className="font-semibold text-ink-900">{formatINRCompact(component.monthlyPremium)}/mo</span>
+          </div>
+        ))}
+      </Card>
+
+      <Card className="flex flex-col gap-2">
+        <p className="text-xs font-semibold text-ink-500">{t("advisor.screen4.whatYouPay", locale)}</p>
+        {structure.allocations.map((allocation, i) => (
+          <div key={i} className="flex items-center justify-between text-xs">
+            <span className="text-ink-500">{structure.components[i]?.productName}</span>
             <span className="font-semibold text-ink-900">
-              {component.monthlyPremium.value != null ? `${formatINRCompact(component.monthlyPremium.value)}/mo` : "—"}
+              {formatINRCompact(allocation.amount)} ({allocation.percent}%)
             </span>
           </div>
         ))}
       </Card>
 
       <Card className="flex flex-col gap-2">
-        <p className="text-xs font-semibold text-ink-500">{t("advisor.screen3.illustrationTitle", locale)}</p>
-        {ADVISOR_ILLUSTRATION_RATES_PCT.map((rate) => {
-          const value = combinedIllustratedValue(effectiveComponents, yearsToGoal, rate);
-          return (
-            <div key={rate} className="flex items-center justify-between text-xs">
-              <span className="text-ink-500">{rate}%</span>
-              <span className="font-semibold text-ink-900">{value != null ? formatINRCompact(value) : t("advisor.screen3.unavailable", locale)}</span>
-            </div>
-          );
-        })}
+        <p className="text-xs font-semibold text-ink-500">{t("advisor.screen4.whatYouMayReceive", locale)}</p>
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-ink-500">{t("advisor.screen3.planningValueAtGoal", locale)}</span>
+          <span className="font-semibold text-ink-900">
+            {ga.totalAtGoal != null ? `${ga.totalAtGoalFullyGuaranteed ? "" : "~"}${formatINRCompact(ga.totalAtGoal)}` : "—"}
+          </span>
+        </div>
       </Card>
 
-      {protectionVisual.providedByStructure != null && (
-        <Card className="flex items-center justify-between">
-          <span className="text-xs font-semibold text-ink-500">{t("advisor.screen4.protectionApplicable", locale)}</span>
-          <span className="text-sm font-semibold text-ink-900">{formatINRCompact(protectionVisual.providedByStructure)}</span>
+      {protectiveComponents.length > 0 && (
+        <Card className="flex flex-col gap-2">
+          <p className="text-xs font-semibold text-ink-500">{t("advisor.screen4.familyProtection", locale)}</p>
+          {protectiveComponents.map((component) => (
+            <p key={`${component.planNumber}-${component.uin}`} className="text-xs text-ink-700">
+              {component.productName}
+            </p>
+          ))}
         </Card>
       )}
 
       <Card className="flex flex-col gap-2">
+        <p className="text-xs font-semibold text-ink-500">{t("advisor.screen4.goalProgress", locale)}</p>
+        {ga.coveragePercent != null && (
+          <div className="flex items-center justify-between text-xs">
+            <span className="text-ink-500">{t("advisor.screen3.goalCoverage", locale)}</span>
+            <span className="font-semibold text-ink-900">{ga.coveragePercent}%</span>
+          </div>
+        )}
+        {ga.gapOrSurplus.kind !== "UNKNOWN" && ga.gapOrSurplus.amount != null && (
+          <div className="flex items-center justify-between text-xs">
+            <span className="text-ink-500">{t(gapKey, locale)}</span>
+            <span className="font-semibold text-ink-900">{formatINRCompact(ga.gapOrSurplus.amount)}</span>
+          </div>
+        )}
+      </Card>
+
+      <Card className="flex flex-col gap-2">
         <p className="text-sm font-bold text-ink-900">{t("advisor.screen4.explanationTitle", locale)}</p>
         <div className="flex flex-col gap-2 text-xs text-ink-700">
-          {explanationParts.map((part, i) => (
-            <p key={i}>{t(part.key, locale, part.params)}</p>
+          {scriptLines.map((line) => (
+            <p key={line.key}>{line.text}</p>
           ))}
         </div>
+      </Card>
+
+      <Card className="flex flex-col gap-1">
+        <p className="text-xs font-semibold text-ink-500">{t("advisor.screen4.importantNotes", locale)}</p>
+        <p className="text-[11px] text-ink-500">{t("advisor.disclosure.text", locale)}</p>
       </Card>
 
       <button

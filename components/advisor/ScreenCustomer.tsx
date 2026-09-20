@@ -2,13 +2,15 @@
 
 // Screen 1 of 4 — Customer. Deliberately minimal: no underwriting
 // questionnaire, no financial-engine terminology. Every field here is
-// either fed straight into CustomerFinancialProfile (age/goal/amount/
-// years/budget/risk) or kept purely as a display label the advisor sees
-// later (customer name, profession) — never used in any calculation.
+// either fed straight into the Phase 2/3/3B PlanningRequest (age/goal/
+// amount/years/budget/risk, via lib/advisor/combinationPlanModel.ts's
+// own buildPlanningRequest) or kept purely as a display label the
+// advisor sees later (customer name, profession) — never used in any
+// calculation itself.
 
 import { ReactNode } from "react";
-import { GoalType, RiskComfort } from "@/types";
-import { AdvisorGoalOption } from "@/lib/advisor/advisorViewModel";
+import { RiskComfort } from "@/types";
+import { AdvisorGoalOption } from "@/lib/advisor/combinationPlanModel";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Locale } from "@/lib/i18n/types";
@@ -25,13 +27,22 @@ export interface AdvisorCustomerInput {
   riskComfort: RiskComfort | null;
 }
 
+// Reasonable upper bounds only — guard against obviously broken input
+// (a 900-year-old customer, a ₹100,000 Cr goal), never a source of
+// friction for a normal case.
+const MAX_AGE = 100;
+const MAX_GOAL_AMOUNT = 100_00_00_000; // ₹100 Cr
+const MAX_YEARS_TO_GOAL = 60;
+const MAX_MONTHLY_BUDGET = 10_00_000; // ₹10 L/month
+
 const GOAL_OPTIONS: { id: AdvisorGoalOption; labelKey: string; emoji: string }[] = [
-  { id: "child_education", labelKey: "goals.type.child_education", emoji: "🎓" },
-  { id: "marriage", labelKey: "goals.type.marriage", emoji: "💍" },
-  { id: "retirement", labelKey: "goals.type.retirement", emoji: "🌴" },
-  { id: "wealth", labelKey: "goals.type.wealth", emoji: "💰" },
-  { id: "home", labelKey: "goals.type.home", emoji: "🏠" },
-  { id: "other", labelKey: "advisor.goalType.other", emoji: "✨" },
+  { id: "child_education", labelKey: "advisor.goal.child_education", emoji: "🎓" },
+  { id: "marriage", labelKey: "advisor.goal.marriage", emoji: "💍" },
+  { id: "retirement", labelKey: "advisor.goal.retirement", emoji: "🌴" },
+  { id: "wealth", labelKey: "advisor.goal.wealth", emoji: "💰" },
+  { id: "home", labelKey: "advisor.goal.home", emoji: "🏠" },
+  { id: "regular_income", labelKey: "advisor.goal.regular_income", emoji: "📆" },
+  { id: "other", labelKey: "advisor.goal.other", emoji: "✨" },
 ];
 
 const RISK_OPTIONS: { id: RiskComfort; labelKey: string }[] = [
@@ -68,12 +79,17 @@ export function ScreenCustomer({
   const canSubmit =
     value.age != null &&
     value.age > 0 &&
+    value.age <= MAX_AGE &&
+    value.profession.trim().length > 0 &&
     value.targetGoalAmount != null &&
     value.targetGoalAmount > 0 &&
+    value.targetGoalAmount <= MAX_GOAL_AMOUNT &&
     value.yearsToGoal != null &&
     value.yearsToGoal > 0 &&
+    value.yearsToGoal <= MAX_YEARS_TO_GOAL &&
     value.monthlyBudget != null &&
-    value.monthlyBudget > 0;
+    value.monthlyBudget > 0 &&
+    value.monthlyBudget <= MAX_MONTHLY_BUDGET;
 
   return (
     <div className="flex flex-col gap-4">
@@ -193,7 +209,7 @@ export function defaultAdvisorCustomerInput(overrides: Partial<AdvisorCustomerIn
     customerName: "",
     profession: "",
     age: null,
-    goalOption: "child_education" as GoalType,
+    goalOption: "child_education",
     targetGoalAmount: null,
     yearsToGoal: null,
     monthlyBudget: null,

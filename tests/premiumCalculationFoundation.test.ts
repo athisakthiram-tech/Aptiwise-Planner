@@ -53,7 +53,7 @@ describe("premiumCalculationCapability — every registered engine is classified
       ["879", "512N386V01"],
       ["758", "512N338V08"],
       ["873", "512L354V01"],
-      ["749", "512L317V02"],
+      ["849", "512L317V02"],
       ["886", "512L361V01"],
     ]) {
       const domain = getPremiumCalculationDomain(plan, uin)!;

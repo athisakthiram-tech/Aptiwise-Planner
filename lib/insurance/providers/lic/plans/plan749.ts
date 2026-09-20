@@ -1,5 +1,8 @@
-// Verified rule implementation for LIC's Nivesh Plus (Plan 749, UIN
-// 512L317V02). A Non-Par, UNIT-LINKED (market-linked), Single Premium,
+// Verified rule implementation for LIC's Nivesh Plus (Plan 849, UIN
+// 512L317V02 — this file/module and its exported PLAN_749_* symbols
+// keep their historical "749" naming from before Phase 4 corrected the
+// registered plan number; see catalogue.ts's own comment). A Non-Par,
+// UNIT-LINKED (market-linked), Single Premium,
 // Life, Individual Savings plan — closely related in shape to Plan 873
 // (Index Plus): same non-negotiable guardrail that the Unit Fund Value is
 // NAV-dependent and is NEVER projected here (`calculateBenefits` never

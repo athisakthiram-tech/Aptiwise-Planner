@@ -162,7 +162,7 @@ describe("Plan 886 costs — only FMC and the exact-lookup mortality table are v
 
   it("reports Mortality Charge as verified for a published age, using this plan's own rates", () => {
     const costs = calculateCosts("test-source", 45);
-    expect(costs.mortalityCharge.value).toBe(3.22); // distinct from Plan 873/749's 3.48
+    expect(costs.mortalityCharge.value).toBe(3.22); // distinct from Plan 873/849's 3.48
   });
 
   it("never interpolates Mortality Charge for an unpublished age", () => {

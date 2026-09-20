@@ -1453,7 +1453,9 @@ const PLAN_873 = buildProfile({
 });
 
 const PLAN_749 = buildProfile({
-  planNumber: "749",
+  // Phase 4: corrected from "749" to "849" — see this profile's own
+  // eligibility.notes below for the full identity resolution writeup.
+  planNumber: "849",
   uin: "512L317V02",
   hasRegisteredEngine: true,
   productNature: ["MARKET_LINKED", "SINGLE_PREMIUM"],
@@ -1469,11 +1471,10 @@ const PLAN_749 = buildProfile({
     premiumModes: ["single"],
     notes: [
       "Single-premium-only ULIP — BSA is a chosen multiple (1.25x or 10x) of the Single Premium; maximum entry age depends on the option chosen (70 or 35).",
-      // Phase 3B IDENTITY/VERSION FLAG — see docs/lic-financial-knowledge-v2.md
-      // "IDENTITY/VERSION ISSUES" for the full writeup. Kept as an actual
-      // data string (not just a code comment) so this conflict stays
-      // discoverable/testable rather than living only in source history.
-      "IDENTITY/VERSION FLAG (Phase 3B, not silently resolved): multiple independent official licindia.in page titles found this session read 'LIC's Nivesh Plus (Plan No. 849, UIN No. 512L317V01)', with UIN 512L317V02 for the current/latest revision — NOT 'Plan No. 749' as this repository's catalogue has it. A secondary training document titled 'INTRODUCTION OF LIC's Nivesh Plus (Plan No. 749)' was also found, plausibly the origin of '749' in this repository. This looks like a PLAN-NUMBER transcription error (not a version change) — the UIN (512L317V02) is independently corroborated as this product either way. NOT changed this phase: the planNumber field is read by pre-existing UI-owning files (components/planner/Plan749Configurator.tsx, tests/lic-plan749.test.ts) this phase is not authorized to touch (no UI work). A secondary source also states this UIN was formally withdrawn by LIC on 2024-10-14 — NOT independently confirmed, and NOT acted on (this profile's active status is left unchanged) per 'report the conflict, do not silently overwrite'.",
+      // IDENTITY/VERSION FLAG — RESOLVED in Phase 4 (was open in Phase 3B).
+      // Kept as an actual data string (not just a code comment) so the
+      // resolution stays discoverable/testable, not just in source history.
+      "IDENTITY RESOLVED (Phase 4): Phase 3B found multiple independent official licindia.in page titles reading 'LIC's Nivesh Plus (Plan No. 849, UIN No. 512L317V01)', with UIN 512L317V02 for the current/latest revision — NOT 'Plan No. 749' as this repository's catalogue previously had it (plausibly a transcription error from a secondary training document titled 'INTRODUCTION OF LIC's Nivesh Plus (Plan No. 749)'). Phase 4 judged this evidence sufficient and corrected the canonical planNumber to '849' throughout the catalogue, engine registration, source registry, premium-capability registry and this profile — the UIN (512L317V02) was unchanged throughout, since it was independently corroborated as this product either way. The underlying engine module/exported-symbol names intentionally keep their historical '749' naming (lib/insurance/providers/lic/plans/plan749.ts, PLAN_749_UIN, etc.) — only the actual identifier VALUE was wrong. A secondary source also states this UIN was formally withdrawn by LIC on 2024-10-14 — still NOT independently confirmed, and still NOT acted on (this profile's active status remains unchanged).",
     ],
   },
   premiumModel: {
@@ -1500,8 +1501,8 @@ const PLAN_749 = buildProfile({
       "IRDAI-mandated benefit-illustration rates applied uniformly across LIC's current ULIP shelf (directly confirmed this session for LIC's SIIP, Plan 752 — see that plan's own citation; applied here as the same regulatorily-uniform standard). Primary licindia.in brochure could not be directly fetched in this sandbox (egress blocked). Note: unconfirmed secondary references to a 'Nivesh Plus Plan No. 849' were also found this session — possibly a separate/newer relaunch not yet reconciled with this repository's Plan 749/UIN 512L317V02 identity; flagged for dedicated re-verification, not silently changed (see docs/lic-financial-knowledge-v2.md)."
     ),
     charges: [
-      { name: "Fund Management Charge", description: "1.35% p.a., flat and unconditional.", provenance: { status: "VERIFIED", sourceReferences: src("749") } },
-      { name: "Mortality Charge", description: "A published rate per Rs.1,000 of Sum at Risk, increasing by age band.", provenance: { status: "VERIFIED", sourceReferences: src("749") } },
+      { name: "Fund Management Charge", description: "1.35% p.a., flat and unconditional.", provenance: { status: "VERIFIED", sourceReferences: src("849") } },
+      { name: "Mortality Charge", description: "A published rate per Rs.1,000 of Sum at Risk, increasing by age band.", provenance: { status: "VERIFIED", sourceReferences: src("849") } },
     ],
     lockInYears: 5,
   }),
@@ -1513,7 +1514,7 @@ const PLAN_749 = buildProfile({
   usefulWhen: ["The customer has a lump sum, accepts market risk, and wants growth-oriented deployment alongside life cover."],
   lessUsefulWhen: ["The customer wants to fund the goal from ongoing income rather than a lump sum, or needs capital preservation."],
   overallConfidence: "VERIFIED",
-  sources: src("749"),
+  sources: src("849"),
 });
 
 const PLAN_886 = buildProfile({

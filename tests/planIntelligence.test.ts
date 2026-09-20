@@ -205,7 +205,7 @@ describe("An ESTIMATE is never presented as VERIFIED (Item 15)", () => {
 // ---- Item 16: historical != illustrative, 17: historical != guaranteed, 18: official illustration != historical ----
 describe("ULIP historical performance is kept distinct from illustration and never treated as guaranteed (Items 16/17/18)", () => {
   it("no fabricated historical NAV data exists for any ULIP without verified history", () => {
-    for (const planNumber of ["873", "749", "886", "752"]) {
+    for (const planNumber of ["873", "849", "886", "752"]) {
       const profile = ALL_PLAN_INTELLIGENCE_PROFILES.find((p) => p.identity.planNumber === planNumber)!;
       expect(profile.ulip).not.toBeNull();
       // No verified historical series exists in this repository yet — an

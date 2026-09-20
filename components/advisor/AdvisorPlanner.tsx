@@ -1,22 +1,27 @@
 "use client";
 
-// Top-level 4-screen Advisor MVP: Customer -> Combinations -> Illustration
-// -> What Advisor Says. The ENTIRE underlying planning stack (Goal
-// Orchestrator V2, product roles, budget solver, cash-flow timeline,
-// engine capability, CustomerPlan/proposal export) is reused completely
-// unchanged underneath this screen — this file only sequences 4 simple
-// views over it. The old 12-step Wizard.tsx is untouched and still
-// exists, just no longer the app's rendered entry point (see
-// app/page.tsx).
+// Top-level 4-screen Advisor MVP: Customer -> Combinations ->
+// Illustration -> What Advisor Says.
+//
+// THE canonical planning path (Phase 4): Screen 1 builds a real
+// PlanningRequest and calls lib/advisor/combinationPlanModel.ts's
+// planAdvisorStructures(), which itself calls the Phase 2/3/3B
+// combination engine (planCombinations()) — never the old Goal
+// Orchestrator V2 (lib/planning/goalOrchestrator/*), never a mock
+// result. protectionNeeds.ts/goalNeeds.ts are kept and reused unchanged
+// (pure, orthogonal calculators, not part of the old planning path this
+// phase replaces) purely so createCustomerPlan()/CustomerPlanPreview/
+// WhatsApp/PDF continue to work unmodified — see
+// combinationPlanModel.ts's buildStrategyResultForSnapshot for the one
+// adapter that bridges the new engine's output into that pre-existing
+// shape. The old 12-step Wizard.tsx is untouched and still exists, just
+// no longer the app's rendered entry point (see app/page.tsx).
 
 import { useMemo, useState } from "react";
 import { UNKNOWN_CUSTOMER_PROFILE, CustomerFinancialProfile } from "@/lib/planning/customerProfile";
 import { calculateProtectionNeed } from "@/lib/planning/protectionNeeds";
 import { calculateGoalNeed } from "@/lib/planning/goalNeeds";
-import { generateGoalStructures } from "@/lib/planning/goalOrchestrator/goalStructureGenerator";
-import { GoalStructure } from "@/lib/planning/goalOrchestrator/types";
-import { StrategyComponent } from "@/lib/planning/strategyTypes";
-import { toEngineGoalType, ADVISOR_ILLUSTRATION_RATES_PCT } from "@/lib/advisor/advisorViewModel";
+import { AdvisorStructureView, buildPlanningRequest, planAdvisorStructures, toEngineGoalType } from "@/lib/advisor/combinationPlanModel";
 import { ScreenCustomer, AdvisorCustomerInput, defaultAdvisorCustomerInput } from "@/components/advisor/ScreenCustomer";
 import { ScreenCombinations } from "@/components/advisor/ScreenCombinations";
 import { ScreenIllustration } from "@/components/advisor/ScreenIllustration";
@@ -44,9 +49,10 @@ export function AdvisorPlanner() {
   const [customerInput, setCustomerInput] = useState<AdvisorCustomerInput>(DEFAULT_CUSTOMER_INPUT);
   const [locale, setLocale] = useState<Locale>(DEFAULT_LOCALE);
   const [selectedStructureId, setSelectedStructureId] = useState<string | null>(null);
-  const [effectiveComponents, setEffectiveComponents] = useState<StrategyComponent[] | null>(null);
-  const [selectedRatePct, setSelectedRatePct] = useState<number>(ADVISOR_ILLUSTRATION_RATES_PCT[1]);
 
+  // Kept unchanged for createCustomerPlan()'s own required inputs
+  // (protection/goal needs are orthogonal to product selection — see
+  // this file's own header comment).
   const profile: CustomerFinancialProfile = useMemo(
     () => ({
       ...UNKNOWN_CUSTOMER_PROFILE,
@@ -66,9 +72,11 @@ export function AdvisorPlanner() {
     [profile]
   );
 
-  const structures: GoalStructure[] = useMemo(
-    () => generateGoalStructures({ profile, protectionNeed, goalNeed }),
-    [profile, protectionNeed, goalNeed]
+  const planningRequest = useMemo(() => buildPlanningRequest(customerInput), [customerInput]);
+
+  const structures: AdvisorStructureView[] = useMemo(
+    () => (planningRequest ? planAdvisorStructures(planningRequest) : []),
+    [planningRequest]
   );
 
   const selectedStructure = structures.find((s) => s.id === selectedStructureId) ?? null;
@@ -108,7 +116,6 @@ export function AdvisorPlanner() {
       {screen === "combinations" && (
         <ScreenCombinations
           structures={structures}
-          yearsToGoal={profile.yearsToGoal ?? 0}
           locale={locale}
           onBack={() => setScreen("customer")}
           onViewIllustration={(structureId) => {
@@ -121,22 +128,18 @@ export function AdvisorPlanner() {
       {screen === "illustration" && selectedStructure && (
         <ScreenIllustration
           structure={selectedStructure}
-          profile={profile}
+          goalOption={customerInput.goalOption}
+          monthlyBudget={customerInput.monthlyBudget}
           locale={locale}
           onBack={() => setScreen("combinations")}
-          onContinue={(components, ratePct) => {
-            setEffectiveComponents(components);
-            setSelectedRatePct(ratePct);
-            setScreen("explain");
-          }}
+          onContinue={() => setScreen("explain")}
         />
       )}
 
-      {screen === "explain" && selectedStructure && effectiveComponents && (
+      {screen === "explain" && selectedStructure && (
         <ScreenExplain
           structure={selectedStructure}
-          effectiveComponents={effectiveComponents}
-          selectedRatePct={selectedRatePct}
+          goalOption={customerInput.goalOption}
           profile={profile}
           protectionNeed={protectionNeed}
           goalNeed={goalNeed}

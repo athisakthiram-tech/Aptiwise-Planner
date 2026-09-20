@@ -758,14 +758,20 @@ const PLAN_873_ENGINE: LicProductEngine = {
   evaluateLiquidity: () => plan873.evaluateLiquidity(PLAN_873_SOURCE_ID),
 };
 
-// ---- Plan 749 (Nivesh Plus) — bespoke adapter, like Plan 873 ----
+// ---- Plan 849 (Nivesh Plus) — bespoke adapter, like Plan 873 ----
 // A Single-Premium-only market-linked (ULIP) plan with a genuine Basic
 // Sum Assured that's a multiple (1.25x/10x) of the Single Premium the
 // customer chooses — always directly computable, no rate-table lookup
 // needed — rather than an absolute figure buildStandardEngine's mapping
 // expects.
+//
+// Phase 4: the registered plan NUMBER below was corrected from "749" to
+// "849" (see catalogue.ts's own comment) — the source module/file/
+// exported-symbol names keep their historical "749" naming
+// (plans/plan749.ts, PLAN_749_UIN, PLAN_749_RULES, etc.) since only the
+// actual identifier VALUE was wrong, not the code around it.
 const PLAN_749_SOURCE_ID = "lic-plan749-sales-brochure-current";
-requireProduct("749", plan749.PLAN_749_UIN);
+requireProduct("849", plan749.PLAN_749_UIN);
 function plan749Input(context: LicCalculationContext): plan749.Plan749Input {
   return {
     age: context.age ?? -1,
@@ -776,7 +782,7 @@ function plan749Input(context: LicCalculationContext): plan749.Plan749Input {
 }
 const PLAN_749_ENGINE: LicProductEngine = {
   provider: "LIC",
-  planNumber: "749",
+  planNumber: "849",
   uin: plan749.PLAN_749_UIN,
   capabilities: {
     eligibility: "verified",

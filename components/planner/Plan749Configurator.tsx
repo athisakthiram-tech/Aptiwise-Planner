@@ -1,6 +1,9 @@
 "use client";
 
-// LIC's Nivesh Plus (Plan 749) — a Single-Premium-only unit-linked savings
+// LIC's Nivesh Plus (Plan 849, corrected in Phase 4 from this
+// repository's earlier "749" — see catalogue.ts's own comment; this
+// file/component and the underlying plans/plan749.ts module keep their
+// historical "749" naming) — a Single-Premium-only unit-linked savings
 // plan with a genuine Basic Sum Assured (a 1.25x/10x multiple of Single
 // Premium the customer chooses), but the maturity/vesting value depends
 // on NAV performance and is NEVER projected here — same guardrail as
@@ -39,7 +42,7 @@ export function Plan749Configurator({
     ? Math.min(Math.max(policyTermYears, termRange.min), termRange.max)
     : policyTermYears;
 
-  const engine = getLicProductEngine("749", PLAN_749_UIN);
+  const engine = getLicProductEngine("849", PLAN_749_UIN);
   const context = {
     age,
     policyTermYears: activeTerm,

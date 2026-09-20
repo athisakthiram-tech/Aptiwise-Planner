@@ -272,7 +272,7 @@ describe("ULIP data model keeps historical/official-illustration/planning-scenar
   it("an official illustration is never itself GUARANTEED", () => {
     for (const plan of [
       ["873", "512L354V01"],
-      ["749", "512L317V02"],
+      ["849", "512L317V02"],
       ["752", "512L334V02"],
       ["886", "512L361V01"],
     ]) {

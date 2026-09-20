@@ -179,7 +179,7 @@ export function LicProductDetailSheet({
             <AnnuityConfigurator product={product} goal={goal} locale={locale} config={PLAN_758_CONFIG} />
           ) : product.planNumber === "873" ? (
             <Plan873Configurator product={product} goal={goal} locale={locale} />
-          ) : product.planNumber === "749" ? (
+          ) : product.planNumber === "849" ? (
             <Plan749Configurator product={product} goal={goal} locale={locale} />
           ) : product.planNumber === "886" ? (
             <Plan886Configurator product={product} goal={goal} locale={locale} />

@@ -13,15 +13,15 @@ import {
   evaluateLiquidity,
 } from "@/lib/insurance/providers/lic/plans/plan749";
 
-const product = LIC_CATALOGUE.find((p) => p.id === "lic-749") as InsuranceProduct;
+const product = LIC_CATALOGUE.find((p) => p.id === "lic-849") as InsuranceProduct;
 
 function ctx(overrides: Record<string, unknown> = {}) {
   return { age: 30, policyTermYears: 20, singlePremium: 125000, bsaOption: 1 as const, ...overrides };
 }
 
-describe("Plan 749 identity", () => {
-  it("matches the catalogue's Plan 749 identity exactly", () => {
-    expect(product.planNumber).toBe("749");
+describe("Plan 849 (Nivesh Plus, formerly \"749\" in this repo) identity", () => {
+  it("matches the catalogue's corrected Plan 849 identity exactly", () => {
+    expect(product.planNumber).toBe("849"); // Phase 4: corrected from "749"
     expect(product.uin).toBe(PLAN_749_UIN);
     expect(PLAN_749_UIN).toBe("512L317V02");
   });
@@ -87,7 +87,7 @@ describe("Plan 749 has no rate table for premium — capability is not_applicabl
   });
 
   it("has no calculatePremium method at all", () => {
-    const engine = getLicProductEngine("749", PLAN_749_UIN);
+    const engine = getLicProductEngine("849", PLAN_749_UIN);
     expect(engine?.calculatePremium).toBeUndefined();
   });
 });

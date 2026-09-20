@@ -27,7 +27,7 @@ import { projectBenefits } from "@/lib/planning/planIntelligence/benefitProjecti
 const GENERIC_PLANNING_SCENARIO_RATE_PCT = ILLUSTRATION_RATES_PCT[Math.floor(ILLUSTRATION_RATES_PCT.length / 2)];
 
 // All 4 of this catalogue's active LIC ULIPs (Index Plus/873, Nivesh
-// Plus/749, SIIP/752, Protection Plus/886) publish an identical 1.35%
+// Plus/849, SIIP/752, Protection Plus/886) publish an identical 1.35%
 // p.a. Fund Management Charge across every available fund (see each
 // plan's own planProfiles.ts ulip.charges entry) — applied here as a
 // drag on the assumed gross illustration rate, approximating LIC's own

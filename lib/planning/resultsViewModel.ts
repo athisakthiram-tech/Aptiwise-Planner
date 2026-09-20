@@ -198,19 +198,23 @@ export interface GoalVisualData {
 // plan's maturity benefit, or the illustrative investment's projection)
 // — never both at once (a strategy only ever has one such component) and
 // never upgraded past that component's own status.
-function findStructureValueComponent(strategy: StrategyResult): StrategyComponent | undefined {
-  return strategy.components.find((c) => c.maturityBenefit.value != null);
-}
-
 export function getGoalVisualData(strategy: StrategyResult, profile: CustomerFinancialProfile): GoalVisualData {
   const coverage = strategy.goalCoverage;
-  const structureComponent = findStructureValueComponent(strategy);
+  // SUMS every component's own maturity/goal contribution (mirroring how
+  // protection's own `providedByStructure` already sums `deathBenefit`
+  // across components just below) — a structure with two goal-funding
+  // components (e.g. a traditional plan plus a market-linked one) has a
+  // combined goal value that is genuinely additive, never just its first
+  // component's own figure. combineNumeric's own "weakest status wins"
+  // rule still applies, so a mix of verified/estimated/illustrative
+  // contributions is never presented as more certain than its weakest.
+  const structureValue = combineNumeric(strategy.components.map((c) => c.maturityBenefit));
 
   return {
     targetGoal: profile.targetGoalAmount,
     currentResources: profile.existingInvestments,
-    structureValue: structureComponent?.maturityBenefit.value ?? null,
-    structureValueStatus: structureComponent?.maturityBenefit.status ?? "unavailable",
+    structureValue: structureValue.value,
+    structureValueStatus: structureValue.status,
     coveragePercent: coverage.value?.coveragePercent ?? null,
     remainingGap: coverage.value?.remainingGap ?? null,
     status: coverage.status,

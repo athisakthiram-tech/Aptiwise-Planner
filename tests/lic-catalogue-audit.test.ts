@@ -49,7 +49,7 @@ const SUPPLIED_ACTIVE_IDENTITIES: Array<[planNumber: string, uin: string]> = [
   ["879", "512N386V01"],
   // Unit Linked
   ["873", "512L354V01"],
-  ["749", "512L317V02"],
+  ["849", "512L317V02"],
   ["752", "512L334V02"],
   ["886", "512L361V01"],
   // Micro Insurance

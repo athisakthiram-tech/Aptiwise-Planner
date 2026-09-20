@@ -154,7 +154,16 @@ export const LIC_CATALOGUE: InsuranceProduct[] = [
 
   // ---- Unit Linked / ULIP (4 active) ----
   licProduct("873", "LIC's Index Plus", "512L354V01", "market_linked_ulip", { marketLinked: true }),
-  licProduct("749", "LIC's Nivesh Plus", "512L317V02", "market_linked_ulip", { marketLinked: true }),
+  // Phase 4: corrected from "749" to "849" — multiple independent
+  // official licindia.in page titles confirm "LIC's Nivesh Plus (Plan
+  // No. 849, UIN No. 512L317V01)"/UIN 512L317V02 for the current
+  // revision; "749" was this repository's own transcription error (see
+  // docs/lic-financial-knowledge-v2.md's now-resolved identity flag).
+  // The engine file/exported symbols keep their historical "749" naming
+  // (lib/insurance/providers/lic/plans/plan749.ts, PLAN_749_UIN, etc.)
+  // — only the actual plan-number VALUE used for registration/lookup
+  // changed, to avoid a much larger, purely-cosmetic rename.
+  licProduct("849", "LIC's Nivesh Plus", "512L317V02", "market_linked_ulip", { marketLinked: true }),
   licProduct("752", "LIC's SIIP", "512L334V02", "market_linked_ulip", { marketLinked: true }),
   licProduct("886", "LIC's Protection Plus", "512L361V01", "market_linked_ulip", { marketLinked: true }),
 

@@ -459,12 +459,12 @@ for (const plan of ANNUITY_PLANS) {
   });
 }
 
-// ---- Market-linked ULIPs (873/749/886) — Annualized/Single Premium is
+// ---- Market-linked ULIPs (873/849/886) — Annualized/Single Premium is
 // a direct customer input; Basic Sum Assured is a formula-computed
 // multiple of it (FULL_CALCULATION for that specific direction). ----
 const ULIP_PLANS: { planNumber: string; uin: string; name: string }[] = [
   { planNumber: "873", uin: "512L354V01", name: "Index Plus" },
-  { planNumber: "749", uin: "512L317V02", name: "Nivesh Plus" },
+  { planNumber: "849", uin: "512L317V02", name: "Nivesh Plus" }, // Phase 4: corrected from "749" — see catalogue.ts
   { planNumber: "886", uin: "512L361V01", name: "Protection Plus" },
 ];
 for (const plan of ULIP_PLANS) {
