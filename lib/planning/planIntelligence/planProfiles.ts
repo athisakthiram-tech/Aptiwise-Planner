@@ -1363,7 +1363,11 @@ const PLAN_873 = buildProfile({
     notes: ["No fixed Basic Sum Assured — BSA is a chosen multiple (7x or 10x) of the customer's own Annualized Premium; maximum entry age and maximum maturity age both depend on which multiple is chosen (60/50 and 85/75 respectively)."],
   },
   premiumModel: {
-    structure: "REGULAR",
+    // CUSTOMER_CHOSEN, not REGULAR: this plan's own notes/minimumContribution
+    // above already say premium is "a direct customer choice, not a table
+    // lookup" — REGULAR would incorrectly imply a standard fixed/table-driven
+    // premium structure.
+    structure: "CUSTOMER_CHOSEN",
     pptRelationship: { kind: "EQUALS_TERM" },
     calculationReadiness: "ESTIMABLE",
     minimumContribution: { value: null, provenance: { status: "ESTIMATED", method: "not_yet_estimatable: premium is a direct customer choice, not a table lookup", sourceReferences: [] } },
@@ -1471,7 +1475,10 @@ const PLAN_886 = buildProfile({
     notes: ["BSA is a chosen multiple of Annualized Premium within a published [min, max] band that itself depends on age/PPT/premium — a continuous customer choice, not a discrete option like Plans 873/749. Has NO Guaranteed Additions feature at all (a structural absence, not a data gap)."],
   },
   premiumModel: {
-    structure: "REGULAR",
+    // CUSTOMER_CHOSEN, not REGULAR — same correction as Plan 873 above:
+    // this plan's own notes already describe a direct customer premium
+    // choice, never a table lookup.
+    structure: "CUSTOMER_CHOSEN",
     pptRelationship: { kind: "INDEPENDENT_CHOICE" },
     calculationReadiness: "ESTIMABLE",
     minimumContribution: { value: null, provenance: { status: "ESTIMATED", method: "not_yet_estimatable: premium is a direct customer choice, not a table lookup", sourceReferences: [] } },
