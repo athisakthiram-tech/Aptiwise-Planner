@@ -27,7 +27,7 @@ import { StructureJourney } from "@/components/planner/results/StructureJourney"
 import { StrategyReasons } from "@/components/planner/results/StrategyReasons";
 import { ProductConfigurationPanel } from "@/components/planner/results/ProductConfigurationPanel";
 import { CreatePlanAction } from "@/components/customerPlan/CreatePlanAction";
-import { CustomerPlan } from "@/lib/customerPlan/types";
+import { CustomerPlan, CustomerPlanFundingContext } from "@/lib/customerPlan/types";
 import { Locale } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
 
@@ -81,6 +81,7 @@ export function StrategyDetails({
   goalNeed,
   profile,
   locale,
+  fundingContext,
   onBack,
   onCreatePlan,
 }: {
@@ -89,6 +90,10 @@ export function StrategyDetails({
   goalNeed: GoalNeedResult;
   profile: CustomerFinancialProfile;
   locale: Locale;
+  // Optional (Goal Orchestrator V2) — set only when this strategy came
+  // from a GoalStructure, so the created plan preserves who funds the
+  // goal and who benefits from it.
+  fundingContext?: CustomerPlanFundingContext;
   onBack: () => void;
   onCreatePlan: (plan: CustomerPlan) => void;
 }) {
@@ -129,6 +134,7 @@ export function StrategyDetails({
         goalNeed={goalNeed}
         profile={profile}
         locale={locale}
+        fundingContext={fundingContext}
         onCreated={onCreatePlan}
       />
 

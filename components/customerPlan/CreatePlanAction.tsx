@@ -11,7 +11,7 @@ import { ProtectionNeedResult } from "@/lib/planning/protectionNeeds";
 import { GoalNeedResult } from "@/lib/planning/goalNeeds";
 import { CustomerFinancialProfile } from "@/lib/planning/customerProfile";
 import { createCustomerPlan } from "@/lib/customerPlan/createCustomerPlan";
-import { CustomerPlan } from "@/lib/customerPlan/types";
+import { CustomerPlan, CustomerPlanFundingContext } from "@/lib/customerPlan/types";
 import { Locale } from "@/lib/i18n/types";
 import { t } from "@/lib/i18n/translations";
 
@@ -21,6 +21,7 @@ export function CreatePlanAction({
   goalNeed,
   profile,
   locale,
+  fundingContext,
   onCreated,
 }: {
   strategy: StrategyResult;
@@ -28,6 +29,10 @@ export function CreatePlanAction({
   goalNeed: GoalNeedResult;
   profile: CustomerFinancialProfile;
   locale: Locale;
+  // Optional (Goal Orchestrator V2) — set only when this strategy came
+  // from a GoalStructure; absent for the original per-family strategy
+  // flow.
+  fundingContext?: CustomerPlanFundingContext;
   onCreated: (plan: CustomerPlan) => void;
 }) {
   const [error, setError] = useState<string | null>(null);
@@ -40,6 +45,7 @@ export function CreatePlanAction({
         goalNeed,
         selectedStrategy: strategy,
         locale,
+        fundingContext,
       });
       setError(null);
       onCreated(plan);

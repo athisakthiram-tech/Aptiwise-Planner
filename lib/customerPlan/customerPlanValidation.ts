@@ -97,6 +97,12 @@ export function validateCustomerPlan(candidate: unknown): CustomerPlanValidation
         pushIf(errors, !Number.isFinite(illustration.ratePct), `components[${i}].investmentIllustration.ratePct is not finite.`);
         pushIf(errors, !Number.isFinite(illustration.years), `components[${i}].investmentIllustration.years is not finite.`);
       }
+      if (component.configuration) {
+        const configuration = component.configuration;
+        pushIf(errors, !isFiniteOrAbsent(configuration.basicSumAssured), `components[${i}].configuration.basicSumAssured is not finite.`);
+        pushIf(errors, !isFiniteOrAbsent(configuration.policyTermYears), `components[${i}].configuration.policyTermYears is not finite.`);
+        pushIf(errors, !isFiniteOrAbsent(configuration.premiumPayingTermYears), `components[${i}].configuration.premiumPayingTermYears is not finite.`);
+      }
     }
 
     for (const field of ["protectionCoverage", "protectionGap", "goalGap", "guarantees"] as const) {
@@ -135,6 +141,20 @@ export function validateCustomerPlan(candidate: unknown): CustomerPlanValidation
     pushIf(errors, !!budget && !isFiniteOrAbsent(budget.monthlyBudgetVerifiedUsed), "financialPicture.budget.monthlyBudgetVerifiedUsed is not finite.");
   } else {
     errors.push("Missing financialPicture.");
+  }
+
+  if (plan.fundingContext) {
+    const funding = plan.fundingContext;
+    pushIf(
+      errors,
+      funding.fundingPersonLabel != null && typeof funding.fundingPersonLabel !== "string",
+      "fundingContext.fundingPersonLabel is present but not a string."
+    );
+    pushIf(
+      errors,
+      funding.beneficiaryLabel != null && typeof funding.beneficiaryLabel !== "string",
+      "fundingContext.beneficiaryLabel is present but not a string."
+    );
   }
 
   return { valid: errors.length === 0, errors };

@@ -63,6 +63,15 @@ export interface StrategyComponent {
   // lib/customerPlan) can honestly record what illustration was shown
   // without having to invert sipFutureValue to guess at it.
   illustration?: { ratePct: number; years: number };
+  // Set by the Goal Orchestrator (lib/planning/goalOrchestrator/**) for a
+  // real LIC product component — the exact Basic Sum Assured/Policy Term/
+  // Premium Paying Term the engine was actually called with. Kept
+  // deliberately separate from `deathBenefit`/`maturityBenefit`: a Basic
+  // Sum Assured is never the same thing as a maturity value or the
+  // customer's stated goal amount (see goalOrchestrator's own header
+  // comment). Optional and additive — every existing caller that never
+  // sets it is unaffected.
+  configuration?: { basicSumAssured: number | null; policyTermYears: number | null; premiumPayingTermYears: number | null };
 }
 
 export interface StrategyResult {

@@ -27,6 +27,7 @@ import {
   CURRENT_CUSTOMER_PLAN_SCHEMA_VERSION,
   CustomerPlan,
   CustomerPlanComponentSnapshot,
+  CustomerPlanFundingContext,
   CustomerPlanIdentity,
 } from "@/lib/customerPlan/types";
 import { ComparisonValue, ValueStatus } from "@/lib/comparison/protectionAdjustedComparison";
@@ -39,6 +40,10 @@ export interface CreateCustomerPlanInput {
   selectedStrategy: StrategyResult;
   locale: Locale;
   customer?: { name?: string | null; phone?: string | null };
+  // Optional (Goal Orchestrator V2) — who funds the goal and who benefits
+  // from it, when the caller has this (e.g. a GoalStructure). Never
+  // inferred here; absent when the caller doesn't have it.
+  fundingContext?: CustomerPlanFundingContext;
   // Injectable for deterministic tests — default to real id/time.
   idProvider?: () => string;
   nowProvider?: () => Date;
@@ -103,6 +108,9 @@ function snapshotComponent(component: StrategyComponent): CustomerPlanComponentS
           }
         : null,
     reasonCodes: [...component.reasonCodes],
+    // Purely additive passthrough — absent for any component that never
+    // had a configured BSA/term (e.g. an illustrative-investment role).
+    ...(component.configuration != null ? { configuration: { ...component.configuration } } : {}),
   };
 }
 
@@ -180,6 +188,7 @@ export function createCustomerPlan(input: CreateCustomerPlanInput): CustomerPlan
       snapshotNote: "snapshot_not_live_reference",
       strategyIdAtCreation: selectedStrategy.id,
     },
+    ...(input.fundingContext != null ? { fundingContext: { ...input.fundingContext } } : {}),
   };
 
   // Belt-and-braces: round-trip through JSON so the returned plan can

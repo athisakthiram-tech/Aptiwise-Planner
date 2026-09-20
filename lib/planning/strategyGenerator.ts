@@ -130,7 +130,11 @@ function annualToMonthly(premium: number, frequency: PremiumFrequency | undefine
   }
 }
 
-function buildComponent(
+// Exported so the Goal Orchestrator (lib/planning/goalOrchestrator/**)
+// can build components from the SAME registered engines this file
+// already calls, instead of re-implementing "how a StrategyComponent is
+// built from an engine result" a second time.
+export function buildComponent(
   assessment: ProductEligibilityAssessment,
   role: StrategyComponentRole,
   context: LicCalculationContext,
@@ -189,8 +193,10 @@ function buildComponent(
 
 // The illustrative-investment "component" is never an LIC product — it
 // reuses the existing tested SIP maths (lib/calculations/sip.ts) and is
-// always labeled `illustrative`, never `verified`.
-function buildIllustrativeInvestmentComponent(
+// always labeled `illustrative`, never `verified`. Exported for the same
+// reason as buildComponent above — the Goal Orchestrator's post-PPT
+// fallback reuses this exact function rather than a second SIP wrapper.
+export function buildIllustrativeInvestmentComponent(
   monthlyAmount: number,
   years: number,
   ratePct: number,
@@ -278,7 +284,12 @@ function goalCoverageComparison(
   };
 }
 
-function assembleStrategy(params: {
+// Exported so the Goal Orchestrator can assemble a StrategyResult from
+// its own generated components using the exact same aggregation rules
+// (protection/goal coverage combination, budget usage, guarantees,
+// confidence) every existing family already uses — never a second,
+// parallel aggregation implementation.
+export function assembleStrategy(params: {
   id: string;
   family: StrategyFamily;
   components: StrategyComponent[];

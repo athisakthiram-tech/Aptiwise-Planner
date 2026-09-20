@@ -98,6 +98,16 @@ export interface CustomerPlanComponentSnapshot {
   maturityBenefit: ComparisonValue<number>;
   investmentIllustration: CustomerPlanInvestmentIllustrationSnapshot | null;
   reasonCodes: StrategyReasonCode[];
+  // Optional and additive (Goal Orchestrator V2) — the exact Basic Sum
+  // Assured/Policy Term/Premium Paying Term this component's engine call
+  // actually used, when a component came from
+  // lib/planning/goalOrchestrator/**. Absent for every plan created
+  // before this field existed, and absent for components that never had
+  // a configured BSA (e.g. the illustrative-investment role) — never
+  // backfilled or guessed. Deliberately never conflated with
+  // maturityBenefit/deathBenefit or with the customer's stated goal
+  // amount, which are each tracked as their own separate field.
+  configuration?: { basicSumAssured: number | null; policyTermYears: number | null; premiumPayingTermYears: number | null };
 }
 
 export interface CustomerPlanSelectedStrategy {
@@ -141,6 +151,16 @@ export interface CustomerPlanSourceMetadata {
   strategyIdAtCreation: string;
 }
 
+// Who the goal is funded by and who benefits from it — distinct from
+// `customer` (the advisor's contact, i.e. who this proposal is FOR).
+// Optional and additive (Goal Orchestrator V2); absent for every plan
+// created before goal structures existed, and never inferred/guessed
+// when the orchestrator itself didn't receive this information.
+export interface CustomerPlanFundingContext {
+  fundingPersonLabel: string | null;
+  beneficiaryLabel: string | null;
+}
+
 export interface CustomerPlan {
   id: string;
   schemaVersion: number;
@@ -152,6 +172,7 @@ export interface CustomerPlan {
   selectedStrategy: CustomerPlanSelectedStrategy;
   disclosures: CustomerPlanDisclosureCode[];
   sourceMetadata: CustomerPlanSourceMetadata;
+  fundingContext?: CustomerPlanFundingContext;
 }
 
 // A lightweight, storage-list-friendly view of a plan — used by
