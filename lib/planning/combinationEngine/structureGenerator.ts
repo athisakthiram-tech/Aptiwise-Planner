@@ -39,6 +39,7 @@ function toComponent(candidate: CandidateAnalysis, config: CandidateConfiguratio
     benefitModel: candidate.profile.benefitModel,
     cashFlowPattern: candidate.profile.cashFlowPattern,
     marketLinked: candidate.profile.marketRisk === "MARKET_LINKED",
+    ulipOfficialIllustrationRatesPct: candidate.profile.ulip?.officialIllustration?.ratesPct ?? null,
   };
 }
 

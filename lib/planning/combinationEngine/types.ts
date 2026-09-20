@@ -104,6 +104,11 @@ export interface StructureComponent {
   benefitModel: BenefitDescriptor[];
   cashFlowPattern: PlanIntelligenceProfile["cashFlowPattern"];
   marketLinked: boolean;
+  // Phase 3: the product's OWN official illustration rates (e.g. [4, 8]
+  // for LIC's current ULIP shelf), never a global hardcoded 6/8/10 — null
+  // when this repository has no verified product-specific rate yet (see
+  // structureSimulator.ts's fallback).
+  ulipOfficialIllustrationRatesPct: readonly number[] | null;
 }
 
 export interface CashFlowPhase {

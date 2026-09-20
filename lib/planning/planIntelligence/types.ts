@@ -38,6 +38,17 @@ export interface Provenance {
   method?: string; // required whenever status is DERIVED or ESTIMATED
   sourceReferences: string[]; // e.g. ["lic-736-sales-brochure-current"], catalogue source ids
   asOf?: string; // ISO date, when meaningful (e.g. HISTORICAL NAV data)
+  // Phase 3 (Section: ESTIMATION CONFIDENCE) — an internal planning-engine
+  // signal, separate from DataConfidence, for HOW GOOD a given ESTIMATED/
+  // DERIVED/HISTORICAL value's own method is (an exact official table
+  // lookup vs. interpolation between nearby values vs. scaling from one
+  // distant sample vs. a historical-bonus-based projection). Deliberately
+  // NOT surfaced prominently to customers — it exists for the planning
+  // engine's own reasoning (e.g. future diversity/selection weighting),
+  // not as a customer-facing label. Optional: existing values this phase
+  // did not specifically enrich simply omit it, which is not itself a
+  // claim of any particular confidence level.
+  estimationConfidence?: "HIGH" | "MEDIUM" | "LOW";
 }
 
 // A single monetary or numeric planning value, always paired with its

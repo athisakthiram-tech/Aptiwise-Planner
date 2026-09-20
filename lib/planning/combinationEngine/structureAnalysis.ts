@@ -33,7 +33,7 @@ function classify(events: CashFlowEvent[], statuses: DataConfidence[]): CashFlow
   return events.filter((e) => statuses.includes(e.amount.provenance.status));
 }
 
-export function analyzeStructureGoal(structure: CandidateStructure, goalAmount: number, yearsToGoal: number): StructureGoalAnalysis {
+export function analyzeStructureGoal(structure: CandidateStructure, goalAmount: number, yearsToGoal: number, age: number): StructureGoalAnalysis {
   const outflowEvents = structure.events.filter((e) => e.kind === "PREMIUM_OUTFLOW");
   const inflowEvents = structure.events.filter((e) => e.kind !== "PREMIUM_OUTFLOW");
 
@@ -84,7 +84,7 @@ export function analyzeStructureGoal(structure: CandidateStructure, goalAmount: 
   const perComponentReturn = structure.components.map((c) => ({
     planNumber: c.planNumber,
     uin: c.uin,
-    returnAnalysis: analyzeReturn(componentCashFlowEvents(c, yearsToGoal)),
+    returnAnalysis: analyzeReturn(componentCashFlowEvents(c, yearsToGoal, age)),
   }));
 
   return {

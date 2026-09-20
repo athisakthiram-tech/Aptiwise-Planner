@@ -703,29 +703,36 @@ const PLAN_745 = buildProfile({
   hasRegisteredEngine: false,
   productNature: ["TRADITIONAL_PARTICIPATING", "WHOLE_LIFE", "INCOME_ORIENTED", "LIMITED_PREMIUM"],
   eligibility: {
-    minEntryAge: null,
-    maxEntryAge: null,
+    // Phase 3: entry age and PPT options below were cross-verified this
+    // session against LIC's official Jeevan Umang sales brochure
+    // (UIN 512N312V03) via multiple independent secondary sources
+    // quoting matching figures — the primary PDF could not be directly
+    // fetched in this sandbox (licindia.in egress is blocked). Treated
+    // as this repository's best current figures, not re-verified
+    // against the raw PDF.
+    minEntryAge: 0,
+    maxEntryAge: 55,
     minMaturityAge: null,
     maxMaturityAge: 100,
     minPolicyTermYears: null,
     maxPolicyTermYears: null,
-    validTermOptions: null,
+    validTermOptions: [15, 20, 25, 30],
     minPremiumOrBsa: { minBasicSumAssured: null, minPremium: null },
     premiumModes: ["yearly", "half_yearly", "quarterly", "monthly"],
-    notes: [CATALOGUE_ONLY_NOTE, "A whole-life plan structured around cover to age 100 with a choice of limited Premium Paying Terms."],
+    notes: [CATALOGUE_ONLY_NOTE, "A whole-life plan structured around cover to age 100, with the Premium Paying Term chosen from exactly 4 options: 15, 20, 25 or 30 years."],
   },
   premiumModel: {
     structure: "LIMITED",
     pptRelationship: { kind: "INDEPENDENT_CHOICE" },
     calculationReadiness: "NOT_YET_ESTIMATABLE",
-    minimumContribution: { value: null, provenance: { status: "ESTIMATED", method: "not_yet_estimatable: no registered engine or published sample data available", sourceReferences: [] } },
-    notes: ["Premiums are payable for a chosen limited term, after which a recurring survival benefit begins — the defining income-orientation of this product."],
+    minimumContribution: { value: null, provenance: { status: "ESTIMATED", method: "not_yet_estimatable: no registered engine exists, and this session's web research found two independent secondary sources reporting DIFFERENT premiums (Rs.49,000 vs Rs.54,036 annually) for the identical age-30/PPT-20/BSA-10L configuration — a genuine conflict, so neither figure is used as a sample point (Phase 3's own 'report the conflict, do not silently pick one' rule)", sourceReferences: [] } },
+    notes: ["Premiums are payable for the chosen Premium Paying Term (15/20/25/30 years), after which a recurring survival benefit begins — the defining income-orientation of this product."],
   },
   benefitModel: [
-    guaranteedSurvival("An annual survival benefit, a percentage of Basic Sum Assured, payable every year after the Premium Paying Term completes, continuing until maturity/whole-life cover ends — the product's central income mechanic."),
-    guaranteedMaturity("A whole-life/maturity benefit payable at the end of cover (around age 100)."),
+    guaranteedSurvival("An annual Survival Benefit equal to 8% of Basic Sum Assured, payable every year from the end of the Premium Paying Term until age 100 or earlier death — the product's central, quantified income mechanic (see lib/planning/planIntelligence/benefitProjection.ts for the cash-flow projection)."),
+    guaranteedMaturity("A whole-life/maturity benefit equal to Basic Sum Assured, payable at the end of cover (age 100)."),
     guaranteedProtection("A guaranteed death benefit payable at any time during the whole-life cover period, in addition to (not instead of) the accumulated survival benefits already paid."),
-    nonGuaranteedReversionaryBonus("A participating Simple Reversionary Bonus — not guaranteed, rate not verified in this repository."),
+    nonGuaranteedReversionaryBonus("A participating Simple Reversionary Bonus — not guaranteed; no verified historical rate for this specific plan exists in this repository (see historicalBonusData.ts's coverage note)."),
   ],
   hasLifeProtection: true,
   protectionDescription: "Life cover for the whole of life (to around age 100), paid on top of any survival benefits already received — distinguishing this from an endowment where maturity ends the cover.",
@@ -744,38 +751,43 @@ const PLAN_745 = buildProfile({
   usefulWhen: ["The customer wants lifelong protection combined with a recurring income stream after a limited paying period — e.g. a legacy or supplementary-income objective."],
   lessUsefulWhen: ["The customer needs a single lump sum at a specific future year (e.g. a 16-year education goal) — the recurring-income shape is a mechanics mismatch."],
   overallConfidence: "ESTIMATED",
-  sources: ["lic-catalogue-product-page-745"],
+  sources: ["lic-catalogue-product-page-745", "lic-745-jeevan-umang-sales-brochure-secondary-verified"],
 });
 
 const PLAN_771 = buildProfile({
   planNumber: "771",
   uin: "512N363V02",
   hasRegisteredEngine: false,
-  productNature: ["TRADITIONAL_PARTICIPATING", "WHOLE_LIFE", "INCOME_ORIENTED", "LIMITED_PREMIUM"],
+  productNature: ["TRADITIONAL_NON_PARTICIPATING", "WHOLE_LIFE", "INCOME_ORIENTED", "LIMITED_PREMIUM"],
   eligibility: {
-    minEntryAge: null,
-    maxEntryAge: null,
+    // Phase 3: cross-verified this session against LIC's official
+    // Jeevan Utsav sales brochure (UIN 512N363V02) via multiple
+    // independent secondary sources quoting matching figures — the
+    // primary PDF could not be directly fetched in this sandbox
+    // (licindia.in egress is blocked).
+    minEntryAge: 0,
+    maxEntryAge: 65,
     minMaturityAge: null,
     maxMaturityAge: 100,
     minPolicyTermYears: null,
     maxPolicyTermYears: null,
     validTermOptions: null,
-    minPremiumOrBsa: { minBasicSumAssured: null, minPremium: null },
+    minPremiumOrBsa: { minBasicSumAssured: 500000, minPremium: null },
     premiumModes: ["yearly", "half_yearly", "quarterly", "monthly"],
-    notes: [CATALOGUE_ONLY_NOTE, "Offers a choice between a Regular Income Benefit variant and a Flexi Income Benefit variant."],
+    notes: [CATALOGUE_ONLY_NOTE, "Premium Paying Term ranges 5 to 16 years (a shorter, independently-choosable range than Jeevan Umang's 4 fixed options). Offers a choice between a Regular Income Benefit variant and a Flexi Income Benefit variant, selected at inception."],
   },
   premiumModel: {
     structure: "LIMITED",
     pptRelationship: { kind: "INDEPENDENT_CHOICE" },
     calculationReadiness: "NOT_YET_ESTIMATABLE",
-    minimumContribution: { value: null, provenance: { status: "ESTIMATED", method: "not_yet_estimatable: no registered engine or published sample data available", sourceReferences: [] } },
-    notes: ["A shorter limited Premium Paying Term than Jeevan Umang is typical of this product's design, again followed by recurring benefits."],
+    minimumContribution: { value: null, provenance: { status: "ESTIMATED", method: "not_yet_estimatable: no registered engine or published sample premium data available in this repository", sourceReferences: [] } },
+    notes: ["A shorter limited Premium Paying Term than Jeevan Umang (5-16 years) is typical of this product's design, again followed by recurring benefits."],
   },
   benefitModel: [
-    guaranteedIncome("Under the Regular Income Benefit variant, a guaranteed income begins a short period after the Premium Paying Term completes and continues to around age 100."),
-    otherContractual("Under the Flexi Income Benefit variant, the customer can choose to accumulate the income benefit (with guaranteed additions) instead of drawing it immediately, adding flexibility this product's Regular variant doesn't have."),
-    guaranteedAddition("Guaranteed Additions accrue during the Premium Paying Term, a guaranteed (not participating-bonus-dependent) component distinguishing it from a plain participating endowment."),
-    guaranteedProtection("A guaranteed death benefit throughout the whole-life cover period."),
+    guaranteedIncome("Under the Regular Income Benefit variant, a guaranteed income equal to 10% of Basic Sum Assured per year begins at the end of the Premium Paying Term and continues to around age 100 (see lib/planning/planIntelligence/benefitProjection.ts for the cash-flow projection)."),
+    otherContractual("Under the Flexi Income Benefit variant, the customer can choose to accumulate the income benefit at a stated accrual rate instead of drawing it immediately; this repository does not yet quantify that accrual rate (only one, uncorroborated secondary source reported a figure this session, so none is used)."),
+    guaranteedAddition("Guaranteed Additions of Rs.40 per Rs.1,000 of Basic Sum Assured accrue for every year of the Premium Paying Term — a guaranteed (not participating-bonus-dependent) component; this plan is entirely non-participating (no Simple/Final Reversionary Bonus applies at all)."),
+    guaranteedProtection("A guaranteed death benefit throughout the whole-life cover period, never less than 105% of total premiums paid, plus accrued Guaranteed Additions."),
   ],
   hasLifeProtection: true,
   protectionDescription: "Whole-life death benefit cover, with the specific death-benefit amount varying by the Regular/Flexi variant chosen and elapsed policy duration.",
@@ -794,7 +806,7 @@ const PLAN_771 = buildProfile({
   usefulWhen: ["The customer wants flexible-timing recurring income with lifelong protection and values guaranteed (not bonus-dependent) accrual."],
   lessUsefulWhen: ["The customer needs one lump sum at a specific future year."],
   overallConfidence: "ESTIMATED",
-  sources: ["lic-catalogue-product-page-771"],
+  sources: ["lic-catalogue-product-page-771", "lic-771-jeevan-utsav-sales-brochure-secondary-verified"],
 });
 
 const PLAN_883 = buildProfile({
@@ -1385,7 +1397,10 @@ const PLAN_873 = buildProfile({
   ulip: buildUlipIntelligence({
     funds: [ulipFund("Available Fund(s)", "OTHER", ["Exact fund names/asset-allocation bands are not itemized in this repository's verified data."])],
     historicalPerformance: [],
-    officialIllustration: null,
+    officialIllustration: officialIllustration(
+      [4, 8],
+      "IRDAI-mandated benefit-illustration rates applied uniformly across LIC's current ULIP shelf (directly confirmed this session for LIC's SIIP, Plan 752 — see that plan's own citation; applied here as the same regulatorily-uniform standard, not independently confirmed by product name for Index Plus specifically). Primary licindia.in brochure could not be directly fetched in this sandbox (egress blocked)."
+    ),
     charges: [
       { name: "Fund Management Charge", description: "1.35% p.a., flat and unconditional.", provenance: { status: "VERIFIED", sourceReferences: src("873") } },
       { name: "Mortality Charge", description: "A published rate per Rs.1,000 of Sum at Risk, increasing by age band (e.g. Rs.1.26 at age 25 up to Rs.15.07 at age 60).", provenance: { status: "VERIFIED", sourceReferences: src("873") } },
@@ -1439,7 +1454,10 @@ const PLAN_749 = buildProfile({
   ulip: buildUlipIntelligence({
     funds: [ulipFund("Available Fund(s)", "OTHER", ["Exact fund names/asset-allocation bands are not itemized in this repository's verified data."])],
     historicalPerformance: [],
-    officialIllustration: null,
+    officialIllustration: officialIllustration(
+      [4, 8],
+      "IRDAI-mandated benefit-illustration rates applied uniformly across LIC's current ULIP shelf (directly confirmed this session for LIC's SIIP, Plan 752 — see that plan's own citation; applied here as the same regulatorily-uniform standard). Primary licindia.in brochure could not be directly fetched in this sandbox (egress blocked). Note: unconfirmed secondary references to a 'Nivesh Plus Plan No. 849' were also found this session — possibly a separate/newer relaunch not yet reconciled with this repository's Plan 749/UIN 512L317V02 identity; flagged for dedicated re-verification, not silently changed (see docs/lic-financial-knowledge-v2.md)."
+    ),
     charges: [
       { name: "Fund Management Charge", description: "1.35% p.a., flat and unconditional.", provenance: { status: "VERIFIED", sourceReferences: src("749") } },
       { name: "Mortality Charge", description: "A published rate per Rs.1,000 of Sum at Risk, increasing by age band.", provenance: { status: "VERIFIED", sourceReferences: src("749") } },
@@ -1496,7 +1514,10 @@ const PLAN_886 = buildProfile({
   ulip: buildUlipIntelligence({
     funds: [ulipFund("Available Fund(s)", "OTHER", ["Exact fund names/asset-allocation bands are not itemized in this repository's verified data."])],
     historicalPerformance: [],
-    officialIllustration: null,
+    officialIllustration: officialIllustration(
+      [4, 8],
+      "IRDAI-mandated benefit-illustration rates applied uniformly across LIC's current ULIP shelf (directly confirmed this session for LIC's SIIP, Plan 752 — see that plan's own citation; applied here as the same regulatorily-uniform standard, not independently confirmed by product name for Protection Plus specifically). Primary licindia.in brochure could not be directly fetched in this sandbox (egress blocked)."
+    ),
     charges: [
       { name: "Fund Management Charge", description: "1.35% p.a., flat and unconditional.", provenance: { status: "VERIFIED", sourceReferences: src("886") } },
       { name: "Mortality Charge", description: "A published rate per Rs.1,000 of Sum at Risk, increasing by age band (e.g. Rs.1.17 at age 25 up to Rs.13.95 at age 60).", provenance: { status: "VERIFIED", sourceReferences: src("886") } },
@@ -1548,10 +1569,15 @@ const PLAN_752 = buildProfile({
   returnNotes: ["No registered engine exists yet for this product; charges/fund mechanics are not verified in this repository."],
   liquidity: { surrenderAvailable: "ESTIMATED", loanAvailable: "NOT_APPLICABLE", lockInYears: 5, notes: ["A standard 5-year lock-in is typical for LIC ULIPs sold under current IRDAI regulations."] },
   ulip: buildUlipIntelligence({
-    funds: [],
+    funds: [ulipFund("Available Fund(s)", "OTHER", ["Exact fund names/asset-allocation bands are not itemized in this repository's verified data."])],
     historicalPerformance: [],
-    officialIllustration: null,
-    charges: [],
+    officialIllustration: officialIllustration(
+      [4, 8],
+      "LIC's SIIP Sales Brochure (UIN: 512L334V02) benefit illustration, confirmed this session via multiple independent secondary sources describing an assumed Projected Investment Rate of Return of 4% p.a. or 8% p.a. — the current IRDAI-mandated illustration rates (post the industry-wide move from the older 6%/10% standard). Primary licindia.in brochure could not be directly fetched in this sandbox (egress blocked)."
+    ),
+    charges: [
+      { name: "Fund Management Charge", description: "1.35% p.a., consistent with this catalogue's other active LIC ULIPs — not independently itemized in a directly-fetched SIIP-specific document this session (see officialIllustration's own caveat).", provenance: { status: "ESTIMATED", method: "assumed uniform with Plans 873/749/886, all independently verified at 1.35% p.a.", sourceReferences: src("752") } },
+    ],
     lockInYears: 5,
   }),
   professionSuitability: ["A flexible-contribution ULIP design (regular, limited, or single premium) can suit varied income patterns, though exact mechanics are not yet verified."],

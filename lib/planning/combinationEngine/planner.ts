@@ -42,8 +42,8 @@ export function planCombinations(request: PlanningRequest): PlanningResult {
   const allStructures = [...singleStructures, ...pairResult.structures, ...tripleResult.structures];
 
   const analyzed: AnalyzedStructure[] = allStructures.map((structure) => {
-    const simulated = simulateStructure(structure, request.yearsToGoal, request.monthlyCapacity);
-    const goalAnalysis = analyzeStructureGoal(simulated, request.goalAmount, request.yearsToGoal);
+    const simulated = simulateStructure(structure, request.yearsToGoal, request.monthlyCapacity, request.age);
+    const goalAnalysis = analyzeStructureGoal(simulated, request.goalAmount, request.yearsToGoal, request.age);
 
     const monthlyBudgetUsedValue = simulated.components.reduce((sum, c) => sum + (c.monthlyAllocation.value ?? 0), 0);
     const monthlyBudgetUsed = {

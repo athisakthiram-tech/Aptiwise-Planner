@@ -285,7 +285,7 @@ describe("PPT and released-capacity timeline", () => {
     const singles = generateSingleProductStructures(candidatesByPlan, configsByPlan);
     const limitedPay = singles.find((s) => (s.components[0].premiumPayingTermYears ?? s.components[0].policyTermYears ?? REGRESSION_REQUEST.yearsToGoal) < REGRESSION_REQUEST.yearsToGoal);
     expect(limitedPay).toBeDefined();
-    const simulated = simulateStructure(limitedPay!, REGRESSION_REQUEST.yearsToGoal, REGRESSION_REQUEST.monthlyCapacity);
+    const simulated = simulateStructure(limitedPay!, REGRESSION_REQUEST.yearsToGoal, REGRESSION_REQUEST.monthlyCapacity, REGRESSION_REQUEST.age);
     expect(simulated.timeline.length).toBeGreaterThan(1); // more than one phase => a PPT boundary was modeled
     const lastPhase = simulated.timeline[simulated.timeline.length - 1];
     expect(lastPhase.allocatedMonthly).toBe(0); // premium has stopped by the final phase
@@ -416,8 +416,8 @@ describe("Reuse of Phase 1 intelligence (never duplicated)", () => {
     const candidatesByPlan = new Map(survivors.map((c) => [`${c.profile.identity.planNumber}::${c.profile.identity.uin}`, c]));
     const configsByPlan = generateAllConfigurations(survivors, customer);
     const singles = generateSingleProductStructures(candidatesByPlan, configsByPlan);
-    const simulated = simulateStructure(singles[0], REGRESSION_REQUEST.yearsToGoal, REGRESSION_REQUEST.monthlyCapacity);
-    const analysis = analyzeStructureGoal(simulated, REGRESSION_REQUEST.goalAmount, REGRESSION_REQUEST.yearsToGoal);
+    const simulated = simulateStructure(singles[0], REGRESSION_REQUEST.yearsToGoal, REGRESSION_REQUEST.monthlyCapacity, REGRESSION_REQUEST.age);
+    const analysis = analyzeStructureGoal(simulated, REGRESSION_REQUEST.goalAmount, REGRESSION_REQUEST.yearsToGoal, REGRESSION_REQUEST.age);
     expect(analysis.perComponentReturn.length).toBe(simulated.components.length);
   });
 });
